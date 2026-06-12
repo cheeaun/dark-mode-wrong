@@ -322,13 +322,31 @@ p code, li code, .fine code, dd code {
 .theme-toggle .seg:has(input[value="auto"]:checked)  .thumb { translate: 100% 0; }
 .theme-toggle .seg:has(input[value="dark"]:checked)  .thumb { translate: 200% 0; }
 
-/* mobile-first: icon-only toggle and mark-only wordmark by default */
-.theme-toggle label span { position: absolute; width: 1px; height: 1px; margin: -1px; clip-path: inset(50%); overflow: hidden; }
+/* invisible hit-area extension: a ≥44px-tall touch target without
+   growing the pill visually */
+.theme-toggle label::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  top: 50%; height: 44px;
+  translate: 0 -50%;
+}
+
+/* mobile-first: mark-only wordmark by default. The toggle keeps its text
+   labels at every width — its state should never be icon-shape-only. */
+.theme-toggle label { padding: .45em .55em; }
 .wordmark .label { display: none; }
 @media (min-width: 35em) {
-  .theme-toggle label span { position: static; width: auto; height: auto; margin: 0; clip-path: none; overflow: visible; }
   .theme-toggle label { padding: .34em .9em; }
   .wordmark .label { display: inline; }
+}
+
+/* forced colors (Windows High Contrast) strips the thumb's background,
+   so the checked state must not ride on it — use the system selection
+   colors on the label itself */
+@media (forced-colors: active) {
+  .theme-toggle .thumb { display: none; }
+  .theme-toggle label:has(:checked) { background: SelectedItem; color: SelectedItemText; }
 }
 
 /* without JS the control can’t override anything — don’t pretend */
@@ -478,9 +496,12 @@ html:not(.js) .theme-toggle { display: none; }
 .night li {
   position: relative;
   display: grid;
-  grid-template-columns: 5.2rem 1fr;
-  gap: 1.2rem;
+  grid-template-columns: 3.4rem 1fr;
+  gap: .9rem;
   padding: 1.05rem 0;
+}
+@media (min-width: 35em) {
+  .night li { grid-template-columns: 5.2rem 1fr; gap: 1.2rem; }
 }
 .night li + li { border-top: 1px dashed var(--rule); }
 .night time, .night .t {
@@ -538,6 +559,13 @@ html:not(.js) .theme-toggle { display: none; }
   font-size: .84rem;
   line-height: 1.65;
   tab-size: 2;
+  /* narrow screens: the annotations carry the argument, and prose
+     shouldn't need sideways scrolling — wrap instead */
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+@media (min-width: 40em) {
+  .code pre { white-space: pre; overflow-wrap: normal; }
 }
 .code .copy {
   position: absolute; top: .45rem; right: .55rem;
@@ -547,6 +575,7 @@ html:not(.js) .theme-toggle { display: none; }
   color: var(--ink-soft);
   font: 500 .7rem/1 "Spline Sans Mono", monospace;
   padding: .45em .7em;
+  min-height: 24px; /* WCAG 2.5.8 minimum target size */
   cursor: pointer;
 }
 .code .copy:hover { color: var(--accent-ink); border-color: var(--rule-strong); }
@@ -597,7 +626,9 @@ html:not(.js) .theme-toggle { display: none; }
 .state dt { display: none; }
 .state dd { margin: 0; }
 .state dd b, .state dd code { font-weight: 500; color: var(--ink-soft); }
-.state dd code { font-size: inherit; }
+/* these are exact attribute values — wrap to a new line whole, never mid-token
+   (nowrap blocks the break the hyphen in data-theme would otherwise allow) */
+.state dd code { font-size: inherit; white-space: nowrap; }
 
 /* —— objections —— */
 .objection {
@@ -616,14 +647,15 @@ html:not(.js) .theme-toggle { display: none; }
   list-style: none;
 }
 .objection summary::-webkit-details-marker { display: none; }
+.objection summary:hover { color: var(--accent-ink); }
 .objection summary::before {
-  content: "→";
+  content: "+"; /* a disclosure, not a link — "→" read as the latter */
   display: inline-block;
   width: 1.35em;
   text-align: center;
   color: var(--accent);
 }
-.objection[open] summary::before { rotate: 90deg; }
+.objection[open] summary::before { rotate: 45deg; }
 /* animatable open/close where ::details-content is supported;
    elsewhere it simply opens instantly */
 .objection::details-content {
@@ -764,7 +796,11 @@ a.res .domain {
 a.res .domain::after { content: " ↗"; color: var(--accent-ink); }
 
 @media (prefers-reduced-motion: no-preference) {
-  a.res, .exhibit, .code .copy, a { transition: all .18s ease; }
+  /* not `all`: underline thickness should snap, not smear */
+  a.res, .exhibit, .code .copy, a {
+    transition: color .18s ease, border-color .18s ease,
+                transform .18s ease, box-shadow .18s ease;
+  }
   a.res:hover { transform: translateY(-2px); box-shadow: 0 6px 18px var(--shadow); }
 }
 
