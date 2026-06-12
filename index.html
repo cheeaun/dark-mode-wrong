@@ -864,7 +864,7 @@ abbr[title] {
     <!-- THE control. Three states. Real radio buttons, so the keyboard
          and screen readers get the right semantics for free. -->
     <fieldset class="theme-toggle">
-      <legend class="vh">Color theme</legend>
+      <legend class="vh">Theme</legend>
       <div class="seg">
         <div class="thumb" aria-hidden="true"></div>
         <label>
@@ -1585,8 +1585,8 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
     if (statusLine) {
       statusLine.innerHTML = stored
         ? 'This page is set to <em>' + stored + ' mode</em> because you chose it. ' +
-          'Your system currently prefers ' + sys + ' — select <em>Auto</em> above ' +
-          'to follow it again.'
+          'Your system currently prefers ' + sys + ' — select <em>Auto</em> in the ' +
+          'theme control to follow it again.'
         : 'Right now this page is in <em>' + sys + ' mode</em> because your ' +
           'system preference says so — no clicks required. That’s what Auto does.';
     }
@@ -1633,8 +1633,7 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
      (Syntax highlighting is hard-coded into the markup itself —
      view any <pre> block. There is no runtime highlighter.)
      ============================================================ */
-  var copyFallback = 'press ' +
-    (/mac|iphone|ipad|ipod/i.test(navigator.platform || navigator.userAgent) ? '⌘C' : 'Ctrl+C');
+  var copyKey = /mac|iphone|ipad|ipod/i.test(navigator.platform || navigator.userAgent) ? '⌘C' : 'Ctrl+C';
 
   document.querySelectorAll('figure.code').forEach(function (fig) {
     var code = fig.querySelector('code');
@@ -1643,19 +1642,36 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
     btn.type = 'button';
     btn.className = 'copy';
     btn.textContent = 'copy';
-    btn.setAttribute('aria-label', 'Copy code to clipboard');
+    // no aria-label: it would shadow the visible text, and the state
+    // changes below are the announcement
+    btn.setAttribute('aria-live', 'polite');
+    var revertTimer;
     btn.addEventListener('click', function () {
-      function done(label) {
+      function done(label, holdMs) {
         btn.textContent = label;
         btn.classList.add('done');
-        setTimeout(function () { btn.textContent = 'copy'; btn.classList.remove('done'); }, 1600);
+        clearTimeout(revertTimer); // a re-click must not inherit the old revert
+        revertTimer = setTimeout(function () { btn.textContent = 'copy'; btn.classList.remove('done'); }, holdMs);
+      }
+      // clipboard blocked? select the code first so the keypress we
+      // ask for actually copies it — and hold the instruction longer
+      // than a confirmation
+      function fallback() {
+        var sel = window.getSelection();
+        if (sel) {
+          var range = document.createRange();
+          range.selectNodeContents(code);
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
+        done('selected — press ' + copyKey, 4000);
       }
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(code.textContent).then(
-          function () { done('copied ✓'); },
-          function () { done(copyFallback); }
+          function () { done('copied ✓', 1600); },
+          fallback
         );
-      } else { done(copyFallback); }
+      } else { fallback(); }
     });
     fig.appendChild(btn);
   });
