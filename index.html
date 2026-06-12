@@ -710,14 +710,14 @@ a.res p { margin: 0; font-size: .9rem; line-height: 1.55; color: var(--ink-faint
 
   <!-- ====================================================== -->
   <section class="hero wrap">
-    <p class="kicker up">a public service announcement for people who ship toggles</p>
+    <p class="kicker up">a field guide for developers and designers</p>
     <h1 class="up">You’re doing dark&nbsp;mode <span class="wrong">wrong.</span></h1>
     <p class="dek up">Your toggle has two states. Your users have three.</p>
     <p class="status up" id="status-line" aria-live="polite">
       This page follows your system’s appearance. If you can read this, JavaScript
-      isn’t running — and the theme is <em>still</em> correct. That’s rather the point.
+      isn’t running — and the theme still matches your system. Auto works without it.
     </p>
-    <a class="scroll-hint up" href="#problem">↓ THE CASE AGAINST YOUR TOGGLE</a>
+    <a class="scroll-hint up" href="#problem">↓ WHY TWO STATES AREN’T ENOUGH</a>
   </section>
 
   <!-- ====================================================== -->
@@ -725,14 +725,13 @@ a.res p { margin: 0; font-size: .9rem; line-height: 1.55; color: var(--ink-faint
     <div class="wrap">
       <header class="sec-head reveal">
         <span class="sec-num" aria-hidden="true">01</span>
-        <p class="kicker">the diagnosis</p>
-        <h2>The toggle you shipped</h2>
+        <p class="kicker">the problem</p>
+        <h2>The two-state toggle</h2>
       </header>
 
-      <p class="reveal">Somewhere in your codebase there is a button. It has a sun on one
-      side and a moon on the other, and it is quietly lying to your users. It promises
-      control over the site’s appearance — but it has no way to say the one thing most
-      of them mean: <em>“just match my device.”</em></p>
+      <p class="reveal">Most sites that offer a theme choice ship a two-state toggle:
+      a sun on one side, a moon on the other. The trouble is that it can’t express
+      the preference many users actually have — <em>“just match my device.”</em></p>
 
       <figure class="exhibits reveal">
         <div class="exhibit exhibit-bad">
@@ -743,21 +742,21 @@ a.res p { margin: 0; font-size: .9rem; line-height: 1.55; color: var(--ink-faint
               <span class="slot slot-moon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.4 14.2A8.5 8.5 0 1 1 9.8 3.6a7 7 0 1 0 10.6 10.6z"/></svg></span>
             </div>
           </div>
-          <figcaption><b>✕ what you shipped</b> Two states. A question your user
-          already answered — in their OS settings, possibly years before they
-          ever found your site.</figcaption>
+          <figcaption><b>✕ two states</b> Re-asks a question the user already
+          answered in their OS settings — and can’t accept “follow the system”
+          as an answer.</figcaption>
         </div>
         <div class="exhibit exhibit-good">
           <div class="mock mock-3" aria-hidden="true">
             <div class="seg"><span>Light</span><span class="on">Auto</span><span>Dark</span></div>
           </div>
-          <figcaption><b>✓ what they needed</b> Three states. An override for the
-          minority who want one — and, crucially, a way back.</figcaption>
+          <figcaption><b>✓ three states</b> An explicit override for those who
+          want one — and, crucially, a way back to the system default.</figcaption>
         </div>
       </figure>
 
-      <p class="reveal">Here is what that two-state toggle does to one ordinary user,
-      on one ordinary evening:</p>
+      <p class="reveal">Here is how that plays out for a user over one ordinary
+      evening:</p>
 
       <ol class="night reveal">
         <li>
@@ -769,39 +768,39 @@ a.res p { margin: 0; font-size: .9rem; line-height: 1.55; color: var(--ink-faint
         </li>
         <li>
           <time>19:42</time>
-          <p><strong>Your site: still <code>#FFFFFF</code>.</strong> A lighthouse
-          beam in a dark room. The user squints, and blames you — correctly.</p>
+          <p><strong>Your site: still <code>#FFFFFF</code>.</strong> Now the
+          brightest thing on the screen.</p>
         </li>
         <li>
           <time>19:43</time>
-          <p>They hunt down your toggle and click it.
-          <code>localStorage.theme = "dark"</code>. Relief. Also: a trap has
-          just sprung shut, silently.</p>
+          <p>They find the toggle and click it.
+          <code>localStorage.theme = "dark"</code>. The page goes dark — and the
+          stored value will now override the system setting on every future visit.</p>
         </li>
         <li>
           <time>07:06</time>
           <p><strong>Sunrise.</strong> The OS returns to light. Every app follows.
-          Your site? Pinned dark, by a value written ten hours ago. It will be
-          wrong twice a day, every day, from now on.</p>
+          Your site stays dark, pinned by a value written ten hours ago. From now
+          on it will disagree with the rest of the device twice a day.</p>
         </li>
         <li>
           <span class="t">∞</span>
-          <p><strong>There is no way back.</strong> Your UI has no state that means
-          “follow my system again.” The only exit is clearing site data — and no
-          human alive connects “clear site data” with “fix the colors.”</p>
+          <p><strong>There is no way back.</strong> The UI has no state that means
+          “follow my system again.” The only exit is clearing site data — a step
+          few users would ever connect with fixing a theme.</p>
         </li>
       </ol>
 
-      <p class="reveal">The code behind this is almost always some version of the
-      following — found in roughly every tutorial written since 2019:</p>
+      <p class="reveal">The code behind this pattern usually looks something like
+      the following:</p>
 
       <figure class="code reveal">
-        <figcaption><span class="lang">js</span> exhibit-b.js — do not copy</figcaption>
+        <figcaption><span class="lang">js</span> two-state-toggle.js — the anti-pattern, annotated</figcaption>
         <pre><code data-lang="js">// ❌ the two-state toggle, with its three bugs annotated
 
 const theme = localStorage.getItem('theme') || 'light';
-// BUG 1 — defaults to *your* preference, not theirs. A first-time
-// visitor with a dark OS gets a light page. They told you; you ignored it.
+// BUG 1 — defaults to 'light' for every first-time visitor.
+// The system preference is available, but never consulted.
 
 document.documentElement.dataset.theme = theme;
 // …and because the attribute is ALWAYS set, the CSS
@@ -810,14 +809,14 @@ document.documentElement.dataset.theme = theme;
 toggle.addEventListener('click', () =&gt; {
   const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
   localStorage.setItem('theme', next);
-  // BUG 2 — stored forever after one curious click. There is no
-  // third state, so there is no way to ever hand control back.
+  // BUG 2 — stored permanently after the first click. There is no
+  // third state, so there is no way to hand control back.
   html.dataset.theme = next;
 });
 
 // BUG 3 — nowhere in this file:
 //   matchMedia('(prefers-color-scheme: dark)')
-// When the OS switches at sunset, this page doesn’t. Ever.</code></pre>
+// When the OS switches at sunset, this page won’t follow.</code></pre>
       </figure>
     </div>
   </section>
@@ -836,25 +835,30 @@ toggle.addEventListener('click', () =&gt; {
           <h3>The user already answered.</h3>
           <p>Every modern browser exposes the device’s appearance setting through the
           <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-color-scheme"><code>prefers-color-scheme</code></a>
-          media query — it has been Baseline since 2020. Your user’s preference is
-          on file before they arrive. A binary toggle that defaults to light re-asks
-          a question that was answered years ago, then ignores the answer.</p>
+          media query — it has been Baseline since 2020. The user’s preference is
+          available before they arrive. A binary toggle that defaults to light asks
+          again for a preference that is already on record — and then ignores it.</p>
         </li>
         <li class="reveal">
           <h3>Operating systems follow the sun. A stored toggle can’t.</h3>
-          <p>macOS has <em>Auto</em>, iOS has <em>Automatic</em> with a schedule, Android
-          flips with Bedtime mode and Battery Saver, Windows does it via Auto Dark Mode
-          and PowerToys. Appearance changes <em>mid-session</em>, without a click. A persisted
-          binary value can never follow — your site ends up wrong twice a day, at
-          sunrise and at sunset, forever.</p>
+          <p>macOS has <a href="https://support.apple.com/guide/mac-help/use-a-light-or-dark-appearance-mchl52e1c2d2/mac"><em>Auto</em></a>,
+          iOS has <a href="https://support.apple.com/en-us/108350"><em>Automatic</em></a> with
+          a schedule, Android can switch on a schedule or
+          <a href="https://support.google.com/android/answer/9730472">with Battery Saver</a>,
+          and Windows does it via
+          <a href="https://learn.microsoft.com/en-us/windows/powertoys/light-switch">PowerToys</a> or
+          <a href="https://github.com/AutoDarkMode/Windows-Auto-Night-Mode">Auto Dark Mode</a>.
+          Appearance changes <em>mid-session</em>, without a click. A persisted binary
+          value can never follow — the site ends up disagreeing with the rest of the
+          device twice a day, at sunrise and at sunset.</p>
         </li>
         <li class="reveal">
-          <h3>One curious click is a life sentence.</h3>
-          <p>The stale-override trap: a user peeks at your other theme once, and the
-          choice is written down permanently. As <a href="https://www.bram.us/2022/05/25/dark-mode-toggles-should-be-a-browser-feature/">Bramus
+          <h3>One click disconnects the site permanently.</h3>
+          <p>The stale-override trap: a user tries the other theme once, and the
+          choice is stored for good. As <a href="https://www.bram.us/2022/05/25/dark-mode-toggles-should-be-a-browser-feature/">Bramus
           Van Damme puts it</a>, such sites “will never be able to respond to the system
-          preference again, as they always have an override applied.” The two-state UI
-          has no word for <em>undo</em>.</p>
+          preference again, as they always have an override applied.” The two-state
+          control has no way to express <em>undo the override</em>.</p>
         </li>
         <li class="reveal">
           <h3>It’s an accessibility signal, not a vibe.</h3>
@@ -872,15 +876,16 @@ toggle.addEventListener('click', () =&gt; {
           Light, Dark, Auto. So are <a href="https://kilianvalkhof.com/2020/design/your-dark-mode-toggle-is-broken/">Stack
           Overflow’s and GitHub’s theme controls</a>. On a new laptop or a fresh browser
           profile, a system-default site just <em>matches</em>, with nothing to reconfigure.
-          When yours doesn’t, users don’t blame their settings. They blame your site.</p>
+          When a site doesn’t follow, the mismatch reads as a bug in the site, not in
+          the settings.</p>
         </li>
         <li class="reveal">
           <h3>The fix costs one enum value and one event listener.</h3>
           <p>Both versions need two themes in CSS, a stored preference, a control, and a
           head script against the theme flash. The correct version differs only in treating
           “nothing stored” as a first-class state and listening for system changes — a
-          few lines. You aren’t buying simplicity with a binary toggle. You’re paying
-          the same price for the defective product.</p>
+          few lines. A binary toggle saves almost nothing; it costs the same to build
+          and behaves worse.</p>
         </li>
       </ol>
     </div>
@@ -892,7 +897,7 @@ toggle.addEventListener('click', () =&gt; {
       <header class="sec-head reveal">
         <span class="sec-num" aria-hidden="true">03</span>
         <p class="kicker">the fix</p>
-        <h2>Three states. Auto wins by default.</h2>
+        <h2>Three states, with Auto as the default</h2>
       </header>
 
       <p class="reveal">The mental model that makes everything fall into place:
@@ -930,8 +935,8 @@ toggle.addEventListener('click', () =&gt; {
       <p class="reveal"><strong>Step one — the head.</strong> Declare scheme support
       before any CSS, and apply a stored override <em>synchronously</em>, before first
       paint. The script must be inline and blocking: external files, <code>defer</code>,
-      <code>async</code> and modules all run too late, and “too late” is spelled
-      F-O-U-C — a flash of the wrong theme on every visit.</p>
+      <code>async</code> and modules all run after the first paint is possible, which
+      means a flash of the wrong theme for anyone with a stored override.</p>
 
       <figure class="code reveal">
         <figcaption><span class="lang">html</span> index.html — the &lt;head&gt;, in this order</figcaption>
@@ -952,8 +957,8 @@ toggle.addEventListener('click', () =&gt; {
 &lt;link rel="stylesheet" href="/styles.css"&gt;</code></pre>
       </figure>
 
-      <p class="reveal"><strong>Step two — the CSS.</strong> This is the part people
-      expect to be hard, and it’s three lines plus your colors.
+      <p class="reveal"><strong>Step two — the CSS.</strong> This part is smaller
+      than it sounds: three lines plus your colors.
       <code>color-scheme</code> opts you into both schemes — the browser immediately
       renders form controls, scrollbars and the default canvas to match the OS, for
       free. <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark"><code>light-dark()</code></a>
@@ -977,7 +982,8 @@ body {
 }</code></pre>
       </figure>
 
-      <p class="reveal"><code>light-dark()</code> is Baseline 2024 (Chrome&nbsp;123,
+      <p class="reveal"><code>light-dark()</code> is
+      <a href="https://caniuse.com/css-light-dark">Baseline 2024</a> (Chrome&nbsp;123,
       Edge&nbsp;123, Firefox&nbsp;120, Safari&nbsp;17.5). Supporting older browsers? Same
       model, classic syntax — define tokens in <code>:root</code>, override them in
       <code>@media (prefers-color-scheme: dark)</code> guarded by
@@ -1040,36 +1046,38 @@ window.addEventListener('storage', (e) =&gt; {
       the effective color). Second: if you animate the swap — a View Transitions
       crossfade is lovely — gate it behind
       <code>matchMedia('(prefers-reduced-motion: reduce)')</code> in the JS, not just
-      CSS. A full-viewport color animation is precisely what reduced-motion users
-      asked you not to do.</p>
+      CSS — a full-viewport color animation is exactly the kind of effect
+      reduced-motion users have opted out of.</p>
 
       <h3 class="kicker kicker-spaced reveal">objections, anticipated</h3>
 
       <details class="objection reveal">
         <summary>“A two-state toggle is simpler.”</summary>
-        <div class="a"><p>Simpler to draw, not simpler to use. The binary control encodes
-        a false model of the world — that a preference is one fixed value — and silently
-        breaks OS sync forever after one click. Since Auto is the default, most users never
-        open the control at all; the ones who do get a switch that can finally say
-        <em>“stop overriding.”</em> Simplicity that discards the user’s existing choice
-        isn’t simplicity. It’s lossiness.</p></div>
+        <div class="a"><p>Simpler to draw, but not simpler to use: the binary control
+        assumes a preference is one fixed value, and it breaks OS sync permanently after
+        one click. Since Auto is the default, most users never open the control at all;
+        the ones who do get a switch that can express <em>“stop overriding.”</em> A
+        control that can’t represent the default state isn’t simpler — it’s incomplete.</p></div>
       </details>
       <details class="objection reveal">
         <summary>“Users don’t understand what ‘System’ means.”</summary>
-        <div class="a"><p>Then label it <em>Auto</em> — that’s literally Apple’s word for it
-        in macOS Appearance settings, and iOS calls it <em>Automatic</em>. The platform spent
-        seven years teaching the concept. Stack Overflow, GitHub and the OS settings panels
-        all ship the tri-state; it’s the familiar pattern, not the exotic one. And a user who
-        truly doesn’t get it is unaffected: Auto is simply the default that makes your site
-        match everything else they own.</p></div>
+        <div class="a"><p>Then label it <em>Auto</em> — that’s
+        <a href="https://support.apple.com/guide/mac-help/use-a-light-or-dark-appearance-mchl52e1c2d2/mac">Apple’s
+        word for it in macOS Appearance settings</a>, and
+        <a href="https://support.apple.com/en-us/108350">iOS calls it <em>Automatic</em></a>.
+        The platforms have been teaching the concept since 2018. Stack Overflow, GitHub
+        and the OS settings panels all ship the tri-state, so it’s the familiar pattern,
+        not the exotic one. And a user who doesn’t engage with it is unaffected: Auto is
+        simply the default that makes the site match everything else on their device.</p></div>
       </details>
       <details class="objection reveal">
         <summary>“Nobody changes their OS theme anyway.”</summary>
         <div class="a"><p>Those users are exactly who Auto serves — the site inherits whatever
-        their device does, including vendor defaults and scheduled switching, with zero effort.
+        their device does, including vendor defaults and scheduled switching, with no effort.
         Meanwhile the users who <em>did</em> configure something are not an edge case: in
-        Android Authority’s 2,514-vote poll, 81.9% used dark mode everywhere it was offered.
-        And you don’t need everyone to use a feature for breaking it to be a bug.</p></div>
+        <a href="https://www.androidauthority.com/dark-mode-poll-results-1090716/">Android
+        Authority’s 2,514-vote poll</a>, 81.9% said they used dark mode everywhere it was
+        offered. A feature doesn’t need universal use for breaking it to matter.</p></div>
       </details>
       <details class="objection reveal">
         <summary>“We initialize the toggle from <code>prefers-color-scheme</code>, so we do respect it.”</summary>
@@ -1098,9 +1106,9 @@ window.addEventListener('storage', (e) =&gt; {
       </header>
 
       <p class="reveal">This page runs exactly the code above — view source; it’s one
-      file. Leave the toggle in the header on <strong>Auto</strong> (it already is,
-      unless you clicked), then change your OS appearance and watch the page follow,
-      live, mid-scroll, no reload:</p>
+      file. Leave the toggle in the header on <strong>Auto</strong> (the default,
+      unless you’ve overridden it), then change your OS appearance and watch the page
+      follow live, with no reload:</p>
 
       <div class="os-grid reveal">
         <div class="os"><b>macOS</b> <span>System Settings → Appearance → Light / Dark / Auto</span></div>
@@ -1109,8 +1117,8 @@ window.addEventListener('storage', (e) =&gt; {
         <div class="os"><b>Android</b> <span>Settings → Display → Dark theme</span></div>
       </div>
 
-      <p class="reveal">And here are this page’s actual internals, re-read live every
-      time anything changes — your honest little debug console:</p>
+      <p class="reveal">And below are the page’s actual internals, updated live
+      whenever anything changes:</p>
 
       <div class="console reveal" role="group" aria-label="Live view of this page's theme internals">
         <div class="console-head">under the hood · updates live</div>
@@ -1136,9 +1144,9 @@ window.addEventListener('storage', (e) =&gt; {
         </div>
       </div>
 
-      <p class="reveal">Party trick: open this page in two windows side by side and
-      flip the toggle in one. The other follows — that’s the <code>storage</code>
-      event, eight lines up in step three.</p>
+      <p class="reveal">One more thing to try: open this page in two windows side by
+      side and change the theme in one. The other follows — that’s the
+      <code>storage</code> event from step three.</p>
     </div>
   </section>
 
@@ -1151,9 +1159,8 @@ window.addEventListener('storage', (e) =&gt; {
         <h2>The checklist</h2>
       </header>
 
-      <p class="reveal">Audit your own site against these. (Tick away — this list
-      stores nothing. We only write to storage when you override the theme.
-      Obviously.)</p>
+      <p class="reveal">Audit your own site against these. (Ticking the boxes stores
+      nothing — this page only writes to storage when you override the theme.)</p>
 
       <ul class="checklist reveal">
         <li><label><input type="checkbox">
@@ -1321,14 +1328,14 @@ window.addEventListener('storage', (e) =&gt; {
   <footer class="colophon">
     <div class="wrap">
       <blockquote class="pull">Light and dark are answers.<br>Auto is respecting the question.</blockquote>
-      <p>This page is its own proof: it defaults to Auto, stores exactly one
+      <p>This page is its own demonstration: it defaults to Auto, stores exactly one
       localStorage key — and only if you override — follows your OS mid-session,
-      and was built as a single HTML file precisely so you can view source and
-      take whatever you need. Steal the implementation. Please.</p>
+      and was built as a single HTML file so you can view source and reuse whatever
+      you need. The implementation is free to copy.</p>
       <p class="fine">Set in <em>Fraunces</em>, <em>Newsreader</em> &amp;
       <em>Spline Sans Mono</em>. No frameworks, no build step, no analytics, no
-      cookies. JavaScript off? The toggle hides itself and Auto still works —
-      which is rather the point.</p>
+      cookies. With JavaScript off, the toggle hides itself and Auto still
+      works.</p>
     </div>
   </footer>
 
@@ -1399,12 +1406,11 @@ window.addEventListener('storage', (e) =&gt; {
     // hero status line
     if (statusLine) {
       statusLine.innerHTML = stored
-        ? 'You’ve pinned this page to <em>' + stored + ' mode</em>. Your system ' +
-          'currently says “' + sys + '” — and we’re ignoring it, politely and ' +
-          'reversibly. Choose <em>Auto</em> above to hand control back.'
-        : 'Right now this page is in <em>' + sys + ' mode</em> — not because we ' +
-          'chose it, and not because you clicked anything. Your system asked; ' +
-          'we listened. That’s the entire lesson.';
+        ? 'This page is set to <em>' + stored + ' mode</em> because you chose it. ' +
+          'Your system currently prefers ' + sys + ' — select <em>Auto</em> above ' +
+          'to follow it again.'
+        : 'Right now this page is in <em>' + sys + ' mode</em> because your ' +
+          'system preference says so — no clicks required. That’s what Auto does.';
     }
 
     // debug console
@@ -1447,9 +1453,9 @@ window.addEventListener('storage', (e) =&gt; {
   try {
     var s0 = storedTheme();
     console.log(
-      '%c◐ you’re reading the source. good.%c\n\nlocalStorage.theme → ' +
-      (s0 ? '"' + s0 + '" — you overrode. choose Auto to hand control back.'
-          : 'null — exactly right. absence means Auto.'),
+      '%c◐ theme internals%c\n\nlocalStorage.theme → ' +
+      (s0 ? '"' + s0 + '" — explicit override; choose Auto to follow the system again.'
+          : 'null — no override stored; following the system (Auto).'),
       'font-family: Georgia, serif; font-size: 1.4em; font-style: italic', ''
     );
   } catch (e) {}
