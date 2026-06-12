@@ -194,13 +194,16 @@ p code, li code, .fine code, dd code {
   padding: .55rem clamp(1rem, 4vw, 1.5rem);
 }
 .wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: .5em;
   font: 400 .78rem/1 "Spline Sans Mono", monospace;
   letter-spacing: .04em;
   color: var(--ink-soft);
   text-decoration: none;
   white-space: nowrap;
 }
-.wordmark .mark { color: var(--accent-ink); font-size: 1.05rem; vertical-align: -.1em; }
+.wordmark .mark { color: var(--accent-ink); font-size: 1.05rem; line-height: 1; }
 .wordmark b { font-weight: 500; color: var(--accent-ink); }
 .wordmark:hover .label { color: var(--ink); }
 
@@ -226,7 +229,7 @@ p code, li code, .fine code, dd code {
 .theme-toggle label {
   position: relative; z-index: 2;
   display: flex; align-items: center; justify-content: center; gap: .45em;
-  padding: .34em .9em;
+  padding: .45em .8em;
   border-radius: 999px;
   cursor: pointer;
   font: 500 .76rem/1 "Spline Sans Mono", monospace;
@@ -239,10 +242,13 @@ p code, li code, .fine code, dd code {
 .theme-toggle .seg:has(input[value="auto"]:checked)  .thumb { translate: 100% 0; }
 .theme-toggle .seg:has(input[value="dark"]:checked)  .thumb { translate: 200% 0; }
 
-@media (max-width: 560px) {
-  .theme-toggle label span { position: absolute !important; width: 1px; height: 1px; margin: -1px; clip-path: inset(50%); overflow: hidden; }
-  .theme-toggle label { padding: .45em .8em; }
-  .wordmark .label { display: none; }
+/* mobile-first: icon-only toggle and mark-only wordmark by default */
+.theme-toggle label span { position: absolute; width: 1px; height: 1px; margin: -1px; clip-path: inset(50%); overflow: hidden; }
+.wordmark .label { display: none; }
+@media (min-width: 35em) {
+  .theme-toggle label span { position: static; width: auto; height: auto; margin: 0; clip-path: none; overflow: visible; }
+  .theme-toggle label { padding: .34em .9em; }
+  .wordmark .label { display: inline; }
 }
 
 /* without JS the control can’t override anything — don’t pretend */
@@ -320,15 +326,13 @@ html:not(.js) .theme-toggle { display: none; }
 
 .pull {
   margin: 3rem 0;
-  padding: 0;
-  border: 0;
-  font-size: clamp(1.6rem, 4vw, 2.3rem);
+  padding: 1.3rem 0;
+  border-block: 1px solid var(--rule);
+  font-size: clamp(1.5rem, 4vw, 2.1rem);
   line-height: 1.3;
   text-wrap: balance;
   color: var(--ink);
 }
-.pull::before { content: "“"; color: var(--accent); }
-.pull::after { content: "”"; color: var(--accent); }
 
 /* —— exhibits: wrong vs right —— */
 .exhibits {
@@ -337,6 +341,7 @@ html:not(.js) .theme-toggle { display: none; }
   margin: 2.5rem 0;
 }
 .exhibit {
+  margin: 0;
   border: 1px solid var(--rule);
   border-radius: 12px;
   background: var(--bg-card);
@@ -435,7 +440,7 @@ html:not(.js) .theme-toggle { display: none; }
 }
 .code figcaption {
   display: flex; gap: .8rem; align-items: baseline;
-  padding: .65rem 1.1rem;
+  padding: .65rem 4.5rem .65rem 1.1rem; /* right padding reserves room for the copy button */
   border-bottom: 1px solid var(--rule);
   font: 400 .78rem/1.5 "Spline Sans Mono", monospace;
   color: var(--ink-faint);
@@ -511,7 +516,8 @@ html:not(.js) .theme-toggle { display: none; }
 .state dl { margin: 0; font: 400 .74rem/1.9 "Spline Sans Mono", monospace; color: var(--ink-faint); }
 .state dt { display: none; }
 .state dd { margin: 0; }
-.state dd b { font-weight: 500; color: var(--ink-soft); }
+.state dd b, .state dd code { font-weight: 500; color: var(--ink-soft); }
+.state dd code { font-size: inherit; }
 
 /* —— objections —— */
 .objection {
@@ -535,36 +541,46 @@ html:not(.js) .theme-toggle { display: none; }
 .objection .a { padding: 0 1.2rem 1.1rem; color: var(--ink-soft); font-size: 1rem; max-width: 60ch; }
 .objection .a p { margin: .2rem 0 .6rem; }
 
-/* —— live console —— */
+/* —— live console: a real table (property / value / meaning),
+      mobile-first — rows stack into a small grid, then become
+      table rows on wider screens —— */
 .console {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
   border: 1px solid var(--rule);
   border-radius: 12px;
   background: var(--code-bg);
   margin: 2.2rem 0;
   font-family: "Spline Sans Mono", monospace;
-  overflow: hidden;
 }
-.console-head {
-  padding: .6rem 1.1rem;
-  border-bottom: 1px solid var(--rule);
-  font-size: .72rem; letter-spacing: .14em; text-transform: uppercase;
+.console caption {
+  caption-side: top;
+  text-align: left;
+  padding: 0 .2rem .55rem;
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
   color: var(--ink-faint);
 }
-.console-row {
+.console tr {
   display: grid;
-  grid-template-columns: minmax(11rem, 1.3fr) minmax(6rem, .9fr) 1.6fr;
-  gap: 1rem;
-  align-items: baseline;
+  grid-template-columns: 1fr auto;
+  gap: .15rem 1rem;
   padding: .8rem 1.1rem;
-  font-size: .8rem;
 }
-.console-row + .console-row { border-top: 1px dashed var(--rule); }
-.console-row .k { color: var(--ink-soft); }
-.console-row .v { color: var(--accent-ink); font-weight: 500; }
-.console-row .why { color: var(--ink-faint); font-size: .74rem; font-style: italic; font-family: "Newsreader", serif; }
-@media (max-width: 640px) {
-  .console-row { grid-template-columns: 1fr auto; }
-  .console-row .why { grid-column: 1 / -1; }
+.console tr + tr { border-top: 1px dashed var(--rule); }
+.console th, .console td { padding: 0; text-align: left; font-weight: 400; font-size: .8rem; }
+.console th { color: var(--ink-soft); }
+.console th code { font: inherit; }
+.console td.v { color: var(--accent-ink); font-weight: 500; }
+.console td.why { grid-column: 1 / -1; color: var(--ink-faint); font-size: .74rem; font-style: italic; font-family: "Newsreader", serif; }
+@media (min-width: 40em) {
+  .console tr { display: table-row; }
+  .console th, .console td { display: table-cell; padding: .8rem 1.1rem; vertical-align: baseline; }
+  .console tr + tr th, .console tr + tr td { border-top: 1px dashed var(--rule); }
+  .console th { width: 38%; }
+  .console td.v { width: 17%; white-space: nowrap; }
 }
 
 /* —— OS instructions —— */
@@ -639,6 +655,15 @@ a.res strong {
 a.res:hover strong { color: var(--accent-ink); }
 a.res .by { display: block; font-size: .85rem; color: var(--ink-soft); margin-bottom: .45rem; }
 a.res p { margin: 0; font-size: .9rem; line-height: 1.55; color: var(--ink-faint); }
+a.res .domain {
+  display: block;
+  margin-top: .6rem;
+  font: 400 .68rem/1.4 "Spline Sans Mono", monospace;
+  letter-spacing: .04em;
+  color: var(--ink-faint);
+  overflow-wrap: anywhere;
+}
+a.res .domain::after { content: " ↗"; color: var(--accent-ink); }
 
 @media (prefers-reduced-motion: no-preference) {
   a.res, .exhibit, .code .copy, a, .objection summary::before { transition: all .18s ease; }
@@ -668,6 +693,27 @@ a.res p { margin: 0; font-size: .9rem; line-height: 1.55; color: var(--ink-faint
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }
 
+abbr[title] {
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--ink-faint);
+  cursor: help;
+}
+
+/* honor a request for more contrast: stronger rules and secondary
+   text, no grain or glow, solid header */
+@media (prefers-contrast: more) {
+  :root {
+    --ink-soft:  light-dark(#473c2c, #d4c9b0);
+    --ink-faint: light-dark(#564a38, #bbae93);
+    --rule:        light-dark(rgb(38 25 10 / .45), rgb(236 226 205 / .4));
+    --rule-strong: light-dark(rgb(38 25 10 / .75), rgb(236 226 205 / .7));
+  }
+  body::before, body::after { display: none; }
+  .site-head { background: var(--bg); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .status { background: var(--bg-card); }
+}
+
 @media print {
   body::after, .site-head, .scroll-hint, .copy { display: none !important; }
   body { font-size: 11pt; }
@@ -678,7 +724,7 @@ a.res p { margin: 0; font-size: .9rem; line-height: 1.55; color: var(--ink-faint
 
 <header class="site-head">
   <div class="bar">
-    <a class="wordmark" href="#top"><span class="mark" aria-hidden="true">◐</span><span class="label"> You’re doing dark mode <b>wrong.</b></span></a>
+    <a class="wordmark" href="#top"><span class="mark" aria-hidden="true">◐</span><span class="label">You’re doing dark mode <b>wrong.</b></span></a>
 
     <!-- THE control. Three states. Real radio buttons, so the keyboard
          and screen readers get the right semantics for free. -->
@@ -733,8 +779,8 @@ a.res p { margin: 0; font-size: .9rem; line-height: 1.55; color: var(--ink-faint
       a sun on one side, a moon on the other. The trouble is that it can’t express
       the preference many users actually have — <em>“just match my device.”</em></p>
 
-      <figure class="exhibits reveal">
-        <div class="exhibit exhibit-bad">
+      <div class="exhibits reveal">
+        <figure class="exhibit exhibit-bad">
           <div class="mock mock-2" aria-hidden="true">
             <div class="pill">
               <span class="knob"></span>
@@ -745,15 +791,15 @@ a.res p { margin: 0; font-size: .9rem; line-height: 1.55; color: var(--ink-faint
           <figcaption><b>✕ two states</b> Re-asks a question the user already
           answered in their OS settings — and can’t accept “follow the system”
           as an answer.</figcaption>
-        </div>
-        <div class="exhibit exhibit-good">
+        </figure>
+        <figure class="exhibit exhibit-good">
           <div class="mock mock-3" aria-hidden="true">
             <div class="seg"><span>Light</span><span class="on">Auto</span><span>Dark</span></div>
           </div>
           <figcaption><b>✓ three states</b> An explicit override for those who
           want one — and, crucially, a way back to the system default.</figcaption>
-        </div>
-      </figure>
+        </figure>
+      </div>
 
       <p class="reveal">Here is how that plays out for a user over one ordinary
       evening:</p>
@@ -761,7 +807,7 @@ a.res p { margin: 0; font-size: .9rem; line-height: 1.55; color: var(--ink-faint
       <ol class="night reveal">
         <li>
           <time>19:42</time>
-          <p><strong>Sunset.</strong> Their OS fades to dark — macOS calls it
+          <p><strong>Sunset.</strong> Their <abbr title="operating system">OS</abbr> fades to dark — macOS calls it
           <em>Auto</em>, iOS calls it <em>Automatic</em>, Android schedules it,
           Windows does it with Auto Dark Mode. Every native app follows. The
           terminal follows. The other tabs follow.</p>
@@ -785,9 +831,12 @@ a.res p { margin: 0; font-size: .9rem; line-height: 1.55; color: var(--ink-faint
         </li>
         <li>
           <span class="t">∞</span>
-          <p><strong>There is no way back.</strong> The UI has no state that means
-          “follow my system again.” The only exit is clearing site data — a step
-          few users would ever connect with fixing a theme.</p>
+          <p><strong>No way back to automatic.</strong> The toggle can still switch
+          between light and dark, but it can no longer mean “follow my system” —
+          the <abbr title="user interface">UI</abbr> has no state for it. Keeping
+          the site in sync is now manual work, twice a day; the only way to restore
+          automatic switching is clearing site data, which few people would think
+          of for a theme.</p>
         </li>
       </ol>
 
@@ -796,27 +845,27 @@ a.res p { margin: 0; font-size: .9rem; line-height: 1.55; color: var(--ink-faint
 
       <figure class="code reveal">
         <figcaption><span class="lang">js</span> two-state-toggle.js — the anti-pattern, annotated</figcaption>
-        <pre><code data-lang="js">// ❌ the two-state toggle, with its three bugs annotated
+        <pre><code data-lang="js"><span class="tok-c">// <span class="tok-x">❌</span> the two-state toggle, with its three bugs annotated</span>
 
-const theme = localStorage.getItem('theme') || 'light';
-// BUG 1 — defaults to 'light' for every first-time visitor.
-// The system preference is available, but never consulted.
+<span class="tok-k">const</span> theme = <span class="tok-b">localStorage</span>.<span class="tok-f">getItem</span>(<span class="tok-s">'theme'</span>) || <span class="tok-s">'light'</span>;
+<span class="tok-c">// <span class="tok-x">BUG 1</span> — defaults to 'light' for every first-time visitor.</span>
+<span class="tok-c">// The system preference is available, but never consulted.</span>
 
-document.documentElement.dataset.theme = theme;
-// …and because the attribute is ALWAYS set, the CSS
-// prefers-color-scheme media query can never apply. Auto is unreachable.
+<span class="tok-b">document</span>.documentElement.dataset.theme = theme;
+<span class="tok-c">// …and because the attribute is ALWAYS set, the CSS</span>
+<span class="tok-c">// prefers-color-scheme media query can never apply. Auto is unreachable.</span>
 
-toggle.addEventListener('click', () =&gt; {
-  const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
-  localStorage.setItem('theme', next);
-  // BUG 2 — stored permanently after the first click. There is no
-  // third state, so there is no way to hand control back.
+toggle.<span class="tok-f">addEventListener</span>(<span class="tok-s">'click'</span>, () <span class="tok-k">=&gt;</span> {
+  <span class="tok-k">const</span> next = html.dataset.theme === <span class="tok-s">'dark'</span> ? <span class="tok-s">'light'</span> : <span class="tok-s">'dark'</span>;
+  <span class="tok-b">localStorage</span>.<span class="tok-f">setItem</span>(<span class="tok-s">'theme'</span>, next);
+  <span class="tok-c">// <span class="tok-x">BUG 2</span> — stored permanently after the first click. There is no</span>
+  <span class="tok-c">// third state, so there is no way to hand control back.</span>
   html.dataset.theme = next;
 });
 
-// BUG 3 — nowhere in this file:
-//   matchMedia('(prefers-color-scheme: dark)')
-// When the OS switches at sunset, this page won’t follow.</code></pre>
+<span class="tok-c">// <span class="tok-x">BUG 3</span> — nowhere in this file:</span>
+<span class="tok-c">//   matchMedia('(prefers-color-scheme: dark)')</span>
+<span class="tok-c">// When the OS switches at sunset, this page won’t follow.</span></code></pre>
       </figure>
     </div>
   </section>
@@ -881,7 +930,7 @@ toggle.addEventListener('click', () =&gt; {
         </li>
         <li class="reveal">
           <h3>The fix costs one enum value and one event listener.</h3>
-          <p>Both versions need two themes in CSS, a stored preference, a control, and a
+          <p>Both versions need two themes in <abbr title="Cascading Style Sheets">CSS</abbr>, a stored preference, a control, and a
           head script against the theme flash. The correct version differs only in treating
           “nothing stored” as a first-class state and listening for system changes — a
           few lines. A binary toggle saves almost nothing; it costs the same to build
@@ -900,17 +949,17 @@ toggle.addEventListener('click', () =&gt; {
         <h2>Three states, with Auto as the default</h2>
       </header>
 
-      <p class="reveal">The mental model that makes everything fall into place:
-      <strong>light and dark are overrides; auto is the absence of one.</strong>
-      Don’t store <code>"auto"</code> — store nothing. The moment “no stored value”
-      means “follow the system,” every piece of the implementation becomes obvious.</p>
+      <p class="reveal">The model:
+      <strong>light and dark are stored overrides; auto means nothing is stored.</strong>
+      Don’t store <code>"auto"</code> — store nothing. Once “no stored value” means
+      “follow the system,” the rest of the implementation follows directly.</p>
 
       <div class="states reveal" role="img" aria-label="State diagram: Light stores the value light; Auto, the default, stores nothing; Dark stores the value dark.">
         <div class="state">
           <h3>Light</h3>
           <dl>
-            <dt>storage</dt><dd>storage: <b>"light"</b></dd>
-            <dt>attribute</dt><dd>html: <b>data-theme="light"</b></dd>
+            <dt>storage</dt><dd>storage: <code>"light"</code></dd>
+            <dt>attribute</dt><dd>html: <code>data-theme="light"</code></dd>
           </dl>
         </div>
         <div class="state is-default">
@@ -924,13 +973,13 @@ toggle.addEventListener('click', () =&gt; {
         <div class="state">
           <h3>Dark</h3>
           <dl>
-            <dt>storage</dt><dd>storage: <b>"dark"</b></dd>
-            <dt>attribute</dt><dd>html: <b>data-theme="dark"</b></dd>
+            <dt>storage</dt><dd>storage: <code>"dark"</code></dd>
+            <dt>attribute</dt><dd>html: <code>data-theme="dark"</code></dd>
           </dl>
         </div>
       </div>
 
-      <blockquote class="pull reveal">Auto isn’t a third theme. It’s the absence of an override.</blockquote>
+      <p class="pull reveal">Auto isn’t a third theme — it’s the absence of an override.</p>
 
       <p class="reveal"><strong>Step one — the head.</strong> Declare scheme support
       before any CSS, and apply a stored override <em>synchronously</em>, before first
@@ -940,21 +989,21 @@ toggle.addEventListener('click', () =&gt; {
 
       <figure class="code reveal">
         <figcaption><span class="lang">html</span> index.html — the &lt;head&gt;, in this order</figcaption>
-        <pre><code data-lang="html">&lt;meta name="color-scheme" content="light dark"&gt;
-&lt;meta name="theme-color" content="#f5efe3" media="(prefers-color-scheme: light)"&gt;
-&lt;meta name="theme-color" content="#161109" media="(prefers-color-scheme: dark)"&gt;
+        <pre><code data-lang="html">&lt;<span class="tok-t">meta</span> <span class="tok-a">name</span>=<span class="tok-s">"color-scheme"</span> <span class="tok-a">content</span>=<span class="tok-s">"light dark"</span>&gt;
+&lt;<span class="tok-t">meta</span> <span class="tok-a">name</span>=<span class="tok-s">"theme-color"</span> <span class="tok-a">content</span>=<span class="tok-s">"#f5efe3"</span> <span class="tok-a">media</span>=<span class="tok-s">"(prefers-color-scheme: light)"</span>&gt;
+&lt;<span class="tok-t">meta</span> <span class="tok-a">name</span>=<span class="tok-s">"theme-color"</span> <span class="tok-a">content</span>=<span class="tok-s">"#161109"</span> <span class="tok-a">media</span>=<span class="tok-s">"(prefers-color-scheme: dark)"</span>&gt;
 
-&lt;!-- inline + blocking, BEFORE the stylesheet --&gt;
-&lt;script&gt;
-  try {
-    const t = localStorage.getItem('theme');
-    if (t === 'light' || t === 'dark')
-      document.documentElement.dataset.theme = t;
-    // no stored key? do nothing — CSS handles auto by itself
-  } catch (e) {}
-&lt;/script&gt;
+<span class="tok-c">&lt;!-- inline + blocking, BEFORE the stylesheet --&gt;</span>
+&lt;<span class="tok-t">script</span>&gt;
+  <span class="tok-k">try</span> {
+    <span class="tok-k">const</span> t = <span class="tok-b">localStorage</span>.<span class="tok-f">getItem</span>(<span class="tok-s">'theme'</span>);
+    <span class="tok-k">if</span> (t === <span class="tok-s">'light'</span> || t === <span class="tok-s">'dark'</span>)
+      <span class="tok-b">document</span>.documentElement.dataset.theme = t;
+    <span class="tok-c">// no stored key? do nothing — CSS handles auto by itself</span>
+  } <span class="tok-k">catch</span> (e) {}
+&lt;/<span class="tok-t">script</span>&gt;
 
-&lt;link rel="stylesheet" href="/styles.css"&gt;</code></pre>
+&lt;<span class="tok-t">link</span> <span class="tok-a">rel</span>=<span class="tok-s">"stylesheet"</span> <span class="tok-a">href</span>=<span class="tok-s">"/styles.css"</span>&gt;</code></pre>
       </figure>
 
       <p class="reveal"><strong>Step two — the CSS.</strong> This part is smaller
@@ -967,18 +1016,18 @@ toggle.addEventListener('click', () =&gt; {
 
       <figure class="code reveal">
         <figcaption><span class="lang">css</span> styles.css — the entire theming system</figcaption>
-        <pre><code data-lang="css">/* 1 · support both schemes; auto now works with zero JS */
-:root { color-scheme: light dark; }
+        <pre><code data-lang="css"><span class="tok-c">/* 1 · support both schemes; auto now works with zero JS */</span>
+:root { <span class="tok-p">color-scheme</span>: light dark; }
 
-/* 2 · an explicit choice just narrows the scheme */
-:root[data-theme="light"] { color-scheme: light; }
-:root[data-theme="dark"]  { color-scheme: dark; }
+<span class="tok-c">/* 2 · an explicit choice just narrows the scheme */</span>
+:root[data-theme=<span class="tok-s">"light"</span>] { <span class="tok-p">color-scheme</span>: light; }
+:root[data-theme=<span class="tok-s">"dark"</span>]  { <span class="tok-p">color-scheme</span>: dark; }
 
-/* 3 · every color picks its own side — no duplicated palettes,
-       no media queries, correct in all three states */
+<span class="tok-c">/* 3 · every color picks its own side — no duplicated palettes,
+       no media queries, correct in all three states */</span>
 body {
-  background: light-dark(#f5efe3, #161109);
-  color:      light-dark(#26190a, #ece2cd);
+  <span class="tok-p">background</span>: <span class="tok-f">light-dark</span>(<span class="tok-n">#f5efe3</span>, <span class="tok-n">#161109</span>);
+  <span class="tok-p">color</span>:      <span class="tok-f">light-dark</span>(<span class="tok-n">#26190a</span>, <span class="tok-n">#ece2cd</span>);
 }</code></pre>
       </figure>
 
@@ -998,43 +1047,43 @@ body {
 
       <figure class="code reveal">
         <figcaption><span class="lang">html</span> the control — three real states, not a checkbox</figcaption>
-        <pre><code data-lang="html">&lt;fieldset&gt;
-  &lt;legend&gt;Theme&lt;/legend&gt;
-  &lt;label&gt;&lt;input type="radio" name="theme" value="light"&gt; Light&lt;/label&gt;
-  &lt;label&gt;&lt;input type="radio" name="theme" value="auto" checked&gt; Auto&lt;/label&gt;
-  &lt;label&gt;&lt;input type="radio" name="theme" value="dark"&gt; Dark&lt;/label&gt;
-&lt;/fieldset&gt;</code></pre>
+        <pre><code data-lang="html">&lt;<span class="tok-t">fieldset</span>&gt;
+  &lt;<span class="tok-t">legend</span>&gt;Theme&lt;/<span class="tok-t">legend</span>&gt;
+  &lt;<span class="tok-t">label</span>&gt;&lt;<span class="tok-t">input</span> <span class="tok-a">type</span>=<span class="tok-s">"radio"</span> <span class="tok-a">name</span>=<span class="tok-s">"theme"</span> <span class="tok-a">value</span>=<span class="tok-s">"light"</span>&gt; Light&lt;/<span class="tok-t">label</span>&gt;
+  &lt;<span class="tok-t">label</span>&gt;&lt;<span class="tok-t">input</span> <span class="tok-a">type</span>=<span class="tok-s">"radio"</span> <span class="tok-a">name</span>=<span class="tok-s">"theme"</span> <span class="tok-a">value</span>=<span class="tok-s">"auto"</span> <span class="tok-a">checked</span>&gt; Auto&lt;/<span class="tok-t">label</span>&gt;
+  &lt;<span class="tok-t">label</span>&gt;&lt;<span class="tok-t">input</span> <span class="tok-a">type</span>=<span class="tok-s">"radio"</span> <span class="tok-a">name</span>=<span class="tok-s">"theme"</span> <span class="tok-a">value</span>=<span class="tok-s">"dark"</span>&gt; Dark&lt;/<span class="tok-t">label</span>&gt;
+&lt;/<span class="tok-t">fieldset</span>&gt;</code></pre>
       </figure>
 
       <figure class="code reveal">
         <figcaption><span class="lang">js</span> theme.js — the whole thing</figcaption>
-        <pre><code data-lang="js">const mql = matchMedia('(prefers-color-scheme: dark)');
+        <pre><code data-lang="js"><span class="tok-k">const</span> mql = <span class="tok-b">matchMedia</span>(<span class="tok-s">'(prefers-color-scheme: dark)'</span>);
 
-function setTheme(choice) {           // 'light' | 'dark' | 'auto'
-  if (choice === 'auto') {
-    localStorage.removeItem('theme'); // absence IS the auto state
-    delete document.documentElement.dataset.theme;
-  } else {
-    localStorage.setItem('theme', choice);
-    document.documentElement.dataset.theme = choice;
+<span class="tok-k">function</span> <span class="tok-f">setTheme</span>(choice) {           <span class="tok-c">// 'light' | 'dark' | 'auto'</span>
+  <span class="tok-k">if</span> (choice === <span class="tok-s">'auto'</span>) {
+    <span class="tok-b">localStorage</span>.<span class="tok-f">removeItem</span>(<span class="tok-s">'theme'</span>); <span class="tok-c">// absence IS the auto state</span>
+    <span class="tok-k">delete</span> <span class="tok-b">document</span>.documentElement.dataset.theme;
+  } <span class="tok-k">else</span> {
+    <span class="tok-b">localStorage</span>.<span class="tok-f">setItem</span>(<span class="tok-s">'theme'</span>, choice);
+    <span class="tok-b">document</span>.documentElement.dataset.theme = choice;
   }
-  syncThemeColor();                   // see the fine print below
+  <span class="tok-f">syncThemeColor</span>();                   <span class="tok-c">// see the fine print below</span>
 }
 
-document.querySelectorAll('input[name="theme"]').forEach((input) =&gt; {
-  input.addEventListener('change', () =&gt; setTheme(input.value));
+<span class="tok-b">document</span>.<span class="tok-f">querySelectorAll</span>(<span class="tok-s">'input[name="theme"]'</span>).<span class="tok-f">forEach</span>((input) <span class="tok-k">=&gt;</span> {
+  input.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</span>, () <span class="tok-k">=&gt;</span> <span class="tok-f">setTheme</span>(input.value));
 });
 
-// In auto mode, CSS already follows OS changes live — this listener
-// is for everything CSS can't reach: canvas charts, maps, embeds,
-// and &lt;meta name="theme-color"&gt;.
-mql.addEventListener('change', () =&gt; {
-  if (!localStorage.getItem('theme')) syncThemeColor();
+<span class="tok-c">// In auto mode, CSS already follows OS changes live — this listener</span>
+<span class="tok-c">// is for everything CSS can't reach: canvas charts, maps, embeds,</span>
+<span class="tok-c">// and &lt;meta name="theme-color"&gt;.</span>
+mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</span>, () <span class="tok-k">=&gt;</span> {
+  <span class="tok-k">if</span> (!<span class="tok-b">localStorage</span>.<span class="tok-f">getItem</span>(<span class="tok-s">'theme'</span>)) <span class="tok-f">syncThemeColor</span>();
 });
 
-// Bonus: if the user changes theme in another tab, follow along.
-window.addEventListener('storage', (e) =&gt; {
-  if (e.key === 'theme') location.reload();
+<span class="tok-c">// Bonus: if the user changes theme in another tab, follow along.</span>
+<span class="tok-b">window</span>.<span class="tok-f">addEventListener</span>(<span class="tok-s">'storage'</span>, (e) <span class="tok-k">=&gt;</span> {
+  <span class="tok-k">if</span> (e.key === <span class="tok-s">'theme'</span>) <span class="tok-b">location</span>.<span class="tok-f">reload</span>();
 });</code></pre>
       </figure>
 
@@ -1042,7 +1091,7 @@ window.addEventListener('storage', (e) =&gt; {
       even good implementations. First: <code>&lt;meta name="theme-color"&gt;</code>
       media attributes track <em>the OS only</em> — they never react to your
       <code>data-theme</code> attribute, so when an override is active you must rewrite
-      the metas from JS (simplest trick: set every candidate’s <code>content</code> to
+      the metas from <abbr title="JavaScript">JS</abbr> (simplest trick: set every candidate’s <code>content</code> to
       the effective color). Second: if you animate the swap — a View Transitions
       crossfade is lovely — gate it behind
       <code>matchMedia('(prefers-reduced-motion: reduce)')</code> in the JS, not just
@@ -1120,29 +1169,31 @@ window.addEventListener('storage', (e) =&gt; {
       <p class="reveal">And below are the page’s actual internals, updated live
       whenever anything changes:</p>
 
-      <div class="console reveal" role="group" aria-label="Live view of this page's theme internals">
-        <div class="console-head">under the hood · updates live</div>
-        <div class="console-row">
-          <span class="k">localStorage.getItem('theme')</span>
-          <span class="v" id="dbg-store">…</span>
-          <span class="why">null is the design — absence means Auto</span>
-        </div>
-        <div class="console-row">
-          <span class="k">prefers-color-scheme</span>
-          <span class="v" id="dbg-mq">…</span>
-          <span class="why">what your OS is saying, right now</span>
-        </div>
-        <div class="console-row">
-          <span class="k">&lt;html data-theme&gt;</span>
-          <span class="v" id="dbg-attr">…</span>
-          <span class="why">set only while you’re overriding</span>
-        </div>
-        <div class="console-row">
-          <span class="k">effective scheme</span>
-          <span class="v" id="dbg-eff">…</span>
-          <span class="why">what you’re looking at</span>
-        </div>
-      </div>
+      <table class="console reveal">
+        <caption>under the hood · updates live</caption>
+        <tbody>
+          <tr>
+            <th scope="row"><code>localStorage.getItem('theme')</code></th>
+            <td class="v" id="dbg-store">…</td>
+            <td class="why">null is the design — absence means Auto</td>
+          </tr>
+          <tr>
+            <th scope="row"><code>prefers-color-scheme</code></th>
+            <td class="v" id="dbg-mq">…</td>
+            <td class="why">what your OS is saying, right now</td>
+          </tr>
+          <tr>
+            <th scope="row"><code>&lt;html data-theme&gt;</code></th>
+            <td class="v" id="dbg-attr">…</td>
+            <td class="why">set only while you’re overriding</td>
+          </tr>
+          <tr>
+            <th scope="row">effective scheme</th>
+            <td class="v" id="dbg-eff">…</td>
+            <td class="why">what you’re looking at</td>
+          </tr>
+        </tbody>
+      </table>
 
       <p class="reveal">One more thing to try: open this page in two windows side by
       side and change the theme in one. The other follows — that’s the
@@ -1216,24 +1267,28 @@ window.addEventListener('storage', (e) =&gt; {
             <strong>Your dark mode toggle is broken</strong>
             <span class="by">Kilian Valkhof</span>
             <p>The canonical statement of the thesis: binary toggles trap users in a stored override, so the fix is exactly three options.</p>
+            <span class="domain">kilianvalkhof.com</span>
           </a>
           <a class="res" href="https://www.bram.us/2022/05/25/dark-mode-toggles-should-be-a-browser-feature/" target="_blank" rel="noopener">
             <span class="meta">essay · 2022</span>
             <strong>Dark Mode Toggles Should be a Browser Feature</strong>
             <span class="by">Bramus Van Damme</span>
             <p>Why overrides without a System option permanently disconnect a site from the user’s preference — and how the cascade should work.</p>
+            <span class="domain">bram.us</span>
           </a>
           <a class="res" href="https://www.brycewray.com/posts/2024/01/its-tri-state-switch-time/" target="_blank" rel="noopener">
             <span class="meta">essay · 2024</span>
             <strong>It’s tri-state switch time</strong>
             <span class="by">Bryce Wray</span>
             <p>A practitioner converts his binary toggle after realizing it failed users who didn’t want the site to futz with their defaults.</p>
+            <span class="domain">brycewray.com</span>
           </a>
           <a class="res" href="https://www.nngroup.com/articles/dark-mode/" target="_blank" rel="noopener">
             <span class="meta">research · 2020</span>
             <strong>Dark Mode vs. Light Mode: Which Is Better?</strong>
             <span class="by">Raluca Budiu · Nielsen Norman Group</span>
             <p>The research review: light wins for normal vision, dark wins for some low-vision users — so let people switch.</p>
+            <span class="domain">nngroup.com</span>
           </a>
         </div>
       </div>
@@ -1246,48 +1301,56 @@ window.addEventListener('storage', (e) =&gt; {
             <strong>The Quest for the Perfect Dark Mode</strong>
             <span class="by">Bramus Van Damme</span>
             <p>Vanilla-JS walkthrough: system as default, storage for overrides only, and a blocking head script against the theme flash.</p>
+            <span class="domain">bram.us</span>
           </a>
           <a class="res" href="https://web.dev/articles/building/a-theme-switch-component" target="_blank" rel="noopener">
             <span class="meta">tutorial · web.dev</span>
             <strong>Building a theme switch component</strong>
             <span class="by">Adam Argyle</span>
             <p>An accessible switch that reads the system preference by default, stores explicit choices, and live-syncs via matchMedia.</p>
+            <span class="domain">web.dev</span>
           </a>
           <a class="res" href="https://www.aleksandrhovhannisyan.com/blog/the-perfect-theme-switch/" target="_blank" rel="noopener">
             <span class="meta">tutorial · 2024</span>
             <strong>The Perfect Theme Switch Component</strong>
             <span class="by">Aleksandr Hovhannisyan</span>
             <p>A progressively enhanced Auto/Light/Dark picker built on color-scheme and light-dark(), with a CSS-only fallback and no FOUC.</p>
+            <span class="domain">aleksandrhovhannisyan.com</span>
           </a>
           <a class="res" href="https://css-tricks.com/come-to-the-light-dark-side/" target="_blank" rel="noopener">
             <span class="meta">tutorial · 2024</span>
             <strong>Come to the light-dark() Side</strong>
             <span class="by">Sara Joy · CSS-Tricks</span>
             <p>Deep dive on color-scheme + light-dark(), building a light/dark/auto switcher and arguing for all three as discrete options.</p>
+            <span class="domain">css-tricks.com</span>
           </a>
           <a class="res" href="https://tpiros.dev/blog/three-state-light-dark-theme-switch/" target="_blank" rel="noopener">
             <span class="meta">tutorial · 2024</span>
             <strong>Three-State Light/Dark Theme Switch</strong>
             <span class="by">Tamas Piros</span>
             <p>Directly contrasts two-state vs three-state switches, with code for the light/dark/system control and flash prevention.</p>
+            <span class="domain">tpiros.dev</span>
           </a>
           <a class="res" href="https://web.dev/articles/prefers-color-scheme" target="_blank" rel="noopener">
             <span class="meta">guide · web.dev</span>
             <strong>prefers-color-scheme: Hello darkness, my old friend</strong>
             <span class="by">Thomas Steiner</span>
             <p>The comprehensive dark-mode guide: respect the OS by default, then layer a persisted override on top.</p>
+            <span class="domain">web.dev</span>
           </a>
           <a class="res" href="https://web.dev/shows/gui-challenges/kZiS1QStIWc" target="_blank" rel="noopener">
             <span class="meta">video · gui challenges</span>
             <strong>Thinking on ways to solve a dark/light theme switch</strong>
             <span class="by">Adam Argyle</span>
             <p>The UX and the code of a theme switch that syncs with the system by default, on video.</p>
+            <span class="domain">web.dev</span>
           </a>
           <a class="res" href="https://github.com/GoogleChromeLabs/dark-mode-toggle" target="_blank" rel="noopener">
             <span class="meta">component · github</span>
             <strong>&lt;dark-mode-toggle&gt;</strong>
             <span class="by">GoogleChromeLabs</span>
             <p>A maintained custom element that defaults to the system value and persists an override only when asked.</p>
+            <span class="domain">github.com</span>
           </a>
         </div>
       </div>
@@ -1300,24 +1363,28 @@ window.addEventListener('storage', (e) =&gt; {
             <strong>prefers-color-scheme</strong>
             <span class="by">MDN Web Docs</span>
             <p>The media feature that carries the user’s answer. Baseline since 2020 — filed under accessibility guidance, not aesthetics.</p>
+            <span class="domain">developer.mozilla.org</span>
           </a>
           <a class="res" href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark" target="_blank" rel="noopener">
             <span class="meta">docs · mdn</span>
             <strong>light-dark()</strong>
             <span class="by">MDN Web Docs</span>
             <p>One function, both palettes — resolves against the element’s used color-scheme. Baseline 2024.</p>
+            <span class="domain">developer.mozilla.org</span>
           </a>
           <a class="res" href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/color-scheme" target="_blank" rel="noopener">
             <span class="meta">docs · mdn</span>
             <strong>color-scheme</strong>
             <span class="by">MDN Web Docs</span>
             <p>The property that declares which schemes you support — and the cleanest primitive for wiring up all three toggle states.</p>
+            <span class="domain">developer.mozilla.org</span>
           </a>
           <a class="res" href="https://www.w3.org/TR/css-color-adjust-1/" target="_blank" rel="noopener">
             <span class="meta">spec · w3c</span>
             <strong>CSS Color Adjustment Module Level 1</strong>
             <span class="by">CSS Working Group</span>
             <p>The standards basis: how author, user and user-agent color preferences negotiate. The “system” state lives here.</p>
+            <span class="domain">w3.org</span>
           </a>
         </div>
       </div>
@@ -1327,11 +1394,11 @@ window.addEventListener('storage', (e) =&gt; {
   <!-- ====================================================== -->
   <footer class="colophon">
     <div class="wrap">
-      <blockquote class="pull">Light and dark are answers.<br>Auto is respecting the question.</blockquote>
+      <p class="pull">Default to the system.<br>Store only overrides.</p>
       <p>This page is its own demonstration: it defaults to Auto, stores exactly one
       localStorage key — and only if you override — follows your OS mid-session,
-      and was built as a single HTML file so you can view source and reuse whatever
-      you need. The implementation is free to copy.</p>
+      and was built as a single <abbr title="HyperText Markup Language">HTML</abbr>
+      file so you can view source and reuse whatever you need. The implementation is free to copy.</p>
       <p class="fine">Set in <em>Fraunces</em>, <em>Newsreader</em> &amp;
       <em>Spline Sans Mono</em>. No frameworks, no build step, no analytics, no
       cookies. With JavaScript off, the toggle hides itself and Auto still
@@ -1461,86 +1528,10 @@ window.addEventListener('storage', (e) =&gt; {
   } catch (e) {}
 
   /* ============================================================
-     Page furniture: syntax highlighting, copy buttons, reveals.
-     None of this is part of the lesson — it's just typesetting.
+     Page furniture: copy buttons and scroll reveals.
+     (Syntax highlighting is hard-coded into the markup itself —
+     view any <pre> block. There is no runtime highlighter.)
      ============================================================ */
-
-  function esc(s) {
-    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  }
-
-  var RULES = {
-    js: [
-      ['x', /BUG \d+|❌|✅/],
-      ['c', /\/\*[\s\S]*?\*\/|\/\/[^\n]*/],
-      ['s', /'(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"|`(?:[^`\\]|\\.)*`/],
-      ['k', /\b(?:const|let|var|function|return|if|else|try|catch|finally|delete|new|typeof|in|of|for|while)\b|=>/],
-      ['b', /\b(?:document|localStorage|matchMedia|window|navigator|console|location)\b/],
-      ['f', /[A-Za-z_$][\w$]*(?=\s*\()/],
-      ['n', /\b\d+(?:\.\d+)?\b/]
-    ],
-    css: [
-      ['c', /\/\*[\s\S]*?\*\//],
-      ['s', /'[^'\n]*'|"[^"\n]*"/],
-      ['k', /@[\w-]+/],
-      ['n', /#[0-9a-fA-F]{3,8}\b/],
-      ['p', /[\w-]+(?=\s*:[^:])/],
-      ['f', /[\w-]+(?=\()/]
-    ]
-  };
-
-  function hlCode(src, lang) {
-    if (lang === 'html') return hlHTML(src);
-    var rules = RULES[lang];
-    if (!rules) return esc(src);
-    var master = new RegExp(rules.map(function (r) { return '(' + r[1].source + ')'; }).join('|'), 'g');
-    var out = '', last = 0, m;
-    while ((m = master.exec(src))) {
-      out += esc(src.slice(last, m.index));
-      var cls = '';
-      for (var i = 0; i < rules.length; i++) {
-        if (m[i + 1] !== undefined) { cls = rules[i][0]; break; }
-      }
-      var inner = esc(m[0]);
-      if (cls === 'c') inner = inner.replace(/BUG \d+|❌/g, '<span class="tok-x">$&</span>');
-      out += '<span class="tok-' + cls + '">' + inner + '</span>';
-      last = master.lastIndex;
-      if (m[0].length === 0) master.lastIndex++;
-    }
-    return out + esc(src.slice(last));
-  }
-
-  function hlTag(tag) {
-    var m = tag.match(/^(<\/?)([a-zA-Z][\w-]*)([\s\S]*?)(\/?>)$/);
-    if (!m) return esc(tag);
-    var attrs = '', re = /([\w-]+)(\s*=\s*)("[^"]*"|'[^']*')|([\w-]+)/g, last = 0, a;
-    while ((a = re.exec(m[3]))) {
-      attrs += esc(m[3].slice(last, a.index));
-      if (a[1]) attrs += '<span class="tok-a">' + esc(a[1]) + '</span>' + a[2] + '<span class="tok-s">' + esc(a[3]) + '</span>';
-      else attrs += '<span class="tok-a">' + esc(a[4]) + '</span>';
-      last = re.lastIndex;
-    }
-    attrs += esc(m[3].slice(last));
-    return esc(m[1]) + '<span class="tok-t">' + m[2] + '</span>' + attrs + esc(m[4]);
-  }
-
-  function hlHTML(src) {
-    var re = /(<script\b[^>]*>)([\s\S]*?)(<\/script>)|(<style\b[^>]*>)([\s\S]*?)(<\/style>)|<!--[\s\S]*?-->|<\/?[a-zA-Z][^>]*?>/g;
-    var out = '', last = 0, m;
-    while ((m = re.exec(src))) {
-      out += esc(src.slice(last, m.index));
-      if (m[1]) out += hlTag(m[1]) + hlCode(m[2], 'js') + hlTag(m[3]);
-      else if (m[4]) out += hlTag(m[4]) + hlCode(m[5], 'css') + hlTag(m[6]);
-      else if (m[0].indexOf('<!--') === 0) out += '<span class="tok-c">' + esc(m[0]) + '</span>';
-      else out += hlTag(m[0]);
-      last = re.lastIndex;
-    }
-    return out + esc(src.slice(last));
-  }
-
-  document.querySelectorAll('pre code[data-lang]').forEach(function (code) {
-    code.innerHTML = hlCode(code.textContent, code.getAttribute('data-lang'));
-  });
 
   /* ---- copy buttons ---- */
   document.querySelectorAll('figure.code').forEach(function (fig) {
