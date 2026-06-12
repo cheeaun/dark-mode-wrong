@@ -12,4 +12,6 @@ Open `index.html` in a browser. No build step, no dependencies.
 
 One HTML file plus self-hosted fonts ([Fraunces](https://fonts.google.com/specimen/Fraunces), [Newsreader](https://fonts.google.com/specimen/Newsreader), [Spline Sans Mono](https://fonts.google.com/specimen/Spline+Sans+Mono)) — vanilla CSS and JS, no external requests.
 
-The implementation is free to copy.
+## License
+
+[MIT](LICENSE) — the implementation is free to copy. The fonts are licensed separately under the [SIL Open Font License 1.1](fonts/LICENSE).
