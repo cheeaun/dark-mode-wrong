@@ -20,6 +20,31 @@
 <meta property="og:title" content="You’re doing dark mode wrong.">
 <meta property="og:description" content="Your toggle has two states. Your users have three. The case for Light / Dark / Auto — with Auto as the default.">
 <meta property="og:type" content="website">
+<link rel="canonical" href="https://cheeaun.github.io/dark-mode-wrong/">
+
+<!-- For agents and LLMs: the whole article as clean markdown. -->
+<link rel="alternate" type="text/markdown" href="llms-full.txt" title="This article as markdown">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "You’re doing dark mode wrong.",
+  "alternativeHeadline": "The case for a three-state theme toggle: Light, Dark, Auto — with Auto as the default",
+  "description": "A field guide to the most common dark-mode bug on the web: the two-state toggle. Why Light/Dark isn’t enough, why Auto must be the default, and the three-state pattern that fixes it — demonstrated by this very page.",
+  "url": "https://cheeaun.github.io/dark-mode-wrong/",
+  "author": { "@type": "Person", "name": "Lim Chee Aun", "url": "https://github.com/cheeaun" },
+  "dateModified": "2026-06-12",
+  "proficiencyLevel": "Beginner",
+  "encoding": {
+    "@type": "MediaObject",
+    "contentUrl": "https://cheeaun.github.io/dark-mode-wrong/llms-full.txt",
+    "encodingFormat": "text/markdown",
+    "name": "This article as markdown"
+  }
+}
+</script>
+
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='%23998a6d' stroke-width='9'/%3E%3Cpath d='M50 10 a40 40 0 0 1 0 80 z' fill='%23998a6d'/%3E%3C/svg%3E">
 
 <!-- ③ The flash-killer. Inline and blocking, ABOVE the stylesheet, on purpose:
@@ -1444,6 +1469,8 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
       <em>Spline Sans Mono</em>, self-hosted. No frameworks, no build step, no
       analytics, no cookies, no external requests. With JavaScript off, the
       toggle hides itself and Auto still works.</p>
+      <p class="fine">Reading this with a robot? The whole article is also
+      <a href="llms-full.txt">plain markdown</a> — see <a href="llms.txt">llms.txt</a>.</p>
     </div>
   </footer>
 

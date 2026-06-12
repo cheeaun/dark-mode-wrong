@@ -1,0 +1,18 @@
+# You're doing dark mode wrong.
+
+> A one-page field guide for developers and designers about the most common dark-mode mistake: the two-state theme toggle. The correct pattern has three states — Light, Dark, and Auto — with Auto (follow the system) as the default. The model: light and dark are stored overrides; Auto means nothing is stored.
+
+Key rules, if you're implementing a theme toggle right now:
+
+- Default to the system preference (`prefers-color-scheme`); never default to light.
+- The control needs three states: Light, Dark, Auto. A checkbox can't represent "follow my system."
+- Storage holds overrides only. On Auto, `localStorage.removeItem('theme')` — never `setItem('theme', 'auto')`. Absence of the key IS the auto state.
+- Apply a stored override in an inline, blocking `<script>` in the `<head>`, before the stylesheet, or the first paint flashes the wrong theme.
+- Use `color-scheme: light dark` on `:root` plus `light-dark()` colors; an explicit choice just narrows `color-scheme` to one value via `:root[data-theme]`.
+- Add a `matchMedia('(prefers-color-scheme: dark)')` change listener for things CSS can't reach (canvas, embeds, `<meta name="theme-color">`).
+
+## Docs
+
+- [Full article as markdown](https://cheeaun.github.io/dark-mode-wrong/llms-full.txt): the complete argument, annotated anti-pattern, the three implementation steps, objections and responses, a pre-ship checklist, and 16 curated resources
+- [The live page](https://cheeaun.github.io/dark-mode-wrong/): a working demonstration — the page itself implements the three-state toggle it describes
+- [Source repository](https://github.com/cheeaun/dark-mode-wrong): one HTML file, MIT licensed, free to copy

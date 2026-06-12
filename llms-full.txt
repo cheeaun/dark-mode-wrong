@@ -1,0 +1,223 @@
+# You're doing dark mode wrong.
+
+*A field guide for developers and designers.*
+
+Your toggle has two states. Your users have three.
+
+This is the markdown version of <https://cheeaun.github.io/dark-mode-wrong/>. The live page implements everything described here — it is its own demonstration. Source: <https://github.com/cheeaun/dark-mode-wrong> (MIT, free to copy).
+
+## 01 · The problem: the two-state toggle
+
+Most theme toggles have two states: light and dark. Neither means what many users actually want — *"just match my device."*
+
+- **✕ Two states** re-ask a question the OS already answered. "Follow the system" isn't an option.
+- **✓ Three states** give an override when you want one — and a way back.
+
+How that plays out over one evening:
+
+1. **19:42 — Sunset.** The user's OS fades to dark — macOS *Auto*, iOS *Automatic*, Android's schedule, Windows via Auto Dark Mode. Every app follows.
+2. **19:42 — Your site: still `#FFFFFF`.** Now the brightest thing on the screen.
+3. **19:43 —** They click your toggle. `localStorage.theme = "dark"`. The page goes dark — and that value now overrides the system on every future visit.
+4. **07:06 — Sunrise.** The OS returns to light. Every app follows — except your site, pinned by a value written ten hours ago. It will now disagree with the device twice a day.
+5. **∞ — No way back to automatic.** The toggle still switches between light and dark, but "follow my system" is gone — the UI has no state for it. Staying in sync is now manual work; the only reset is clearing site data, a step few would connect to a theme.
+
+The code usually looks like this:
+
+```js
+// ❌ the two-state toggle, with its three bugs annotated
+
+const theme = localStorage.getItem('theme') || 'light';
+// BUG 1 — defaults to 'light' for every first-time visitor.
+// The system preference is available, but never consulted.
+
+document.documentElement.dataset.theme = theme;
+// …and because the attribute is ALWAYS set, the CSS
+// prefers-color-scheme media query can never apply. Auto is unreachable.
+
+toggle.addEventListener('click', () => {
+  const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+  localStorage.setItem('theme', next);
+  // BUG 2 — stored permanently after the first click. There is no
+  // third state, so there is no way to hand control back.
+  html.dataset.theme = next;
+});
+
+// BUG 3 — nowhere in this file:
+//   matchMedia('(prefers-color-scheme: dark)')
+// When the OS switches at sunset, this page won't follow.
+```
+
+## 02 · Why it matters
+
+1. **The user already answered.** Every browser exposes the device's appearance via [`prefers-color-scheme`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-color-scheme) — Baseline since 2020. The preference is on record before the user arrives; a toggle that defaults to light simply ignores it.
+2. **Operating systems follow the sun. A stored toggle can't.** macOS has [*Auto*](https://support.apple.com/guide/mac-help/use-a-light-or-dark-appearance-mchl52e1c2d2/mac), iOS has [*Automatic*](https://support.apple.com/en-us/108350) with a schedule, Android can switch on a schedule or [with Battery Saver](https://support.google.com/android/answer/9730472), and Windows does it via [PowerToys](https://learn.microsoft.com/en-us/windows/powertoys/light-switch) or [Auto Dark Mode](https://github.com/AutoDarkMode/Windows-Auto-Night-Mode). Appearance changes *mid-session* — and a stored binary value can never follow.
+3. **One click disconnects the site permanently.** Try the other theme once, and the choice is stored for good. As [Bramus Van Damme puts it](https://www.bram.us/2022/05/25/dark-mode-toggles-should-be-a-browser-feature/), such sites "will never be able to respond to the system preference again, as they always have an override applied."
+4. **It's an accessibility signal, not a vibe.** Photophobia and migraines push some users to dark; astigmatism halation pushes others to light; [NN/g's research review](https://www.nngroup.com/articles/dark-mode/) found no default that suits everyone. That's why the OS lets each user pick — and why overriding the signal is the same class of bug as ignoring `prefers-reduced-motion`.
+5. **Everything else on the device already behaves this way.** Native apps follow the system. The OS settings panel is a tri-state — so are [Stack Overflow's and GitHub's theme controls](https://kilianvalkhof.com/2020/design/your-dark-mode-toggle-is-broken/). When a site doesn't follow, the mismatch reads as a bug in the site, not in the settings.
+6. **The fix costs one enum value and one event listener.** Both versions need two themes in CSS, a stored preference, a control, and a head script against theme flash. The difference is treating "nothing stored" as a state and listening for system changes — a few lines.
+
+## 03 · The fix: three states, with Auto as the default
+
+The model: **light and dark are stored overrides; auto means nothing is stored.** Once "no stored value" means "follow the system," the rest falls into place.
+
+| State | Storage | `<html>` attribute |
+| --- | --- | --- |
+| Light | `"light"` | `data-theme="light"` |
+| **Auto (the default)** | **(nothing)** | **(no attribute)** |
+| Dark | `"dark"` | `data-theme="dark"` |
+
+> Auto isn't a third theme — it's the absence of an override.
+
+**Step one — the head.** Declare scheme support before any CSS, and apply a stored override *synchronously*, before first paint. The script must be inline and blocking — external files, `defer`, `async` and modules all run too late and flash the wrong theme.
+
+```html
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f5efe3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#161109" media="(prefers-color-scheme: dark)">
+
+<!-- inline + blocking, BEFORE the stylesheet -->
+<script>
+  try {
+    const t = localStorage.getItem('theme');
+    if (t === 'light' || t === 'dark')
+      document.documentElement.dataset.theme = t;
+    // no stored key? do nothing — CSS handles auto by itself
+  } catch (e) {}
+</script>
+
+<link rel="stylesheet" href="/styles.css">
+```
+
+**Step two — the CSS.** Three lines plus your colors. `color-scheme` opts you into both schemes — form controls, scrollbars and the default canvas match the OS for free. [`light-dark()`](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark) picks every color's side automatically; an override is just `color-scheme` narrowed to one value.
+
+```css
+/* 1 · support both schemes; auto now works with zero JS */
+:root { color-scheme: light dark; }
+
+/* 2 · an explicit choice just narrows the scheme */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"]  { color-scheme: dark; }
+
+/* 3 · every color picks its own side — no duplicated palettes,
+       no media queries, correct in all three states */
+body {
+  background: light-dark(#f5efe3, #161109);
+  color:      light-dark(#26190a, #ece2cd);
+}
+```
+
+`light-dark()` is [Baseline 2024](https://caniuse.com/css-light-dark) (Chrome 123, Edge 123, Firefox 120, Safari 17.5). For older browsers, same model in classic syntax: tokens in `:root`, overridden in `@media (prefers-color-scheme: dark)` guarded by `:root:not([data-theme])`, then re-asserted under each `[data-theme]`. (The live page ships that fallback — view source.)
+
+**Step three — the control and the logic.** Radio buttons give you keyboard support and screen-reader semantics for free. The logic enforces one invariant: *storage holds overrides only.*
+
+```html
+<fieldset>
+  <legend>Theme</legend>
+  <label><input type="radio" name="theme" value="light"> Light</label>
+  <label><input type="radio" name="theme" value="auto" checked> Auto</label>
+  <label><input type="radio" name="theme" value="dark"> Dark</label>
+</fieldset>
+```
+
+```js
+const mql = matchMedia('(prefers-color-scheme: dark)');
+
+function setTheme(choice) {           // 'light' | 'dark' | 'auto'
+  if (choice === 'auto') {
+    localStorage.removeItem('theme'); // absence IS the auto state
+    delete document.documentElement.dataset.theme;
+  } else {
+    localStorage.setItem('theme', choice);
+    document.documentElement.dataset.theme = choice;
+  }
+  syncThemeColor();                   // see the fine print below
+}
+
+document.querySelectorAll('input[name="theme"]').forEach((input) => {
+  input.addEventListener('change', () => setTheme(input.value));
+});
+
+// In auto mode, CSS already follows OS changes live — this listener
+// is for everything CSS can't reach: canvas charts, maps, embeds,
+// and <meta name="theme-color">.
+mql.addEventListener('change', () => {
+  if (!localStorage.getItem('theme')) syncThemeColor();
+});
+```
+
+**The fine print** — two gotchas that survive even good implementations. First: `<meta name="theme-color">` media attributes track *the OS only*, never your `data-theme` attribute — while overridden, rewrite the metas from JS. Second: if you animate the swap, gate it behind `matchMedia('(prefers-reduced-motion: reduce)')` in the JS, not just CSS.
+
+### Objections, anticipated
+
+**"A two-state toggle is simpler."**
+Simpler to draw, not simpler to use: it breaks OS sync permanently after one click. Auto is the default, so most users never open the control at all — and the ones who do can finally say *"stop overriding."*
+
+**"Users don't understand what 'System' means."**
+Label it *Auto* — [Apple's word in macOS settings](https://support.apple.com/guide/mac-help/use-a-light-or-dark-appearance-mchl52e1c2d2/mac); [iOS says *Automatic*](https://support.apple.com/en-us/108350). Stack Overflow, GitHub and the OS panels all ship the tri-state — it's the familiar pattern. A user who ignores it is unaffected: Auto just makes the site match their device.
+
+**"Nobody changes their OS theme anyway."**
+Those users are exactly who Auto serves: the site inherits whatever their device does, no effort required. And the users who *did* configure something aren't an edge case — in [Android Authority's 2,514-vote poll](https://www.androidauthority.com/dark-mode-poll-results-1090716/), 81.9% used dark mode everywhere it was offered.
+
+**"We initialize the toggle from `prefers-color-scheme`, so we do respect it."**
+Only until the first click. A persisted value shadows the media query permanently, and can't follow the sunset switch mid-session. Respecting the preference once isn't staying subscribed to it.
+
+**"We clear the stored choice when it matches the system — that's our way back."**
+That fixes one direction and breaks the other. Picking Dark while the system is dark silently becomes Auto — so at sunrise the site flips to light, against an explicit request. The user can no longer pin a theme that happens to match their current system. A third state states the intent; this trick guesses it.
+
+**"Fine — then we just won't persist the choice at all."**
+That breaks the opposite contract: someone who wants your site light on a dark device now re-toggles every visit. Three states honor both intents — choices persist, and Auto means "no override."
+
+## 04 · The demonstration
+
+The live page runs exactly the code above — view source; it's one file. With the header toggle on **Auto**, change your OS appearance and watch the page follow, no reload:
+
+- **macOS** · System Settings → Appearance → Light / Dark / Auto
+- **iOS** · Settings → Display & Brightness
+- **Windows** · Settings → Personalization → Colors → Choose your mode
+- **Android** · Settings → Display → Dark theme
+
+The page shows its internals live: `localStorage.getItem('theme')` (null is the design — absence means Auto), `prefers-color-scheme` (what the OS is saying right now), `<html data-theme>` (set only while overriding), and the effective scheme.
+
+## 05 · The checklist
+
+Audit your own site against these:
+
+- [ ] The control has three states: Light, Dark, and Auto. (A checkbox cannot represent "follow my system." Radios or a select can.)
+- [ ] Auto is the default for every first-time visitor. (First paint honors `prefers-color-scheme` — no flash of your favorite theme.)
+- [ ] Storage holds overrides only — no key means Auto. (`removeItem` on Auto, never `setItem('auto')`. Absence is the state.)
+- [ ] A `matchMedia` change listener keeps JS-rendered things in sync. (Charts, maps, embeds and meta theme-color don't read CSS variables on their own.)
+- [ ] An inline, blocking head script applies the override before first paint. (Inline, above the stylesheet. `defer`/`async`/module all flash.)
+- [ ] `color-scheme` is declared in both the meta tag and the CSS. (Scrollbars, form controls and the pre-CSS canvas follow the scheme for free.)
+- [ ] `meta theme-color` gets rewritten from JS while overridden. (Its media attribute tracks the OS, not your `data-theme` attribute.)
+- [ ] The theme swap respects `prefers-reduced-motion`. (Checked in JS before any view transition — not just in CSS.)
+
+## 06 · Resources
+
+### The argument
+
+- [Your dark mode toggle is broken](https://kilianvalkhof.com/2020/design/your-dark-mode-toggle-is-broken/) — Kilian Valkhof, 2020. The canonical statement of the thesis: binary toggles trap users in a stored override, so the fix is exactly three options.
+- [Dark Mode Toggles Should be a Browser Feature](https://www.bram.us/2022/05/25/dark-mode-toggles-should-be-a-browser-feature/) — Bramus Van Damme, 2022. Why overrides without a System option permanently disconnect a site from the user's preference.
+- [It's tri-state switch time](https://www.brycewray.com/posts/2024/01/its-tri-state-switch-time/) — Bryce Wray, 2024. A practitioner converts his binary toggle after realizing it failed users who didn't want the site to futz with their defaults.
+- [Dark Mode vs. Light Mode: Which Is Better?](https://www.nngroup.com/articles/dark-mode/) — Raluca Budiu, Nielsen Norman Group, 2020. The research review: light wins for normal vision, dark wins for some low-vision users — so let people switch.
+
+### The build
+
+- [The Quest for the Perfect Dark Mode](https://www.bram.us/2020/04/26/the-quest-for-the-perfect-dark-mode-using-vanilla-javascript/) — Bramus Van Damme, 2020. Vanilla-JS walkthrough: system as default, storage for overrides only, and a blocking head script against the theme flash.
+- [Building a theme switch component](https://web.dev/articles/building/a-theme-switch-component) — Adam Argyle, web.dev. An accessible switch that reads the system preference by default, stores explicit choices, and live-syncs via matchMedia.
+- [The Perfect Theme Switch Component](https://www.aleksandrhovhannisyan.com/blog/the-perfect-theme-switch/) — Aleksandr Hovhannisyan, 2024. A progressively enhanced Auto/Light/Dark picker built on color-scheme and light-dark(), with a CSS-only fallback and no FOUC.
+- [Come to the light-dark() Side](https://css-tricks.com/come-to-the-light-dark-side/) — Sara Joy, CSS-Tricks, 2024. Deep dive on color-scheme + light-dark(), building a light/dark/auto switcher.
+- [Three-State Light/Dark Theme Switch](https://tpiros.dev/blog/three-state-light-dark-theme-switch/) — Tamas Piros, 2024. Directly contrasts two-state vs three-state switches, with code for the control and flash prevention.
+- [prefers-color-scheme: Hello darkness, my old friend](https://web.dev/articles/prefers-color-scheme) — Thomas Steiner, web.dev. The comprehensive dark-mode guide: respect the OS by default, then layer a persisted override on top.
+- [Thinking on ways to solve a dark/light theme switch](https://web.dev/shows/gui-challenges/kZiS1QStIWc) — Adam Argyle, GUI Challenges (video). The UX and the code of a theme switch that syncs with the system by default.
+- [dark-mode-toggle](https://github.com/GoogleChromeLabs/dark-mode-toggle) — GoogleChromeLabs. A maintained custom element that defaults to the system value and persists an override only when asked.
+
+### The platform
+
+- [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-color-scheme) — MDN. The media feature that carries the user's answer. Baseline since 2020 — filed under accessibility guidance, not aesthetics.
+- [light-dark()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark) — MDN. One function, both palettes — resolves against the element's used color-scheme. Baseline 2024.
+- [color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/color-scheme) — MDN. The property that declares which schemes you support — and the cleanest primitive for wiring up all three toggle states.
+- [CSS Color Adjustment Module Level 1](https://www.w3.org/TR/css-color-adjust-1/) — W3C CSS Working Group. The standards basis: how author, user and user-agent color preferences negotiate. The "system" state lives here.
+
+---
+
+Default to the system. Store only overrides.
