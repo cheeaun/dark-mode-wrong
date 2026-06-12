@@ -1,8 +1,8 @@
 # You’re doing dark mode wrong.
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="screenshots/dark.png">
-  <img src="screenshots/light.png" alt="The site's hero in light mode: a three-state Light/Auto/Dark toggle in the header, the headline “You're doing dark mode wrong.”, and a status line reporting which mode is active and why." width="1280">
+  <source media="(prefers-color-scheme: dark)" srcset="screenshots/dark.jpg">
+  <img src="screenshots/light.jpg" alt="The site's hero in light mode: a three-state Light/Auto/Dark toggle in the header, the headline “You're doing dark mode wrong.”, and a status line reporting which mode is active and why." width="1280">
 </picture>
 
 *The screenshot above follows your system theme — fitting, since that's the whole point.*
