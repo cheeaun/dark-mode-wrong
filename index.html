@@ -119,6 +119,40 @@ document.documentElement.classList.add('js');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/* Metric-matched fallback faces, so the swap doesn't move anything.
+   size-adjust scales each local font until its average advance width
+   matches the web font's — same wrap points, same line counts — and
+   ascent/descent are compensated by the same factor. Ratios were
+   measured against the rendered fonts (these are variable fonts, so
+   the tables' default-instance metrics don't match what's drawn).
+   Fraunces' width varies with optical size; 104% centers on the
+   h2/h3/pull sizes where most of it is set. Browsers without these
+   descriptors just render the local font as before. */
+@font-face {
+  font-family: "Newsreader-fallback";
+  src: local("Georgia");
+  size-adjust: 90.37%;
+  ascent-override: 81.33%;
+  descent-override: 29.32%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Fraunces-fallback";
+  src: local("Georgia");
+  size-adjust: 104%;
+  ascent-override: 94.04%;
+  descent-override: 24.52%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Spline Sans Mono-fallback";
+  src: local("Menlo");
+  size-adjust: 99.66%;
+  ascent-override: 96.68%;
+  descent-override: 23.73%;
+  line-gap-override: 0%;
+}
+
 /* ============================================================
    THE WHOLE THEMING SYSTEM
    One declaration opts into both schemes; two narrow it down
@@ -191,7 +225,7 @@ body {
   position: relative;
   background: var(--bg);
   color: var(--ink);
-  font: 400 1.125rem/1.72 "Newsreader", Georgia, serif;
+  font: 400 1.125rem/1.72 "Newsreader", "Newsreader-fallback", Georgia, serif;
   font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -225,9 +259,9 @@ a:hover { text-decoration-thickness: 2px; }
 em { font-style: italic; }
 strong { font-weight: 600; }
 
-h1, h2, h3, .pull { font-family: "Fraunces", Georgia, serif; font-weight: 460; font-optical-sizing: auto; letter-spacing: -0.01em; }
+h1, h2, h3, .pull { font-family: "Fraunces", "Fraunces-fallback", Georgia, serif; font-weight: 460; font-optical-sizing: auto; letter-spacing: -0.01em; }
 
-code, pre, kbd { font-family: "Spline Sans Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+code, pre, kbd { font-family: "Spline Sans Mono", "Spline Sans Mono-fallback", ui-monospace, SFMono-Regular, Menlo, monospace; }
 p code, li code, .fine code, dd code {
   font-size: .82em;
   background: var(--bg-soft);
@@ -251,7 +285,7 @@ p code, li code, .fine code, dd code {
 .wrap { max-width: 46rem; margin-inline: auto; padding-inline: clamp(1.25rem, 5vw, 2rem); }
 
 .kicker {
-  font: 500 .74rem/1.4 "Spline Sans Mono", monospace;
+  font: 500 .74rem/1.4 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
   letter-spacing: .18em;
   text-transform: uppercase;
   color: var(--accent-ink);
@@ -277,7 +311,7 @@ p code, li code, .fine code, dd code {
   display: inline-flex;
   align-items: center;
   gap: .5em;
-  font: 400 .78rem/1 "Spline Sans Mono", monospace;
+  font: 400 .78rem/1 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
   letter-spacing: .04em;
   color: var(--ink-soft);
   text-decoration: none;
@@ -312,7 +346,7 @@ p code, li code, .fine code, dd code {
   padding: .45em .8em;
   border-radius: 999px;
   cursor: pointer;
-  font: 500 .76rem/1 "Spline Sans Mono", monospace;
+  font: 500 .76rem/1 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
   color: var(--ink-soft);
 }
 .theme-toggle label:has(:checked) { color: var(--ink); }
@@ -385,7 +419,7 @@ html:not(.js) .theme-toggle { display: none; }
 .scroll-hint {
   display: inline-block;
   margin-top: 2.6rem;
-  font: 400 .78rem/1 "Spline Sans Mono", monospace;
+  font: 400 .78rem/1 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
   letter-spacing: .14em;
   color: var(--ink-faint);
   text-decoration: none;
@@ -410,7 +444,7 @@ html:not(.js) .theme-toggle { display: none; }
   position: absolute;
   top: -1.2rem; left: -1rem;
   z-index: -1;
-  font-family: "Fraunces", serif;
+  font-family: "Fraunces", "Fraunces-fallback", serif;
   font-size: clamp(5rem, 12vw, 8rem);
   line-height: 1;
   color: transparent;
@@ -450,7 +484,7 @@ html:not(.js) .theme-toggle { display: none; }
   min-height: 4.2rem; margin-bottom: 1rem;
 }
 .exhibit figcaption { font-size: .95rem; line-height: 1.55; color: var(--ink-soft); }
-.exhibit figcaption b { display: block; font: 500 .74rem/1.6 "Spline Sans Mono", monospace; letter-spacing: .14em; text-transform: uppercase; }
+.exhibit figcaption b { display: block; font: 500 .74rem/1.6 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace; letter-spacing: .14em; text-transform: uppercase; }
 .exhibit-bad figcaption b { color: var(--bad); }
 .exhibit-good figcaption b { color: var(--good); }
 
@@ -485,7 +519,7 @@ html:not(.js) .theme-toggle { display: none; }
   background: var(--bg-soft);
   border-radius: 999px;
   padding: 3px;
-  font: 500 .72rem/1 "Spline Sans Mono", monospace;
+  font: 500 .72rem/1 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
   color: var(--ink-faint);
 }
 .mock-3 .seg span { padding: .45em .9em; border-radius: 999px; }
@@ -505,7 +539,7 @@ html:not(.js) .theme-toggle { display: none; }
 }
 .night li + li { border-top: 1px dashed var(--rule); }
 .night time, .night .t {
-  font: 500 .8rem/2.1 "Spline Sans Mono", monospace;
+  font: 500 .8rem/2.1 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
   color: var(--accent-ink);
   white-space: nowrap;
 }
@@ -524,7 +558,7 @@ html:not(.js) .theme-toggle { display: none; }
 }
 .args h3::before {
   content: counter(arg, decimal-leading-zero);
-  font: 400 .8rem/1 "Spline Sans Mono", monospace;
+  font: 400 .8rem/1 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
   color: var(--accent-ink);
   flex: none;
 }
@@ -543,7 +577,7 @@ html:not(.js) .theme-toggle { display: none; }
   display: flex; gap: .8rem; align-items: baseline;
   padding: .65rem 4.5rem .65rem 1.1rem; /* right padding reserves room for the copy button */
   border-bottom: 1px solid var(--rule);
-  font: 400 .78rem/1.5 "Spline Sans Mono", monospace;
+  font: 400 .78rem/1.5 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
   color: var(--ink-faint);
 }
 .code figcaption .lang {
@@ -573,7 +607,7 @@ html:not(.js) .theme-toggle { display: none; }
   border-radius: 6px;
   background: var(--bg-card);
   color: var(--ink-soft);
-  font: 500 .7rem/1 "Spline Sans Mono", monospace;
+  font: 500 .7rem/1 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
   padding: .45em .7em;
   min-height: 24px; /* WCAG 2.5.8 minimum target size */
   cursor: pointer;
@@ -615,14 +649,14 @@ html:not(.js) .theme-toggle { display: none; }
 .state .tag {
   display: inline-block;
   margin-bottom: .8rem;
-  font: 500 .62rem/1 "Spline Sans Mono", monospace;
+  font: 500 .62rem/1 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
   letter-spacing: .14em; text-transform: uppercase;
   color: var(--accent-ink);
   border: 1px solid var(--accent);
   border-radius: 999px;
   padding: .35em .8em;
 }
-.state dl { margin: 0; font: 400 .74rem/1.9 "Spline Sans Mono", monospace; color: var(--ink-faint); }
+.state dl { margin: 0; font: 400 .74rem/1.9 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace; color: var(--ink-faint); }
 .state dt { display: none; }
 .state dd { margin: 0; }
 .state dd b, .state dd code { font-weight: 500; color: var(--ink-soft); }
@@ -640,7 +674,7 @@ html:not(.js) .theme-toggle { display: none; }
 .objection summary {
   cursor: pointer;
   padding: .95rem 1.2rem;
-  font-family: "Fraunces", serif;
+  font-family: "Fraunces", "Fraunces-fallback", serif;
   font-weight: 460;
   font-size: 1.18rem;
   color: var(--ink);
@@ -682,7 +716,7 @@ html:not(.js) .theme-toggle { display: none; }
   border-radius: 12px;
   background: var(--code-bg);
   margin: 2.2rem 0;
-  font-family: "Spline Sans Mono", monospace;
+  font-family: "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
 }
 .console caption {
   caption-side: top;
@@ -704,7 +738,7 @@ html:not(.js) .theme-toggle { display: none; }
 .console th { color: var(--ink-soft); }
 .console th code { font: inherit; }
 .console td.v { color: var(--accent-ink); font-weight: 500; }
-.console td.why { grid-column: 1 / -1; color: var(--ink-faint); font-size: .74rem; font-style: italic; font-family: "Newsreader", serif; }
+.console td.why { grid-column: 1 / -1; color: var(--ink-faint); font-size: .74rem; font-style: italic; font-family: "Newsreader", "Newsreader-fallback", serif; }
 @media (min-width: 40em) {
   .console tr { display: table-row; }
   .console th, .console td { display: table-cell; padding: .8rem 1.1rem; vertical-align: baseline; }
@@ -725,7 +759,7 @@ html:not(.js) .theme-toggle { display: none; }
   padding: 1rem 1.1rem;
   background: var(--bg-card);
 }
-.os b { display: block; font: 500 .72rem/2 "Spline Sans Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink); }
+.os b { display: block; font: 500 .72rem/2 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink); }
 .os span { font-size: .92rem; color: var(--ink-soft); }
 
 /* —— checklist —— */
@@ -768,14 +802,14 @@ a.res {
 a.res:hover { border-color: var(--accent); }
 a.res .meta {
   display: block;
-  font: 400 .68rem/1 "Spline Sans Mono", monospace;
+  font: 400 .68rem/1 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
   letter-spacing: .12em; text-transform: uppercase;
   color: var(--ink-faint);
   margin-bottom: .55rem;
 }
 a.res strong {
   display: block;
-  font-family: "Fraunces", serif;
+  font-family: "Fraunces", "Fraunces-fallback", serif;
   font-weight: 500;
   font-size: 1.2rem;
   line-height: 1.25;
@@ -788,7 +822,7 @@ a.res p { margin: 0; font-size: .9rem; line-height: 1.55; color: var(--ink-faint
 a.res .domain {
   display: block;
   margin-top: .6rem;
-  font: 400 .68rem/1.4 "Spline Sans Mono", monospace;
+  font: 400 .68rem/1.4 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
   letter-spacing: .04em;
   color: var(--ink-faint);
   overflow-wrap: anywhere;
