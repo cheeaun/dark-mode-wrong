@@ -203,7 +203,7 @@ p code, li code, .fine code, dd code {
   text-decoration: none;
   white-space: nowrap;
 }
-.wordmark .mark { color: var(--accent-ink); font-size: 1.05rem; line-height: 1; }
+.wordmark .mark { width: 14px; height: 14px; flex: none; color: var(--accent-ink); }
 .wordmark b { font-weight: 500; color: var(--accent-ink); }
 .wordmark:hover .label { color: var(--ink); }
 
@@ -536,8 +536,26 @@ html:not(.js) .theme-toggle { display: none; }
   list-style: none;
 }
 .objection summary::-webkit-details-marker { display: none; }
-.objection summary::before { content: "→ "; color: var(--accent); }
-.objection[open] summary::before { content: "↓ "; }
+.objection summary::before {
+  content: "→";
+  display: inline-block;
+  width: 1.35em;
+  text-align: center;
+  color: var(--accent);
+}
+.objection[open] summary::before { rotate: 90deg; }
+/* animatable open/close where ::details-content is supported;
+   elsewhere it simply opens instantly */
+.objection::details-content {
+  interpolate-size: allow-keywords;
+  opacity: 0;
+  block-size: 0;
+  overflow-y: clip;
+}
+.objection[open]::details-content {
+  opacity: 1;
+  block-size: auto;
+}
 .objection .a { padding: 0 1.2rem 1.1rem; color: var(--ink-soft); font-size: 1rem; max-width: 60ch; }
 .objection .a p { margin: .2rem 0 .6rem; }
 
@@ -666,7 +684,7 @@ a.res .domain {
 a.res .domain::after { content: " ↗"; color: var(--accent-ink); }
 
 @media (prefers-reduced-motion: no-preference) {
-  a.res, .exhibit, .code .copy, a, .objection summary::before { transition: all .18s ease; }
+  a.res, .exhibit, .code .copy, a { transition: all .18s ease; }
   a.res:hover { transform: translateY(-2px); box-shadow: 0 6px 18px var(--shadow); }
 }
 
@@ -681,11 +699,12 @@ a.res .domain::after { content: " ↗"; color: var(--accent-ink); }
 .colophon .fine { font-size: .82rem; color: var(--ink-faint); }
 .colophon .fine code { font-size: .78em; }
 
-/* —— scroll reveals (JS + motion-ok only) —— */
 @media (prefers-reduced-motion: no-preference) {
-  html.js .reveal { opacity: 0; translate: 0 16px; transition: opacity .55s ease, translate .55s ease; }
-  html.js .reveal.is-in { opacity: 1; translate: 0 0; }
   .theme-toggle .thumb { transition: translate .28s cubic-bezier(.2, .8, .2, 1); }
+  .objection summary::before { transition: rotate .25s ease; }
+  .objection::details-content {
+    transition: content-visibility .35s allow-discrete, opacity .35s ease, block-size .35s ease;
+  }
   ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .3s; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -724,7 +743,7 @@ abbr[title] {
 
 <header class="site-head">
   <div class="bar">
-    <a class="wordmark" href="#top"><span class="mark" aria-hidden="true">◐</span><span class="label">You’re doing dark mode <b>wrong.</b></span></a>
+    <a class="wordmark" href="#top"><svg class="mark" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg><span class="label">You’re doing dark mode <b>wrong.</b></span></a>
 
     <!-- THE control. Three states. Real radio buttons, so the keyboard
          and screen readers get the right semantics for free. -->
@@ -769,17 +788,17 @@ abbr[title] {
   <!-- ====================================================== -->
   <section class="sec" id="problem">
     <div class="wrap">
-      <header class="sec-head reveal">
+      <header class="sec-head">
         <span class="sec-num" aria-hidden="true">01</span>
         <p class="kicker">the problem</p>
         <h2>The two-state toggle</h2>
       </header>
 
-      <p class="reveal">Most sites that offer a theme choice ship a two-state toggle:
+      <p>Most sites that offer a theme choice ship a two-state toggle:
       a sun on one side, a moon on the other. The trouble is that it can’t express
       the preference many users actually have — <em>“just match my device.”</em></p>
 
-      <div class="exhibits reveal">
+      <div class="exhibits">
         <figure class="exhibit exhibit-bad">
           <div class="mock mock-2" aria-hidden="true">
             <div class="pill">
@@ -801,10 +820,10 @@ abbr[title] {
         </figure>
       </div>
 
-      <p class="reveal">Here is how that plays out for a user over one ordinary
+      <p>Here is how that plays out for a user over one ordinary
       evening:</p>
 
-      <ol class="night reveal">
+      <ol class="night">
         <li>
           <time>19:42</time>
           <p><strong>Sunset.</strong> Their <abbr title="operating system">OS</abbr> fades to dark — macOS calls it
@@ -840,10 +859,10 @@ abbr[title] {
         </li>
       </ol>
 
-      <p class="reveal">The code behind this pattern usually looks something like
+      <p>The code behind this pattern usually looks something like
       the following:</p>
 
-      <figure class="code reveal">
+      <figure class="code">
         <figcaption><span class="lang">js</span> two-state-toggle.js — the anti-pattern, annotated</figcaption>
         <pre><code data-lang="js"><span class="tok-c">// <span class="tok-x">❌</span> the two-state toggle, with its three bugs annotated</span>
 
@@ -873,14 +892,14 @@ toggle.<span class="tok-f">addEventListener</span>(<span class="tok-s">'click'</
   <!-- ====================================================== -->
   <section class="sec" id="why">
     <div class="wrap">
-      <header class="sec-head reveal">
+      <header class="sec-head">
         <span class="sec-num" aria-hidden="true">02</span>
         <p class="kicker">the argument</p>
         <h2>Why it matters</h2>
       </header>
 
       <ol class="args">
-        <li class="reveal">
+        <li>
           <h3>The user already answered.</h3>
           <p>Every modern browser exposes the device’s appearance setting through the
           <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-color-scheme"><code>prefers-color-scheme</code></a>
@@ -888,7 +907,7 @@ toggle.<span class="tok-f">addEventListener</span>(<span class="tok-s">'click'</
           available before they arrive. A binary toggle that defaults to light asks
           again for a preference that is already on record — and then ignores it.</p>
         </li>
-        <li class="reveal">
+        <li>
           <h3>Operating systems follow the sun. A stored toggle can’t.</h3>
           <p>macOS has <a href="https://support.apple.com/guide/mac-help/use-a-light-or-dark-appearance-mchl52e1c2d2/mac"><em>Auto</em></a>,
           iOS has <a href="https://support.apple.com/en-us/108350"><em>Automatic</em></a> with
@@ -901,7 +920,7 @@ toggle.<span class="tok-f">addEventListener</span>(<span class="tok-s">'click'</
           value can never follow — the site ends up disagreeing with the rest of the
           device twice a day, at sunrise and at sunset.</p>
         </li>
-        <li class="reveal">
+        <li>
           <h3>One click disconnects the site permanently.</h3>
           <p>The stale-override trap: a user tries the other theme once, and the
           choice is stored for good. As <a href="https://www.bram.us/2022/05/25/dark-mode-toggles-should-be-a-browser-feature/">Bramus
@@ -909,7 +928,7 @@ toggle.<span class="tok-f">addEventListener</span>(<span class="tok-s">'click'</
           preference again, as they always have an override applied.” The two-state
           control has no way to express <em>undo the override</em>.</p>
         </li>
-        <li class="reveal">
+        <li>
           <h3>It’s an accessibility signal, not a vibe.</h3>
           <p>People with photophobia or migraines run their devices dark to function;
           many people with astigmatism get halation in dark mode and need light;
@@ -919,7 +938,7 @@ toggle.<span class="tok-f">addEventListener</span>(<span class="tok-s">'click'</
           pick for everyone — which is exactly why the OS lets each user pick, and exactly why
           overriding that signal is the same class of bug as ignoring <code>prefers-reduced-motion</code>.</p>
         </li>
-        <li class="reveal">
+        <li>
           <h3>Everything else on the device already behaves this way.</h3>
           <p>Native apps follow the system. The OS settings panel itself is a tri-state —
           Light, Dark, Auto. So are <a href="https://kilianvalkhof.com/2020/design/your-dark-mode-toggle-is-broken/">Stack
@@ -928,7 +947,7 @@ toggle.<span class="tok-f">addEventListener</span>(<span class="tok-s">'click'</
           When a site doesn’t follow, the mismatch reads as a bug in the site, not in
           the settings.</p>
         </li>
-        <li class="reveal">
+        <li>
           <h3>The fix costs one enum value and one event listener.</h3>
           <p>Both versions need two themes in <abbr title="Cascading Style Sheets">CSS</abbr>, a stored preference, a control, and a
           head script against the theme flash. The correct version differs only in treating
@@ -943,18 +962,18 @@ toggle.<span class="tok-f">addEventListener</span>(<span class="tok-s">'click'</
   <!-- ====================================================== -->
   <section class="sec" id="fix">
     <div class="wrap">
-      <header class="sec-head reveal">
+      <header class="sec-head">
         <span class="sec-num" aria-hidden="true">03</span>
         <p class="kicker">the fix</p>
         <h2>Three states, with Auto as the default</h2>
       </header>
 
-      <p class="reveal">The model:
+      <p>The model:
       <strong>light and dark are stored overrides; auto means nothing is stored.</strong>
       Don’t store <code>"auto"</code> — store nothing. Once “no stored value” means
       “follow the system,” the rest of the implementation follows directly.</p>
 
-      <div class="states reveal" role="img" aria-label="State diagram: Light stores the value light; Auto, the default, stores nothing; Dark stores the value dark.">
+      <div class="states" role="img" aria-label="State diagram: Light stores the value light; Auto, the default, stores nothing; Dark stores the value dark.">
         <div class="state">
           <h3>Light</h3>
           <dl>
@@ -979,15 +998,15 @@ toggle.<span class="tok-f">addEventListener</span>(<span class="tok-s">'click'</
         </div>
       </div>
 
-      <p class="pull reveal">Auto isn’t a third theme — it’s the absence of an override.</p>
+      <p class="pull">Auto isn’t a third theme — it’s the absence of an override.</p>
 
-      <p class="reveal"><strong>Step one — the head.</strong> Declare scheme support
+      <p><strong>Step one — the head.</strong> Declare scheme support
       before any CSS, and apply a stored override <em>synchronously</em>, before first
       paint. The script must be inline and blocking: external files, <code>defer</code>,
       <code>async</code> and modules all run after the first paint is possible, which
       means a flash of the wrong theme for anyone with a stored override.</p>
 
-      <figure class="code reveal">
+      <figure class="code">
         <figcaption><span class="lang">html</span> index.html — the &lt;head&gt;, in this order</figcaption>
         <pre><code data-lang="html">&lt;<span class="tok-t">meta</span> <span class="tok-a">name</span>=<span class="tok-s">"color-scheme"</span> <span class="tok-a">content</span>=<span class="tok-s">"light dark"</span>&gt;
 &lt;<span class="tok-t">meta</span> <span class="tok-a">name</span>=<span class="tok-s">"theme-color"</span> <span class="tok-a">content</span>=<span class="tok-s">"#f5efe3"</span> <span class="tok-a">media</span>=<span class="tok-s">"(prefers-color-scheme: light)"</span>&gt;
@@ -1006,7 +1025,7 @@ toggle.<span class="tok-f">addEventListener</span>(<span class="tok-s">'click'</
 &lt;<span class="tok-t">link</span> <span class="tok-a">rel</span>=<span class="tok-s">"stylesheet"</span> <span class="tok-a">href</span>=<span class="tok-s">"/styles.css"</span>&gt;</code></pre>
       </figure>
 
-      <p class="reveal"><strong>Step two — the CSS.</strong> This part is smaller
+      <p><strong>Step two — the CSS.</strong> This part is smaller
       than it sounds: three lines plus your colors.
       <code>color-scheme</code> opts you into both schemes — the browser immediately
       renders form controls, scrollbars and the default canvas to match the OS, for
@@ -1014,7 +1033,7 @@ toggle.<span class="tok-f">addEventListener</span>(<span class="tok-s">'click'</
       then picks every color’s side automatically — for auto <em>and</em> for overrides,
       because an override is just <code>color-scheme</code> narrowed to one value.</p>
 
-      <figure class="code reveal">
+      <figure class="code">
         <figcaption><span class="lang">css</span> styles.css — the entire theming system</figcaption>
         <pre><code data-lang="css"><span class="tok-c">/* 1 · support both schemes; auto now works with zero JS */</span>
 :root { <span class="tok-p">color-scheme</span>: light dark; }
@@ -1031,7 +1050,7 @@ body {
 }</code></pre>
       </figure>
 
-      <p class="reveal"><code>light-dark()</code> is
+      <p><code>light-dark()</code> is
       <a href="https://caniuse.com/css-light-dark">Baseline 2024</a> (Chrome&nbsp;123,
       Edge&nbsp;123, Firefox&nbsp;120, Safari&nbsp;17.5). Supporting older browsers? Same
       model, classic syntax — define tokens in <code>:root</code>, override them in
@@ -1041,11 +1060,11 @@ body {
       (This very page ships that fallback in an <code>@supports</code> block —
       view source.)</p>
 
-      <p class="reveal"><strong>Step three — the control and the logic.</strong>
+      <p><strong>Step three — the control and the logic.</strong>
       Radio buttons give you keyboard support and screen-reader semantics for free.
       The logic enforces one invariant: <em>storage holds overrides only.</em></p>
 
-      <figure class="code reveal">
+      <figure class="code">
         <figcaption><span class="lang">html</span> the control — three real states, not a checkbox</figcaption>
         <pre><code data-lang="html">&lt;<span class="tok-t">fieldset</span>&gt;
   &lt;<span class="tok-t">legend</span>&gt;Theme&lt;/<span class="tok-t">legend</span>&gt;
@@ -1055,7 +1074,7 @@ body {
 &lt;/<span class="tok-t">fieldset</span>&gt;</code></pre>
       </figure>
 
-      <figure class="code reveal">
+      <figure class="code">
         <figcaption><span class="lang">js</span> theme.js — the whole thing</figcaption>
         <pre><code data-lang="js"><span class="tok-k">const</span> mql = <span class="tok-b">matchMedia</span>(<span class="tok-s">'(prefers-color-scheme: dark)'</span>);
 
@@ -1087,7 +1106,7 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
 });</code></pre>
       </figure>
 
-      <p class="reveal"><strong>The fine print</strong> — two gotchas that survive
+      <p><strong>The fine print</strong> — two gotchas that survive
       even good implementations. First: <code>&lt;meta name="theme-color"&gt;</code>
       media attributes track <em>the OS only</em> — they never react to your
       <code>data-theme</code> attribute, so when an override is active you must rewrite
@@ -1098,9 +1117,9 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
       CSS — a full-viewport color animation is exactly the kind of effect
       reduced-motion users have opted out of.</p>
 
-      <h3 class="kicker kicker-spaced reveal">objections, anticipated</h3>
+      <h3 class="kicker kicker-spaced">objections, anticipated</h3>
 
-      <details class="objection reveal">
+      <details class="objection">
         <summary>“A two-state toggle is simpler.”</summary>
         <div class="a"><p>Simpler to draw, but not simpler to use: the binary control
         assumes a preference is one fixed value, and it breaks OS sync permanently after
@@ -1108,7 +1127,7 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
         the ones who do get a switch that can express <em>“stop overriding.”</em> A
         control that can’t represent the default state isn’t simpler — it’s incomplete.</p></div>
       </details>
-      <details class="objection reveal">
+      <details class="objection">
         <summary>“Users don’t understand what ‘System’ means.”</summary>
         <div class="a"><p>Then label it <em>Auto</em> — that’s
         <a href="https://support.apple.com/guide/mac-help/use-a-light-or-dark-appearance-mchl52e1c2d2/mac">Apple’s
@@ -1119,7 +1138,7 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
         not the exotic one. And a user who doesn’t engage with it is unaffected: Auto is
         simply the default that makes the site match everything else on their device.</p></div>
       </details>
-      <details class="objection reveal">
+      <details class="objection">
         <summary>“Nobody changes their OS theme anyway.”</summary>
         <div class="a"><p>Those users are exactly who Auto serves — the site inherits whatever
         their device does, including vendor defaults and scheduled switching, with no effort.
@@ -1128,14 +1147,14 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
         Authority’s 2,514-vote poll</a>, 81.9% said they used dark mode everywhere it was
         offered. A feature doesn’t need universal use for breaking it to matter.</p></div>
       </details>
-      <details class="objection reveal">
+      <details class="objection">
         <summary>“We initialize the toggle from <code>prefers-color-scheme</code>, so we do respect it.”</summary>
         <div class="a"><p>Only until the first click. The moment a value is persisted, it
         shadows the media query permanently — and it can’t follow the sunset switch
         mid-session either. Respecting the preference once, at onboarding, is not the same
         thing as staying subscribed to it.</p></div>
       </details>
-      <details class="objection reveal">
+      <details class="objection">
         <summary>“Fine — then we just won’t persist the choice at all.”</summary>
         <div class="a"><p>That breaks the opposite contract: someone who deliberately wants
         your site light on their dark device now has to re-toggle on every visit. The
@@ -1148,28 +1167,28 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
   <!-- ====================================================== -->
   <section class="sec" id="live">
     <div class="wrap">
-      <header class="sec-head reveal">
+      <header class="sec-head">
         <span class="sec-num" aria-hidden="true">04</span>
         <p class="kicker">the demonstration</p>
         <h2>Watch this page do it</h2>
       </header>
 
-      <p class="reveal">This page runs exactly the code above — view source; it’s one
+      <p>This page runs exactly the code above — view source; it’s one
       file. Leave the toggle in the header on <strong>Auto</strong> (the default,
       unless you’ve overridden it), then change your OS appearance and watch the page
       follow live, with no reload:</p>
 
-      <div class="os-grid reveal">
+      <div class="os-grid">
         <div class="os"><b>macOS</b> <span>System Settings → Appearance → Light / Dark / Auto</span></div>
         <div class="os"><b>iOS</b> <span>Settings → Display &amp; Brightness</span></div>
         <div class="os"><b>Windows</b> <span>Settings → Personalization → Colors → Choose your mode</span></div>
         <div class="os"><b>Android</b> <span>Settings → Display → Dark theme</span></div>
       </div>
 
-      <p class="reveal">And below are the page’s actual internals, updated live
+      <p>And below are the page’s actual internals, updated live
       whenever anything changes:</p>
 
-      <table class="console reveal">
+      <table class="console">
         <caption>under the hood · updates live</caption>
         <tbody>
           <tr>
@@ -1195,7 +1214,7 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
         </tbody>
       </table>
 
-      <p class="reveal">One more thing to try: open this page in two windows side by
+      <p>One more thing to try: open this page in two windows side by
       side and change the theme in one. The other follows — that’s the
       <code>storage</code> event from step three.</p>
     </div>
@@ -1204,16 +1223,16 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
   <!-- ====================================================== -->
   <section class="sec" id="checklist">
     <div class="wrap">
-      <header class="sec-head reveal">
+      <header class="sec-head">
         <span class="sec-num" aria-hidden="true">05</span>
         <p class="kicker">before you ship</p>
         <h2>The checklist</h2>
       </header>
 
-      <p class="reveal">Audit your own site against these. (Ticking the boxes stores
+      <p>Audit your own site against these. (Ticking the boxes stores
       nothing — this page only writes to storage when you override the theme.)</p>
 
-      <ul class="checklist reveal">
+      <ul class="checklist">
         <li><label><input type="checkbox">
           <span><span class="what">The control has three states: Light, Dark, and Auto.</span>
           <span class="how">A checkbox cannot represent “follow my system.” Radios or a select can.</span></span>
@@ -1253,13 +1272,13 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
   <!-- ====================================================== -->
   <section class="sec" id="resources">
     <div class="wrap">
-      <header class="sec-head reveal">
+      <header class="sec-head">
         <span class="sec-num" aria-hidden="true">06</span>
         <p class="kicker">go deeper</p>
         <h2>Resources</h2>
       </header>
 
-      <div class="res-group reveal">
+      <div class="res-group">
         <p class="kicker">the argument</p>
         <div class="res-grid">
           <a class="res" href="https://kilianvalkhof.com/2020/design/your-dark-mode-toggle-is-broken/" target="_blank" rel="noopener">
@@ -1293,7 +1312,7 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
         </div>
       </div>
 
-      <div class="res-group reveal">
+      <div class="res-group">
         <p class="kicker">the build</p>
         <div class="res-grid">
           <a class="res" href="https://www.bram.us/2020/04/26/the-quest-for-the-perfect-dark-mode-using-vanilla-javascript/" target="_blank" rel="noopener">
@@ -1355,7 +1374,7 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
         </div>
       </div>
 
-      <div class="res-group reveal">
+      <div class="res-group">
         <p class="kicker">the platform</p>
         <div class="res-grid">
           <a class="res" href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-color-scheme" target="_blank" rel="noopener">
@@ -1520,7 +1539,7 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
   try {
     var s0 = storedTheme();
     console.log(
-      '%c◐ theme internals%c\n\nlocalStorage.theme → ' +
+      '%c◑ theme internals%c\n\nlocalStorage.theme → ' +
       (s0 ? '"' + s0 + '" — explicit override; choose Auto to follow the system again.'
           : 'null — no override stored; following the system (Auto).'),
       'font-family: Georgia, serif; font-size: 1.4em; font-style: italic', ''
@@ -1528,12 +1547,13 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
   } catch (e) {}
 
   /* ============================================================
-     Page furniture: copy buttons and scroll reveals.
+     Page furniture: copy buttons.
      (Syntax highlighting is hard-coded into the markup itself —
      view any <pre> block. There is no runtime highlighter.)
      ============================================================ */
+  var copyFallback = 'press ' +
+    (/mac|iphone|ipad|ipod/i.test(navigator.platform || navigator.userAgent) ? '⌘C' : 'Ctrl+C');
 
-  /* ---- copy buttons ---- */
   document.querySelectorAll('figure.code').forEach(function (fig) {
     var code = fig.querySelector('code');
     if (!code) return;
@@ -1551,24 +1571,12 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(code.textContent).then(
           function () { done('copied ✓'); },
-          function () { done('press ⌘C'); }
+          function () { done(copyFallback); }
         );
-      } else { done('press ⌘C'); }
+      } else { done(copyFallback); }
     });
     fig.appendChild(btn);
   });
-
-  /* ---- scroll reveals ---- */
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
-      });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.1 });
-    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
-  } else {
-    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('is-in'); });
-  }
 })();
 </script>
 </body>
