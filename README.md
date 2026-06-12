@@ -1,5 +1,12 @@
 # You’re doing dark mode wrong.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="screenshots/dark.png">
+  <img src="screenshots/light.png" alt="The site's hero in light mode: a three-state Light/Auto/Dark toggle in the header, the headline “You're doing dark mode wrong.”, and a status line reporting which mode is active and why." width="1280">
+</picture>
+
+*The screenshot above follows your system theme — fitting, since that's the whole point.*
+
 A one-page site for developers and designers about the most common dark-mode mistake: the two-state theme toggle. It makes the case for three states — **Light / Dark / Auto**, with Auto as the default — and demonstrates the pattern by implementing it itself.
 
 For the full argument, the code, and further reading: open the site.
