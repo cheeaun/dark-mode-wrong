@@ -36,7 +36,7 @@ document.documentElement.classList.add('js');
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Spline+Sans+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Spline+Sans+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 
 <style>
 /* ============================================================
@@ -108,6 +108,7 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
+  position: relative;
   background: var(--bg);
   color: var(--ink);
   font: 400 1.125rem/1.72 "Newsreader", Georgia, serif;
@@ -117,6 +118,17 @@ body {
 }
 
 ::selection { background: var(--accent); color: var(--bg); }
+
+/* ambient glow behind the hero — page-level, so it fades naturally
+   instead of being clipped at the content column's edge */
+body::before {
+  content: "";
+  position: absolute; z-index: -1;
+  top: 0; right: 0; left: 0;
+  height: min(110vh, 56rem);
+  background: radial-gradient(56vmin 56vmin at calc(100% - 16vmin) -6vmin, var(--glow), transparent 70%);
+  pointer-events: none;
+}
 
 /* paper grain */
 body::after {
@@ -133,7 +145,7 @@ a:hover { text-decoration-thickness: 2px; }
 em { font-style: italic; }
 strong { font-weight: 600; }
 
-h1, h2, h3, .pull { font-family: "Instrument Serif", Georgia, serif; font-weight: 400; letter-spacing: -0.01em; }
+h1, h2, h3, .pull { font-family: "Fraunces", Georgia, serif; font-weight: 460; font-optical-sizing: auto; letter-spacing: -0.01em; }
 
 code, pre, kbd { font-family: "Spline Sans Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
 p code, li code, .fine code, dd code {
@@ -142,7 +154,9 @@ p code, li code, .fine code, dd code {
   border: 1px solid var(--rule);
   border-radius: 4px;
   padding: .08em .35em;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
@@ -181,11 +195,14 @@ p code, li code, .fine code, dd code {
 }
 .wordmark {
   font: 400 .78rem/1 "Spline Sans Mono", monospace;
-  color: var(--ink-faint);
+  letter-spacing: .04em;
+  color: var(--ink-soft);
   text-decoration: none;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.wordmark b { font-weight: 500; color: var(--ink-soft); }
+.wordmark .mark { color: var(--accent-ink); font-size: 1.05rem; vertical-align: -.1em; }
+.wordmark b { font-weight: 500; color: var(--accent-ink); }
+.wordmark:hover .label { color: var(--ink); }
 
 /* —— the three-state control —— */
 .theme-toggle { border: 0; margin: 0; padding: 0; }
@@ -225,7 +242,7 @@ p code, li code, .fine code, dd code {
 @media (max-width: 560px) {
   .theme-toggle label span { position: absolute !important; width: 1px; height: 1px; margin: -1px; clip-path: inset(50%); overflow: hidden; }
   .theme-toggle label { padding: .45em .8em; }
-  .wordmark { max-width: 34vw; }
+  .wordmark .label { display: none; }
 }
 
 /* without JS the control can’t override anything — don’t pretend */
@@ -234,20 +251,11 @@ html:not(.js) .theme-toggle { display: none; }
 /* ============================================================
    HERO
    ============================================================ */
-.hero { position: relative; overflow: clip; padding-block: clamp(4.5rem, 14vh, 9rem) clamp(4rem, 10vh, 6rem); }
-.hero::before {
-  content: "";
-  position: absolute; z-index: -1;
-  top: -18vmin; right: -12vmin;
-  width: 62vmin; height: 62vmin;
-  border-radius: 50%;
-  background: radial-gradient(circle at 38% 38%, var(--glow), transparent 65%);
-  filter: blur(28px);
-}
+.hero { position: relative; padding-block: clamp(4.5rem, 14vh, 9rem) clamp(4rem, 10vh, 6rem); }
 .hero h1 {
   margin: 0 0 1.6rem;
-  font-size: clamp(3rem, 9.5vw, 6.4rem);
-  line-height: 1.02;
+  font-size: clamp(2.9rem, 9vw, 6rem);
+  line-height: 1.05;
   text-wrap: balance;
 }
 .hero h1 .wrong { font-style: italic; color: var(--accent-ink); }
@@ -287,8 +295,6 @@ html:not(.js) .theme-toggle { display: none; }
   .hero .up + .up + .up + .up { animation-delay: .3s; }
   .hero .up + .up + .up + .up + .up { animation-delay: .42s; }
   @keyframes rise { from { opacity: 0; transform: translateY(18px); } }
-  .hero::before { animation: drift 16s ease-in-out infinite alternate; }
-  @keyframes drift { to { transform: translate(-4vmin, 3vmin) scale(1.06); } }
 }
 
 /* ============================================================
@@ -300,7 +306,7 @@ html:not(.js) .theme-toggle { display: none; }
   position: absolute;
   top: -1.2rem; left: -1rem;
   z-index: -1;
-  font-family: "Instrument Serif", serif;
+  font-family: "Fraunces", serif;
   font-size: clamp(5rem, 12vw, 8rem);
   line-height: 1;
   color: transparent;
@@ -317,8 +323,7 @@ html:not(.js) .theme-toggle { display: none; }
   padding: 0;
   border: 0;
   font-size: clamp(1.6rem, 4vw, 2.3rem);
-  line-height: 1.25;
-  font-style: italic;
+  line-height: 1.3;
   text-wrap: balance;
   color: var(--ink);
 }
@@ -346,18 +351,29 @@ html:not(.js) .theme-toggle { display: none; }
 .exhibit-bad figcaption b { color: var(--bad); }
 .exhibit-good figcaption b { color: var(--good); }
 
-.mock-2 {
-  gap: 0;
-}
 .mock-2 .pill {
-  display: flex; align-items: center; gap: .6rem;
+  position: relative;
+  display: flex;
   border: 1px solid var(--rule-strong);
   background: var(--bg-soft);
   border-radius: 999px;
-  padding: .4rem .6rem;
-  color: var(--ink-faint);
+  padding: 4px;
 }
-.mock-2 .pill .knob { width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--thumb); border: 1px solid var(--rule); box-shadow: 0 1px 4px var(--shadow); }
+.mock-2 .pill .knob {
+  position: absolute; left: 4px; top: 4px;
+  width: 2rem; height: 2rem;
+  border-radius: 50%;
+  background: var(--thumb);
+  border: 1px solid var(--rule);
+  box-shadow: 0 1px 4px var(--shadow);
+}
+.mock-2 .pill .slot {
+  position: relative; z-index: 1;
+  display: grid; place-items: center;
+  width: 2rem; height: 2rem;
+}
+.mock-2 .slot-sun { color: var(--ink); }
+.mock-2 .slot-moon { color: var(--ink-faint); }
 .mock-2 svg { width: 16px; height: 16px; }
 
 .mock-3 .seg {
@@ -507,14 +523,14 @@ html:not(.js) .theme-toggle { display: none; }
 .objection summary {
   cursor: pointer;
   padding: .95rem 1.2rem;
-  font-family: "Instrument Serif", serif;
-  font-size: 1.22rem;
-  font-style: italic;
+  font-family: "Fraunces", serif;
+  font-weight: 460;
+  font-size: 1.18rem;
   color: var(--ink);
   list-style: none;
 }
 .objection summary::-webkit-details-marker { display: none; }
-.objection summary::before { content: "→ "; color: var(--accent); font-style: normal; }
+.objection summary::before { content: "→ "; color: var(--accent); }
 .objection[open] summary::before { content: "↓ "; }
 .objection .a { padding: 0 1.2rem 1.1rem; color: var(--ink-soft); font-size: 1rem; max-width: 60ch; }
 .objection .a p { margin: .2rem 0 .6rem; }
@@ -613,10 +629,10 @@ a.res .meta {
 }
 a.res strong {
   display: block;
-  font-family: "Instrument Serif", serif;
-  font-weight: 400;
-  font-size: 1.3rem;
-  line-height: 1.2;
+  font-family: "Fraunces", serif;
+  font-weight: 500;
+  font-size: 1.2rem;
+  line-height: 1.25;
   margin-bottom: .3rem;
   text-wrap: balance;
 }
@@ -662,7 +678,7 @@ a.res p { margin: 0; font-size: .9rem; line-height: 1.55; color: var(--ink-faint
 
 <header class="site-head">
   <div class="bar">
-    <a class="wordmark" href="#top">you’re-doing-dark-mode-<b>wrong</b>.html</a>
+    <a class="wordmark" href="#top"><span class="mark" aria-hidden="true">◐</span><span class="label"> You’re doing dark mode <b>wrong.</b></span></a>
 
     <!-- THE control. Three states. Real radio buttons, so the keyboard
          and screen readers get the right semantics for free. -->
@@ -722,9 +738,9 @@ a.res p { margin: 0; font-size: .9rem; line-height: 1.55; color: var(--ink-faint
         <div class="exhibit exhibit-bad">
           <div class="mock mock-2" aria-hidden="true">
             <div class="pill">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5 5l1.7 1.7M17.3 17.3 19 19M19 5l-1.7 1.7M6.7 17.3 5 19"/></svg>
               <span class="knob"></span>
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.4 14.2A8.5 8.5 0 1 1 9.8 3.6a7 7 0 1 0 10.6 10.6z"/></svg>
+              <span class="slot slot-sun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5 5l1.7 1.7M17.3 17.3 19 19M19 5l-1.7 1.7M6.7 17.3 5 19"/></svg></span>
+              <span class="slot slot-moon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.4 14.2A8.5 8.5 0 1 1 9.8 3.6a7 7 0 1 0 10.6 10.6z"/></svg></span>
             </div>
           </div>
           <figcaption><b>✕ what you shipped</b> Two states. A question your user
@@ -1309,7 +1325,7 @@ window.addEventListener('storage', (e) =&gt; {
       localStorage key — and only if you override — follows your OS mid-session,
       and was built as a single HTML file precisely so you can view source and
       take whatever you need. Steal the implementation. Please.</p>
-      <p class="fine">Set in <em>Instrument Serif</em>, <em>Newsreader</em> &amp;
+      <p class="fine">Set in <em>Fraunces</em>, <em>Newsreader</em> &amp;
       <em>Spline Sans Mono</em>. No frameworks, no build step, no analytics, no
       cookies. JavaScript off? The toggle hides itself and Auto still works —
       which is rather the point.</p>
