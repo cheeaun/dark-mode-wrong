@@ -1080,11 +1080,6 @@ body {
 <span class="tok-c">// and &lt;meta name="theme-color"&gt;.</span>
 mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</span>, () <span class="tok-k">=&gt;</span> {
   <span class="tok-k">if</span> (!<span class="tok-b">localStorage</span>.<span class="tok-f">getItem</span>(<span class="tok-s">'theme'</span>)) <span class="tok-f">syncThemeColor</span>();
-});
-
-<span class="tok-c">// Bonus: if the user changes theme in another tab, follow along.</span>
-<span class="tok-b">window</span>.<span class="tok-f">addEventListener</span>(<span class="tok-s">'storage'</span>, (e) <span class="tok-k">=&gt;</span> {
-  <span class="tok-k">if</span> (e.key === <span class="tok-s">'theme'</span>) <span class="tok-b">location</span>.<span class="tok-f">reload</span>();
 });</code></pre>
       </figure>
 
@@ -1129,6 +1124,14 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
         <div class="a"><p>Only until the first click. A persisted value shadows the
         media query permanently, and can’t follow the sunset switch mid-session.
         Respecting the preference once isn’t staying subscribed to it.</p></div>
+      </details>
+      <details class="objection">
+        <summary>“We clear the stored choice when it matches the system — that’s our way back.”</summary>
+        <div class="a"><p>That fixes one direction and breaks the other. Picking Dark
+        while the system is dark silently becomes Auto — so at sunrise the site flips
+        to light, against an explicit request. The user can no longer pin a theme
+        that happens to match their current system. A third state states the intent;
+        this trick guesses it.</p></div>
       </details>
       <details class="objection">
         <summary>“Fine — then we just won’t persist the choice at all.”</summary>
@@ -1187,8 +1190,6 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
         </tbody>
       </table>
 
-      <p>Also try: open two windows, change the theme in one — the other follows
-      via the <code>storage</code> event.</p>
     </div>
   </section>
 
@@ -1494,16 +1495,6 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
   // Auto mode: CSS recolors itself when the OS flips; this re-renders
   // the JS-owned bits (status line, console, theme-color metas).
   mql.addEventListener('change', render);
-
-  // Another tab changed the preference? Follow along.
-  window.addEventListener('storage', function (e) {
-    if (e.key === KEY || e.key === null) {
-      var s = storedTheme();
-      if (s) root.dataset.theme = s;
-      else delete root.dataset.theme;
-      render();
-    }
-  });
 
   render();
 
