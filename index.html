@@ -34,11 +34,60 @@ try {
 document.documentElement.classList.add('js');
 </script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Spline+Sans+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-
 <style>
+/* ============================================================
+   FONTS — self-hosted variable fonts, latin subsets.
+   No external requests.
+   ============================================================ */
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("fonts/fraunces.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Fraunces";
+  font-style: italic;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("fonts/fraunces-italic.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Newsreader";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("fonts/newsreader.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Newsreader";
+  font-style: italic;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("fonts/newsreader-italic.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Spline Sans Mono";
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url("fonts/spline-sans-mono.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Spline Sans Mono";
+  font-style: italic;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url("fonts/spline-sans-mono-italic.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 /* ============================================================
    THE WHOLE THEMING SYSTEM
    One declaration opts into both schemes; two narrow it down
@@ -1392,9 +1441,9 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
       <abbr title="HyperText Markup Language">HTML</abbr> file — view source and
       copy freely.</p>
       <p class="fine">Set in <em>Fraunces</em>, <em>Newsreader</em> &amp;
-      <em>Spline Sans Mono</em>. No frameworks, no build step, no analytics, no
-      cookies. With JavaScript off, the toggle hides itself and Auto still
-      works.</p>
+      <em>Spline Sans Mono</em>, self-hosted. No frameworks, no build step, no
+      analytics, no cookies, no external requests. With JavaScript off, the
+      toggle hides itself and Auto still works.</p>
     </div>
   </footer>
 

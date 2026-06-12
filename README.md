@@ -10,6 +10,6 @@ Open `index.html` in a browser. No build step, no dependencies.
 
 ## Stack
 
-One HTML file — vanilla CSS and JS. Fonts loaded from Google Fonts ([Fraunces](https://fonts.google.com/specimen/Fraunces), [Newsreader](https://fonts.google.com/specimen/Newsreader), [Spline Sans Mono](https://fonts.google.com/specimen/Spline+Sans+Mono)).
+One HTML file plus self-hosted fonts ([Fraunces](https://fonts.google.com/specimen/Fraunces), [Newsreader](https://fonts.google.com/specimen/Newsreader), [Spline Sans Mono](https://fonts.google.com/specimen/Spline+Sans+Mono)) — vanilla CSS and JS, no external requests.
 
 The implementation is free to copy.
