@@ -7,7 +7,7 @@
 
 A one-page site for developers and designers about the most common dark-mode mistake: the two-state theme toggle. It makes the case for three states — **Light / Dark / Auto**, with Auto as the default — and demonstrates the pattern by implementing it itself.
 
-For the full argument, the code, and further reading: open the site.
+For the full argument, the code, and further reading: **[cheeaun.github.io/dark-mode-wrong](https://cheeaun.github.io/dark-mode-wrong/)**
 
 ## Run
 
