@@ -634,8 +634,12 @@ html:not(.js) .theme-toggle { display: none; }
 /* —— state diagram —— */
 .states {
   display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  /* one column or three, never 2+1 — an orphaned state card reads
+     as a hierarchy this diagram doesn't have */
   margin: 2.4rem 0;
+}
+@media (min-width: 40em) {
+  .states { grid-template-columns: repeat(3, 1fr); }
 }
 .state {
   border: 1px solid var(--rule);
