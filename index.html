@@ -40,7 +40,8 @@
 <meta name="author" content="Lim Chee Aun">
 <link rel="canonical" href="https://cheeaun.github.io/dark-mode-wrong/">
 
-<!-- For agents and LLMs: the whole article as clean markdown. -->
+<!-- For agents and LLMs: a short index (llms.txt) and the whole article as clean markdown. -->
+<link rel="alternate" type="text/markdown" href="llms.txt" title="Summary and links for LLMs (llms.txt)">
 <link rel="alternate" type="text/markdown" href="llms-full.txt" title="This article as markdown">
 
 <script type="application/ld+json">
@@ -106,6 +107,42 @@
       "@type": "Question",
       "name": "What if we just don’t persist the choice at all?",
       "acceptedAnswer": { "@type": "Answer", "text": "That breaks the opposite contract: someone who wants your site light on a dark device now re-toggles every visit. Three states honor both intents — choices persist, and Auto means “no override.”" }
+    }
+  ]
+}
+</script>
+
+<!-- The three-step fix as a machine-readable procedure, mirroring the "fix"
+     section. Lets agents lift the implementation steps cleanly. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "Build a three-state theme toggle (Light / Dark / Auto)",
+  "description": "Implement a theme control with three states — Light, Dark, and Auto (follow the system) as the default — where light and dark are stored overrides and Auto means nothing is stored.",
+  "inLanguage": "en",
+  "totalTime": "PT15M",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "The head",
+      "text": "Declare scheme support with <meta name=\"color-scheme\" content=\"light dark\">, then apply any stored override synchronously in an inline, blocking <script> placed before the stylesheet — external files, defer, async and modules all run too late and flash the wrong theme. If no key is stored, do nothing; CSS handles Auto by itself.",
+      "url": "https://cheeaun.github.io/dark-mode-wrong/#fix"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "The CSS",
+      "text": "Set color-scheme: light dark on :root so form controls, scrollbars and the canvas follow the OS, and use light-dark() for every color. An explicit choice just narrows color-scheme to one value via :root[data-theme=\"light\"] / :root[data-theme=\"dark\"]. Auto then works with zero JS.",
+      "url": "https://cheeaun.github.io/dark-mode-wrong/#fix"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "The control and the logic",
+      "text": "Offer three radio buttons (Light, Auto, Dark) for free keyboard and screen-reader semantics. Storage holds overrides only: on an explicit choice setItem('theme', value) and set data-theme; on Auto removeItem('theme') and delete the attribute — absence is the Auto state. Add a matchMedia('(prefers-color-scheme: dark)') change listener to keep things CSS can't reach (canvas, embeds, meta theme-color) in sync.",
+      "url": "https://cheeaun.github.io/dark-mode-wrong/#fix"
     }
   ]
 }
