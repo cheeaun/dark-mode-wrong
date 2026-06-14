@@ -6,6 +6,8 @@ Your toggle has two states. Your users have three.
 
 This is the markdown version of <https://cheeaun.github.io/dark-mode-wrong/>. The live page implements everything described here — it is its own demonstration. Source: <https://github.com/cheeaun/dark-mode-wrong> (MIT, free to copy).
 
+*Last updated: 2026-06-14.*
+
 ## 01 · The problem: the two-state toggle
 
 Most theme toggles have two states: light and dark. Neither means what many users actually want — *"just match my device."*

@@ -19,13 +19,25 @@
 <meta name="description" content="A field guide to the most common dark-mode bug on the web: the two-state toggle. Why Light/Dark isn’t enough, why Auto must be the default, and the three-state pattern that fixes it — demonstrated by this very page.">
 <meta property="og:title" content="You’re doing dark mode wrong.">
 <meta property="og:description" content="Your toggle has two states. Your users have three. The case for Light / Dark / Auto — with Auto as the default.">
-<meta property="og:type" content="website">
+<meta property="og:type" content="article">
 <meta property="og:url" content="https://cheeaun.github.io/dark-mode-wrong/">
+<meta property="og:site_name" content="You’re doing dark mode wrong.">
+<meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cheeaun.github.io/dark-mode-wrong/screenshots/social.jpg">
 <meta property="og:image:width" content="2560">
 <meta property="og:image:height" content="1280">
 <meta property="og:image:alt" content="A card split down the middle — left half light theme, right half dark theme, identical content on both: “You’re doing dark mode wrong. Your toggle has two states. Your users have three.” and a Light/Auto/Dark segmented control.">
+<meta property="article:published_time" content="2026-06-12">
+<meta property="article:modified_time" content="2026-06-14">
+<meta property="article:author" content="Lim Chee Aun">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="You’re doing dark mode wrong.">
+<meta name="twitter:description" content="Your toggle has two states. Your users have three. The case for Light / Dark / Auto — with Auto as the default.">
+<meta name="twitter:image" content="https://cheeaun.github.io/dark-mode-wrong/screenshots/social.jpg">
+<meta name="twitter:image:alt" content="A card split down the middle — left half light theme, right half dark theme, identical content on both: “You’re doing dark mode wrong. Your toggle has two states. Your users have three.” and a Light/Auto/Dark segmented control.">
+<meta name="twitter:creator" content="@cheeaun">
+<meta name="twitter:site" content="@cheeaun">
+<meta name="author" content="Lim Chee Aun">
 <link rel="canonical" href="https://cheeaun.github.io/dark-mode-wrong/">
 
 <!-- For agents and LLMs: the whole article as clean markdown. -->
@@ -39,8 +51,14 @@
   "alternativeHeadline": "The case for a three-state theme toggle: Light, Dark, Auto — with Auto as the default",
   "description": "A field guide to the most common dark-mode bug on the web: the two-state toggle. Why Light/Dark isn’t enough, why Auto must be the default, and the three-state pattern that fixes it — demonstrated by this very page.",
   "url": "https://cheeaun.github.io/dark-mode-wrong/",
+  "mainEntityOfPage": "https://cheeaun.github.io/dark-mode-wrong/",
+  "inLanguage": "en",
+  "image": "https://cheeaun.github.io/dark-mode-wrong/screenshots/social.jpg",
+  "keywords": "dark mode, theme toggle, three-state toggle, light dark auto, prefers-color-scheme, color-scheme, light-dark(), web design, accessibility, frontend",
   "author": { "@type": "Person", "name": "Lim Chee Aun", "url": "https://github.com/cheeaun" },
-  "dateModified": "2026-06-12",
+  "publisher": { "@type": "Person", "name": "Lim Chee Aun", "url": "https://github.com/cheeaun" },
+  "datePublished": "2026-06-12",
+  "dateModified": "2026-06-14",
   "proficiencyLevel": "Beginner",
   "encoding": {
     "@type": "MediaObject",
@@ -48,6 +66,48 @@
     "encodingFormat": "text/markdown",
     "name": "This article as markdown"
   }
+}
+</script>
+
+<!-- The "objections, anticipated" section as FAQ structured data. Mirrors the
+     <details> Q&A in the page body verbatim, so search engines and answer
+     engines can lift the rebuttals directly. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Isn’t a two-state toggle simpler?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Simpler to draw, not simpler to use: it breaks OS sync permanently after one click. Auto is the default, so most users never open the control at all — and the ones who do can finally say “stop overriding.”" }
+    },
+    {
+      "@type": "Question",
+      "name": "Don’t users misunderstand what “System” means?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Label it Auto — Apple’s word in macOS settings; iOS says Automatic. Stack Overflow, GitHub and the OS panels all ship the tri-state — it’s the familiar pattern. A user who ignores it is unaffected: Auto just makes the site match their device." }
+    },
+    {
+      "@type": "Question",
+      "name": "Nobody changes their OS theme anyway, so why bother?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Those users are exactly who Auto serves: the site inherits whatever their device does, no effort required. And the users who did configure something aren’t an edge case — in Android Authority’s 2,514-vote poll, 81.9% used dark mode everywhere it was offered." }
+    },
+    {
+      "@type": "Question",
+      "name": "We initialize the toggle from prefers-color-scheme — don’t we already respect it?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Only until the first click. A persisted value shadows the media query permanently, and can’t follow the sunset switch mid-session. Respecting the preference once isn’t staying subscribed to it." }
+    },
+    {
+      "@type": "Question",
+      "name": "What if we clear the stored choice when it matches the system?",
+      "acceptedAnswer": { "@type": "Answer", "text": "That fixes one direction and breaks the other. Picking Dark while the system is dark silently becomes Auto — so at sunrise the site flips to light, against an explicit request. The user can no longer pin a theme that happens to match their current system. A third state states the intent; this trick guesses it." }
+    },
+    {
+      "@type": "Question",
+      "name": "What if we just don’t persist the choice at all?",
+      "acceptedAnswer": { "@type": "Answer", "text": "That breaks the opposite contract: someone who wants your site light on a dark device now re-toggles every visit. Three states honor both intents — choices persist, and Auto means “no override.”" }
+    }
+  ]
 }
 </script>
 

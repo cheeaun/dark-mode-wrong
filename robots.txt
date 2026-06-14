@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cheeaun.github.io/dark-mode-wrong/sitemap.xml
