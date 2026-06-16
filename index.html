@@ -12,8 +12,8 @@
 <!-- ② Tint the browser chrome per OS scheme. NOTE: these media attributes
      track the OS only — they know nothing about a JS override, so we also
      rewrite their content from JS whenever the effective theme changes. -->
-<meta name="theme-color" content="#f5efe3" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#161109" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f4f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0b0d" media="(prefers-color-scheme: dark)">
 
 <title>You’re doing dark mode wrong.</title>
 <meta name="description" content="A field guide to the most common dark-mode bug on the web: the two-state toggle. Why Light/Dark isn’t enough, why Auto must be the default, and the three-state pattern that fixes it — demonstrated by this very page.">
@@ -28,7 +28,7 @@
 <meta property="og:image:height" content="1280">
 <meta property="og:image:alt" content="A card split down the middle — left half light theme, right half dark theme, identical content on both: “You’re doing dark mode wrong. Your toggle has two states. Your users have three.” and a Light/Auto/Dark segmented control.">
 <meta property="article:published_time" content="2026-06-12">
-<meta property="article:modified_time" content="2026-06-14">
+<meta property="article:modified_time" content="2026-06-16">
 <meta property="article:author" content="Lim Chee Aun">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="You’re doing dark mode wrong.">
@@ -59,7 +59,7 @@
   "author": { "@type": "Person", "name": "Lim Chee Aun", "url": "https://github.com/cheeaun" },
   "publisher": { "@type": "Person", "name": "Lim Chee Aun", "url": "https://github.com/cheeaun" },
   "datePublished": "2026-06-12",
-  "dateModified": "2026-06-14",
+  "dateModified": "2026-06-16",
   "proficiencyLevel": "Beginner",
   "encoding": {
     "@type": "MediaObject",
@@ -148,7 +148,7 @@
 }
 </script>
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='%23998a6d' stroke-width='9'/%3E%3Cpath d='M50 10 a40 40 0 0 1 0 80 z' fill='%23998a6d'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='%231f53e0' stroke-width='9'/%3E%3Cpath d='M50 10 a40 40 0 0 1 0 80 z' fill='%231f53e0'/%3E%3C/svg%3E">
 
 <!-- ③ The flash-killer. Inline and blocking, ABOVE the stylesheet, on purpose:
      it applies a stored override synchronously, before the first paint.
@@ -169,12 +169,11 @@ document.documentElement.classList.add('js');
      applies them the ordinary way — no-JS visitors still get the real
      typefaces. Either way, every byte is self-hosted. -->
 <noscript id="webfont-css"><style>
-@font-face { font-family: "Fraunces"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("fonts/fraunces.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: "Fraunces"; font-style: italic; font-weight: 400 600; font-display: swap; src: url("fonts/fraunces-italic.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: "Newsreader"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("fonts/newsreader.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: "Newsreader"; font-style: italic; font-weight: 400 600; font-display: swap; src: url("fonts/newsreader-italic.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: "Spline Sans Mono"; font-style: normal; font-weight: 400 500; font-display: swap; src: url("fonts/spline-sans-mono.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: "Spline Sans Mono"; font-style: italic; font-weight: 400 500; font-display: swap; src: url("fonts/spline-sans-mono-italic.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("fonts/space-grotesk.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Hanken Grotesk"; font-style: normal; font-weight: 400 600; font-display: swap; src: url("fonts/hanken-grotesk.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Hanken Grotesk"; font-style: italic; font-weight: 400 600; font-display: swap; src: url("fonts/hanken-grotesk-italic.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "JetBrains Mono"; font-style: normal; font-weight: 400 500; font-display: swap; src: url("fonts/jetbrains-mono.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "JetBrains Mono"; font-style: italic; font-weight: 400 500; font-display: swap; src: url("fonts/jetbrains-mono-italic.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 </style></noscript>
 <script>
 /* Promote the deferred web-font CSS to a live <style> only AFTER the first
@@ -219,121 +218,118 @@ document.documentElement.classList.add('js');
 
 <style>
 /* ============================================================
-   FONTS — metric-matched fallback faces only. The real, self-hosted
-   faces are deferred (see the <noscript> + loader in <head>) so their
-   half-megabyte never sits on the first-paint critical path.
-
-   These fallbacks make that swap free: size-adjust scales each local
-   font until its average advance width
-   matches the web font's — same wrap points, same line counts — and
-   ascent/descent are compensated by the same factor. Ratios were
-   measured against the rendered fonts (these are variable fonts, so
-   the tables' default-instance metrics don't match what's drawn).
-   Fraunces' width varies with optical size; 104% centers on the
-   h2/h3/pull sizes where most of it is set. Browsers without these
-   descriptors just render the local font as before. */
+   FONTS — self-hosted, deferred. The real faces (Space Grotesk,
+   Hanken Grotesk, JetBrains Mono) are fetched after first paint
+   (see the <noscript> + loader in <head>); until they land, these
+   metric-matched fallbacks render with zero layout shift. size-adjust
+   scales the local font so its average advance width matches the web
+   font's — same wrap points — and ascent/descent are compensated by the
+   same factor. Measured against the rendered faces (Arial / Menlo).
+   ============================================================ */
 @font-face {
-  font-family: "Newsreader-fallback";
-  src: local("Georgia");
-  size-adjust: 90.37%;
-  ascent-override: 81.33%;
-  descent-override: 29.32%;
+  font-family: "Space Grotesk-fallback";
+  src: local("Arial");
+  size-adjust: 111.23%;
+  ascent-override: 88.46%;
+  descent-override: 26.25%;
   line-gap-override: 0%;
 }
 @font-face {
-  font-family: "Fraunces-fallback";
-  src: local("Georgia");
-  size-adjust: 104%;
-  ascent-override: 94.04%;
-  descent-override: 24.52%;
+  font-family: "Hanken Grotesk-fallback";
+  src: local("Arial");
+  size-adjust: 101.69%;
+  ascent-override: 98.34%;
+  descent-override: 29.80%;
   line-gap-override: 0%;
 }
 @font-face {
-  font-family: "Spline Sans Mono-fallback";
+  font-family: "JetBrains Mono-fallback";
   src: local("Menlo");
   size-adjust: 99.66%;
-  ascent-override: 96.68%;
-  descent-override: 23.73%;
+  ascent-override: 102.35%;
+  descent-override: 30.10%;
   line-gap-override: 0%;
 }
 
-/* The hero headline's exact glyphs in real Fraunces — a tiny eager subset
-   (~13 KB, just the letters in “You’re doing dark mode wrong.”). It loads on
-   the critical path on purpose: the largest text then paints in its final
-   font at first paint, so there's no late swap to re-fire Largest Contentful
-   Paint. The full Fraunces (deferred above) takes over every other heading. */
+/* The hero headline's exact glyphs in real Space Grotesk — a tiny eager
+   subset (~2 KB: just the letters in "You’re doing dark mode wrong.").
+   It loads on the critical path so the largest text paints in its final
+   font at first paint — no late swap to re-fire Largest Contentful Paint.
+   The deferred full Space Grotesk takes over every other heading. */
 @font-face {
-  font-family: "Fraunces-hero";
+  font-family: "Space Grotesk-hero";
   font-style: normal;
-  font-weight: 400 600;
+  font-weight: 700;
   font-display: swap;
-  src: url("fonts/fraunces-hero.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Fraunces-hero";
-  font-style: italic;
-  font-weight: 400 600;
-  font-display: swap;
-  src: url("fonts/fraunces-hero-italic.woff2") format("woff2");
+  src: url("fonts/space-grotesk-hero.woff2") format("woff2");
 }
 
+/* font stacks: real face → metric-matched fallback → system */
+:root {
+  --font-display: "Space Grotesk", "Space Grotesk-fallback", system-ui, sans-serif;
+  --font-body:    "Hanken Grotesk", "Hanken Grotesk-fallback", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", "JetBrains Mono-fallback", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+/* the eager hero face leads the headline's stack */
+.hero h1 { font-family: "Space Grotesk-hero", var(--font-display); }
+
 /* ============================================================
-   THE WHOLE THEMING SYSTEM
-   One declaration opts into both schemes; two narrow it down
-   when (and only when) the visitor explicitly overrides.
-   Every color below picks its own side via light-dark().
+   THEME SYSTEM
+   One declaration opts into both schemes; two narrow it down when
+   (and only when) the visitor explicitly overrides. Every color
+   picks its own side via light-dark().
    ============================================================ */
 :root { color-scheme: light dark; }
 :root[data-theme="light"] { color-scheme: light; }
 :root[data-theme="dark"]  { color-scheme: dark; }
 
 :root {
-  --bg:          light-dark(#f5efe3, #161109);
-  --bg-soft:     light-dark(#ede5d2, #1e1810);
-  --bg-card:     light-dark(#faf6ec, #1b1510);
-  --ink:         light-dark(#26190a, #ece2cd);
-  --ink-soft:    light-dark(#6b5c47, #b0a288);
-  --ink-faint:   light-dark(#74654e, #90836a);
-  --accent:      light-dark(#b03c11, #e2a14e);
-  --accent-ink:  light-dark(#993209, #eab268);
-  --rule:        light-dark(rgb(38 25 10 / .16), rgb(236 226 205 / .14));
-  --rule-strong: light-dark(rgb(38 25 10 / .38), rgb(236 226 205 / .34));
-  --code-bg:     light-dark(#efe8d7, #110d08);
-  --good:        light-dark(#2e6b3a, #97c585);
-  --bad:         light-dark(#a32014, #e07a5f);
-  --thumb:       light-dark(#fffdf8, #2c2517);
-  --glow:        light-dark(rgb(224 140 60 / .32), rgb(226 161 78 / .12));
-  --shadow:      light-dark(rgb(60 40 10 / .14), rgb(0 0 0 / .5));
+  --bg:          light-dark(#f4f5f7, #0a0b0d);
+  --bg-soft:     light-dark(#eaecef, #111318);
+  --bg-card:     light-dark(#ffffff, #15181e);
+  --ink:         light-dark(#0d0f13, #eef1f5);
+  --ink-soft:    light-dark(#545b66, #99a3b2);
+  --ink-faint:   light-dark(#7d8693, #69727f);
+  --accent:      light-dark(#1f53e0, #6f9bff);
+  --accent-ink:  light-dark(#1a47c4, #8fb0ff);
+  --accent-soft: light-dark(rgb(31 83 224 / .10), rgb(111 155 255 / .14));
+  --rule:        light-dark(rgb(13 15 19 / .10), rgb(238 241 245 / .10));
+  --rule-strong: light-dark(rgb(13 15 19 / .24), rgb(238 241 245 / .22));
+  --code-bg:     light-dark(#fbfcfd, #0d0f14);
+  --good:        light-dark(#0f7a4d, #4ed99a);
+  --bad:         light-dark(#cc2e3a, #ff7a85);
+  --thumb:       light-dark(#ffffff, #2b313b);
+  --shadow:      light-dark(rgb(20 30 60 / .10), rgb(0 0 0 / .55));
+  --grid-dot:    light-dark(rgb(13 15 19 / .06), rgb(238 241 245 / .055));
 }
 
-/* The classic fallback from §3, doing real work: browsers without
-   light-dark() (pre-2024) land here and still get both themes. */
+/* Pre-2024 browsers without light-dark() land here and still get both. */
 @supports not (color: light-dark(#000, #fff)) {
   :root {
-    --bg:#f5efe3; --bg-soft:#ede5d2; --bg-card:#faf6ec;
-    --ink:#26190a; --ink-soft:#6b5c47; --ink-faint:#74654e;
-    --accent:#b03c11; --accent-ink:#993209;
-    --rule:rgb(38 25 10 / .16); --rule-strong:rgb(38 25 10 / .38);
-    --code-bg:#efe8d7; --good:#2e6b3a; --bad:#a32014;
-    --thumb:#fffdf8; --glow:rgb(224 140 60 / .32); --shadow:rgb(60 40 10 / .14);
+    --bg:#f4f5f7; --bg-soft:#eaecef; --bg-card:#fff;
+    --ink:#0d0f13; --ink-soft:#545b66; --ink-faint:#7d8693;
+    --accent:#1f53e0; --accent-ink:#1a47c4; --accent-soft:rgb(31 83 224 / .10);
+    --rule:rgb(13 15 19 / .10); --rule-strong:rgb(13 15 19 / .24);
+    --code-bg:#fbfcfd; --good:#0f7a4d; --bad:#cc2e3a;
+    --thumb:#fff; --shadow:rgb(20 30 60 / .10); --grid-dot:rgb(13 15 19 / .06);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg:#161109; --bg-soft:#1e1810; --bg-card:#1b1510;
-      --ink:#ece2cd; --ink-soft:#b0a288; --ink-faint:#90836a;
-      --accent:#e2a14e; --accent-ink:#eab268;
-      --rule:rgb(236 226 205 / .14); --rule-strong:rgb(236 226 205 / .34);
-      --code-bg:#110d08; --good:#97c585; --bad:#e07a5f;
-      --thumb:#2c2517; --glow:rgb(226 161 78 / .12); --shadow:rgb(0 0 0 / .5);
+      --bg:#0a0b0d; --bg-soft:#111318; --bg-card:#15181e;
+      --ink:#eef1f5; --ink-soft:#99a3b2; --ink-faint:#69727f;
+      --accent:#6f9bff; --accent-ink:#8fb0ff; --accent-soft:rgb(111 155 255 / .14);
+      --rule:rgb(238 241 245 / .10); --rule-strong:rgb(238 241 245 / .22);
+      --code-bg:#0d0f14; --good:#4ed99a; --bad:#ff7a85;
+      --thumb:#2b313b; --shadow:rgb(0 0 0 / .55); --grid-dot:rgb(238 241 245 / .055);
     }
   }
   :root[data-theme="dark"] {
-    --bg:#161109; --bg-soft:#1e1810; --bg-card:#1b1510;
-    --ink:#ece2cd; --ink-soft:#b0a288; --ink-faint:#90836a;
-    --accent:#e2a14e; --accent-ink:#eab268;
-    --rule:rgb(236 226 205 / .14); --rule-strong:rgb(236 226 205 / .34);
-    --code-bg:#110d08; --good:#97c585; --bad:#e07a5f;
-    --thumb:#2c2517; --glow:rgb(226 161 78 / .12); --shadow:rgb(0 0 0 / .5);
+    --bg:#0a0b0d; --bg-soft:#111318; --bg-card:#15181e;
+    --ink:#eef1f5; --ink-soft:#99a3b2; --ink-faint:#69727f;
+    --accent:#6f9bff; --accent-ink:#8fb0ff; --accent-soft:rgb(111 155 255 / .14);
+    --rule:rgb(238 241 245 / .10); --rule-strong:rgb(238 241 245 / .22);
+    --code-bg:#0d0f14; --good:#4ed99a; --bad:#ff7a85;
+    --thumb:#2b313b; --shadow:rgb(0 0 0 / .55); --grid-dot:rgb(238 241 245 / .055);
   }
 }
 
@@ -341,57 +337,50 @@ document.documentElement.classList.add('js');
    BASE
    ============================================================ */
 *, *::before, *::after { box-sizing: border-box; }
-
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
 
 body {
   margin: 0;
-  position: relative;
+  overflow-x: clip; /* the hero's accent wash may bleed past the centered
+                       content; clip (not hidden) keeps the sticky header intact */
   background: var(--bg);
   color: var(--ink);
-  font: 400 1.125rem/1.72 "Newsreader", "Newsreader-fallback", Georgia, serif;
-  font-optical-sizing: auto;
+  font: 400 1.0625rem/1.7 var(--font-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  font-feature-settings: "ss01";
 }
 
 ::selection { background: var(--accent); color: var(--bg); }
 
-/* ambient glow behind the hero — page-level, so it fades naturally
-   instead of being clipped at the content column's edge */
-body::before {
-  content: "";
-  position: absolute; z-index: -1;
-  top: 0; right: 0; left: 0;
-  height: min(110vh, 56rem);
-  background: radial-gradient(56vmin 56vmin at calc(100% - 16vmin) -6vmin, var(--glow), transparent 70%);
-  pointer-events: none;
+a {
+  color: var(--accent-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2.5px;
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
 }
-
-/* paper grain */
-body::after {
-  content: "";
-  position: fixed; inset: 0;
-  z-index: 4; pointer-events: none;
-  opacity: .05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-a { color: var(--accent-ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: var(--accent); }
-a:hover { text-decoration-thickness: 2px; }
+a:hover { text-decoration-color: var(--accent); }
 
 em { font-style: italic; }
-strong { font-weight: 600; }
+strong { font-weight: 600; color: var(--ink); }
 
-h1, h2, h3, .pull { font-family: "Fraunces", "Fraunces-fallback", Georgia, serif; font-weight: 460; font-optical-sizing: auto; letter-spacing: -0.01em; }
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+}
 
-code, pre, kbd { font-family: "Spline Sans Mono", "Spline Sans Mono-fallback", ui-monospace, SFMono-Regular, Menlo, monospace; }
-p code, li code, .fine code, dd code {
+code, pre, kbd, .mono {
+  font-family: var(--font-mono);
+}
+p code, li code, .fine code, dd code, th code {
   font-size: .82em;
   background: var(--bg-soft);
   border: 1px solid var(--rule);
   border-radius: 4px;
-  padding: .08em .35em;
+  padding: .08em .38em;
   overflow-wrap: anywhere;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
@@ -406,43 +395,45 @@ p code, li code, .fine code, dd code {
   clip-path: inset(50%); overflow: hidden; white-space: nowrap;
 }
 
-.wrap { max-width: 46rem; margin-inline: auto; padding-inline: clamp(1.25rem, 5vw, 2rem); }
-
+/* monospace eyebrow label */
 .kicker {
-  font: 500 .74rem/1.4 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
-  letter-spacing: .18em;
+  font: 500 .72rem/1.4 var(--font-mono);
+  letter-spacing: .2em;
   text-transform: uppercase;
   color: var(--accent-ink);
-  margin: 0 0 .9rem;
+  margin: 0 0 1rem;
+  display: inline-flex; align-items: center; gap: .6em;
 }
-.kicker-spaced { margin-top: 3.2rem; }
+.kicker::before {
+  content: ""; width: 1.6rem; height: 1px; background: var(--accent);
+  display: inline-block; flex: none;
+}
 
 /* ============================================================
    HEADER — the demo lives here
    ============================================================ */
 .site-head {
-  position: sticky; top: 0; z-index: 10;
+  position: sticky; top: 0; z-index: 20;
   border-bottom: 1px solid var(--rule);
-  background: color-mix(in srgb, var(--bg) 84%, transparent);
-  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
 }
 .site-head .bar {
   display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  max-width: 64rem; margin-inline: auto;
-  padding: .55rem clamp(1rem, 4vw, 1.5rem);
+  max-width: 78rem; margin-inline: auto;
+  padding: .6rem clamp(1rem, 4vw, 2rem);
 }
 .wordmark {
-  display: inline-flex;
-  align-items: center;
-  gap: .5em;
-  font: 400 .78rem/1 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
-  letter-spacing: .04em;
+  display: inline-flex; align-items: center; gap: .6em;
+  font: 500 .8rem/1 var(--font-mono);
+  letter-spacing: .02em;
   color: var(--ink-soft);
   text-decoration: none;
   white-space: nowrap;
 }
-.wordmark .mark { width: 14px; height: 14px; flex: none; color: var(--accent-ink); }
-.wordmark b { font-weight: 500; color: var(--accent-ink); }
+.wordmark .mark { width: 16px; height: 16px; flex: none; color: var(--accent); }
+.wordmark b { font-weight: 600; color: var(--ink); }
 .wordmark:hover .label { color: var(--ink); }
 
 /* —— the three-state control —— */
@@ -452,153 +443,258 @@ p code, li code, .fine code, dd code {
   display: grid; grid-template-columns: repeat(3, 1fr);
   padding: 3px;
   border: 1px solid var(--rule-strong);
-  border-radius: 999px;
+  border-radius: 10px;
   background: var(--bg-soft);
 }
 .theme-toggle .thumb {
   position: absolute; z-index: 1;
   top: 3px; bottom: 3px; left: 3px;
   width: calc((100% - 6px) / 3);
-  border-radius: 999px;
+  border-radius: 7px;
   background: var(--thumb);
   border: 1px solid var(--rule);
-  box-shadow: 0 1px 5px var(--shadow);
+  box-shadow: 0 1px 4px var(--shadow);
 }
 .theme-toggle label {
   position: relative; z-index: 2;
   display: flex; align-items: center; justify-content: center; gap: .45em;
-  padding: .45em .8em;
-  border-radius: 999px;
+  padding: .42em .7em;
+  border-radius: 7px;
   cursor: pointer;
-  font: 500 .76rem/1 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
+  font: 500 .74rem/1 var(--font-mono);
   color: var(--ink-soft);
 }
 .theme-toggle label:has(:checked) { color: var(--ink); }
 .theme-toggle label:has(:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
 .theme-toggle input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .theme-toggle svg { width: 14px; height: 14px; flex: none; }
-.theme-toggle .seg:has(input[value="auto"]:checked)  .thumb { translate: 100% 0; }
-.theme-toggle .seg:has(input[value="dark"]:checked)  .thumb { translate: 200% 0; }
+.theme-toggle .seg:has(input[value="auto"]:checked) .thumb { translate: 100% 0; }
+.theme-toggle .seg:has(input[value="dark"]:checked) .thumb { translate: 200% 0; }
 
-/* invisible hit-area extension: a ≥44px-tall touch target without
-   growing the pill visually */
+/* ≥44px touch target without growing the pill visually */
 .theme-toggle label::after {
-  content: "";
-  position: absolute;
-  left: 0; right: 0;
-  top: 50%; height: 44px;
-  translate: 0 -50%;
+  content: ""; position: absolute; left: 0; right: 0;
+  top: 50%; height: 44px; translate: 0 -50%;
 }
 
-/* mobile-first: mark-only wordmark by default. The toggle keeps its text
-   labels at every width — its state should never be icon-shape-only. */
-.theme-toggle label { padding: .45em .55em; }
+/* mobile-first: tighten the toggle, hide the wordmark label */
+.theme-toggle label { padding: .42em .5em; }
 .wordmark .label { display: none; }
 @media (min-width: 35em) {
-  .theme-toggle label { padding: .34em .9em; }
+  .theme-toggle label { padding: .42em .85em; }
   .wordmark .label { display: inline; }
 }
-
-/* forced colors (Windows High Contrast) strips the thumb's background,
-   so the checked state must not ride on it — use the system selection
-   colors on the label itself */
 @media (forced-colors: active) {
   .theme-toggle .thumb { display: none; }
   .theme-toggle label:has(:checked) { background: SelectedItem; color: SelectedItemText; }
 }
-
 /* without JS the control can’t override anything — don’t pretend */
 html:not(.js) .theme-toggle { display: none; }
 
 /* ============================================================
    HERO
    ============================================================ */
-.hero { position: relative; padding-block: clamp(4.5rem, 14vh, 9rem) clamp(4rem, 10vh, 6rem); }
+.hero {
+  position: relative;
+  max-width: 78rem; margin-inline: auto;
+  padding: clamp(4rem, 12vh, 8rem) clamp(1.25rem, 5vw, 3rem) clamp(3.5rem, 9vh, 6rem);
+}
+/* dot-grid field — technical backdrop, fades downward */
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background-image: radial-gradient(var(--grid-dot) 1.2px, transparent 1.2px);
+  background-size: 26px 26px;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 18%, #000 55%, transparent 92%);
+  mask-image: linear-gradient(180deg, transparent, #000 18%, #000 55%, transparent 92%);
+  pointer-events: none;
+}
+/* a soft accent wash behind the headline. Anchored to the viewport's right
+   edge (not the centered content box) so on wide screens it bleeds off the
+   corner instead of hard-clipping at the 78rem content boundary. */
+.hero::after {
+  content: ""; position: absolute; z-index: -1;
+  top: -10%; right: calc(50% - 50vw);
+  width: 60vmin; height: 60vmin;
+  background: radial-gradient(circle at 60% 40%, var(--accent-soft), transparent 68%);
+  pointer-events: none;
+}
 .hero h1 {
   margin: 0 0 1.6rem;
-  /* the eager subset only — deliberately NOT the deferred full "Fraunces", so
-     the largest element never swaps fonts and never re-fires LCP */
-  font-family: "Fraunces-hero", "Fraunces-fallback", Georgia, serif;
-  font-size: clamp(2.9rem, 9vw, 6rem);
-  line-height: 1.05;
+  font-weight: 700;
+  font-size: clamp(2.8rem, 9.5vw, 6.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
   text-wrap: balance;
+  max-width: 16ch;
 }
-.hero h1 .wrong { font-style: italic; color: var(--accent-ink); }
+.hero h1 .wrong {
+  position: relative;
+  color: var(--bad);
+  text-decoration: underline wavy var(--bad);
+  text-decoration-thickness: 2px;
+  text-underline-offset: .14em;
+}
 .hero .dek {
-  margin: 0 0 2.2rem;
-  font-size: clamp(1.25rem, 2.6vw, 1.55rem);
-  line-height: 1.45;
+  margin: 0 0 2.4rem;
+  font-size: clamp(1.2rem, 2.6vw, 1.6rem);
+  line-height: 1.4;
   color: var(--ink-soft);
-  max-width: 34ch;
+  max-width: 30ch;
   text-wrap: balance;
+  font-weight: 400;
 }
+.hero .dek b { color: var(--ink); font-weight: 600; }
+
+/* live status chip */
 .status {
   margin: 0;
-  padding: 1.1rem 1.3rem;
-  max-width: 56ch;
-  border-left: 2px solid var(--accent);
-  background: color-mix(in srgb, var(--bg-card) 70%, transparent);
-  font-style: italic;
-  font-size: 1.08rem;
+  display: flex; gap: .9rem; align-items: flex-start;
+  max-width: 54ch;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+  background: var(--bg-card);
+  box-shadow: 0 1px 2px var(--shadow);
+  font-size: .98rem;
+  line-height: 1.55;
   color: var(--ink-soft);
 }
-.status em { color: var(--accent-ink); font-weight: 500; }
+.status .dot {
+  flex: none; margin-top: .45em;
+  width: .55rem; height: .55rem; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.status em { color: var(--accent-ink); font-style: normal; font-weight: 600; }
 .scroll-hint {
-  display: inline-block;
+  display: inline-flex; align-items: center; gap: .55em;
   margin-top: 2.6rem;
-  font: 400 .78rem/1 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
-  letter-spacing: .14em;
+  font: 500 .74rem/1 var(--font-mono);
+  letter-spacing: .16em; text-transform: uppercase;
   color: var(--ink-faint);
   text-decoration: none;
 }
 .scroll-hint:hover { color: var(--accent-ink); }
+.scroll-hint .arrow { font-size: 1.1em; }
 
 @media (prefers-reduced-motion: no-preference) {
   .hero .up { animation: rise .7s cubic-bezier(.2, .7, .2, 1) both; }
-  .hero .up + .up { animation-delay: .1s; }
-  .hero .up + .up + .up { animation-delay: .2s; }
-  .hero .up + .up + .up + .up { animation-delay: .3s; }
-  .hero .up + .up + .up + .up + .up { animation-delay: .42s; }
-  @keyframes rise { from { opacity: 0; transform: translateY(18px); } }
-  /* The h1 is the LCP element. An opacity fade-in keeps it from being
-     counted as "painted" until late, wrecking Largest Contentful Paint, so
-     it rises without fading — same motion, no opacity to delay the metric. */
+  .hero .up:nth-child(2) { animation-delay: .08s; }
+  .hero .up:nth-child(3) { animation-delay: .16s; }
+  .hero .up:nth-child(4) { animation-delay: .26s; }
+  .hero .up:nth-child(5) { animation-delay: .38s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
   .hero h1.up { animation-name: rise-slide; }
-  @keyframes rise-slide { from { transform: translateY(18px); } }
+  @keyframes rise-slide { from { transform: translateY(16px); } }
+  .scroll-hint .arrow { animation: bob 1.8s ease-in-out infinite; }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
 }
+
+/* Wide viewports: let the headline claim the full width as a two-line
+   statement — “You’re doing / dark mode wrong.” — instead of the narrow
+   three-line column, so the display type itself fills the space beside it.
+   The .ln keeps “dark mode wrong.” together so the break lands after
+   “doing” at every width past the breakpoint. */
+@media (min-width: 72em) {
+  .hero h1 { max-width: none; font-size: clamp(6.5rem, 10vw, 8rem); }
+  .hero h1 .ln { white-space: nowrap; }
+}
+
+/* ============================================================
+   DOCUMENT LAYOUT — sticky index + content
+   ============================================================ */
+.doc {
+  max-width: 78rem; margin-inline: auto;
+  padding-inline: clamp(1.25rem, 5vw, 3rem);
+}
+@media (min-width: 64em) {
+  .doc {
+    display: grid;
+    grid-template-columns: 14rem minmax(0, 1fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: start;
+  }
+}
+.toc {
+  display: none;
+  position: sticky; top: 5.2rem;
+  padding-top: 3.5rem;
+}
+@media (min-width: 64em) { .toc { display: block; } }
+.toc-label {
+  font: 500 .68rem/1 var(--font-mono);
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 1.3rem;
+  padding-left: .8rem;
+}
+.toc ol { list-style: none; margin: 0; padding: 0; }
+.toc li { border-top: 1px solid var(--rule); }
+.toc a {
+  display: grid; grid-template-columns: 2.2rem 1fr; align-items: baseline; gap: .4rem;
+  padding: .72rem 0 .72rem .8rem;
+  text-decoration: none;
+  color: var(--ink-soft);
+  font-size: .92rem;
+}
+.toc a .n {
+  font: 500 .7rem/1 var(--font-mono);
+  color: var(--ink-faint);
+}
+.toc a:hover { color: var(--ink); }
+.toc a.active { color: var(--accent-ink); }
+.toc a.active .n { color: var(--accent); }
+.toc a.active::before {
+  content: ""; position: absolute; left: 0;
+  width: 2px; height: 1.1rem; background: var(--accent); translate: 0 .1rem;
+}
+.toc li { position: relative; }
+
+.content { min-width: 0; }
 
 /* ============================================================
    SECTIONS
    ============================================================ */
-.sec { position: relative; border-top: 1px solid var(--rule); padding-block: clamp(3.5rem, 9vh, 6rem); }
-.sec-head { position: relative; margin-bottom: 2.4rem; }
-.sec-num {
-  position: absolute;
-  top: -1.2rem; left: -1rem;
-  z-index: -1;
-  font-family: "Fraunces", "Fraunces-fallback", serif;
-  font-size: clamp(5rem, 12vw, 8rem);
-  line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 1px var(--rule-strong);
-  opacity: .55;
-  user-select: none;
+.sec {
+  border-top: 1px solid var(--rule);
+  padding-block: clamp(3rem, 8vh, 5.5rem);
 }
-@supports not (-webkit-text-stroke: 1px black) { .sec-num { color: var(--rule); } }
-.sec h2 { margin: 0; font-size: clamp(2.1rem, 5.5vw, 3.1rem); line-height: 1.1; text-wrap: balance; }
-.sec p { max-width: 62ch; }
+.sec:first-child { border-top: 0; }
+.sec-head { margin-bottom: 2.2rem; }
+.sec-head .row {
+  display: flex; align-items: baseline; gap: 1rem;
+}
+.sec-num {
+  font: 500 .8rem/1 var(--font-mono);
+  color: var(--accent);
+  padding: .35em .6em;
+  border: 1px solid var(--rule-strong);
+  border-radius: 6px;
+  flex: none;
+}
+.sec h2 {
+  margin: .9rem 0 0;
+  font-size: clamp(1.9rem, 4.8vw, 2.9rem);
+  text-wrap: balance;
+}
+.content p { max-width: 64ch; }
+.content > * + * { margin-top: 0; }
 
 .pull {
-  margin: 3rem 0;
-  padding: 1.3rem 0;
-  border-block: 1px solid var(--rule);
-  font-size: clamp(1.5rem, 4vw, 2.1rem);
-  line-height: 1.3;
+  margin: 2.8rem 0;
+  padding: 1.6rem 0 1.6rem 1.6rem;
+  border-left: 3px solid var(--accent);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.4rem, 3.6vw, 2rem);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
   text-wrap: balance;
   color: var(--ink);
 }
 
-/* —— exhibits: wrong vs right —— */
+/* —— exhibits: wrong vs right diptych —— */
 .exhibits {
   display: grid; gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
@@ -607,39 +703,45 @@ html:not(.js) .theme-toggle { display: none; }
 .exhibit {
   margin: 0;
   border: 1px solid var(--rule);
-  border-radius: 12px;
+  border-radius: 14px;
   background: var(--bg-card);
-  padding: 1.4rem 1.4rem 1.2rem;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
 }
+.exhibit-bad { border-top: 2px solid var(--bad); }
+.exhibit-good { border-top: 2px solid var(--good); }
 .exhibit .mock {
   display: flex; align-items: center; justify-content: center;
-  min-height: 4.2rem; margin-bottom: 1rem;
+  min-height: 4.6rem; margin-bottom: 1.2rem;
+  border-radius: 10px;
+  background: var(--bg-soft);
 }
-.exhibit figcaption { font-size: .95rem; line-height: 1.55; color: var(--ink-soft); }
-.exhibit figcaption b { display: block; font: 500 .74rem/1.6 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace; letter-spacing: .14em; text-transform: uppercase; }
+.exhibit figcaption { font-size: .94rem; line-height: 1.55; color: var(--ink-soft); }
+.exhibit figcaption b {
+  display: flex; align-items: center; gap: .5em;
+  font: 500 .7rem/1.6 var(--font-mono);
+  letter-spacing: .14em; text-transform: uppercase;
+  margin-bottom: .5rem;
+}
 .exhibit-bad figcaption b { color: var(--bad); }
 .exhibit-good figcaption b { color: var(--good); }
 
 .mock-2 .pill {
-  position: relative;
-  display: flex;
+  position: relative; display: flex;
   border: 1px solid var(--rule-strong);
-  background: var(--bg-soft);
-  border-radius: 999px;
-  padding: 4px;
+  background: var(--bg-card);
+  border-radius: 999px; padding: 4px;
 }
 .mock-2 .pill .knob {
   position: absolute; left: 4px; top: 4px;
-  width: 2rem; height: 2rem;
-  border-radius: 50%;
-  background: var(--thumb);
-  border: 1px solid var(--rule);
+  width: 2rem; height: 2rem; border-radius: 50%;
+  background: var(--thumb); border: 1px solid var(--rule);
   box-shadow: 0 1px 4px var(--shadow);
 }
 .mock-2 .pill .slot {
   position: relative; z-index: 1;
-  display: grid; place-items: center;
-  width: 2rem; height: 2rem;
+  display: grid; place-items: center; width: 2rem; height: 2rem;
 }
 .mock-2 .slot-sun { color: var(--ink); }
 .mock-2 .slot-moon { color: var(--ink-faint); }
@@ -648,34 +750,29 @@ html:not(.js) .theme-toggle { display: none; }
 .mock-3 .seg {
   display: flex;
   border: 1px solid var(--rule-strong);
-  background: var(--bg-soft);
-  border-radius: 999px;
-  padding: 3px;
-  font: 500 .72rem/1 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
+  background: var(--bg-card);
+  border-radius: 999px; padding: 3px;
+  font: 500 .72rem/1 var(--font-mono);
   color: var(--ink-faint);
 }
-.mock-3 .seg span { padding: .45em .9em; border-radius: 999px; }
-.mock-3 .seg .on { background: var(--thumb); color: var(--ink); border: 1px solid var(--rule); box-shadow: 0 1px 4px var(--shadow); }
+.mock-3 .seg span { padding: .5em .9em; border-radius: 999px; }
+.mock-3 .seg .on { background: var(--accent); color: var(--bg); }
 
 /* —— the timeline —— */
 .night { list-style: none; margin: 2.5rem 0; padding: 0; }
 .night li {
   position: relative;
-  display: grid;
-  grid-template-columns: 3.4rem 1fr;
-  gap: .9rem;
-  padding: 1.05rem 0;
+  display: grid; grid-template-columns: 4rem 1fr; gap: 1rem;
+  padding: 1.05rem 0 1.05rem .2rem;
 }
-@media (min-width: 35em) {
-  .night li { grid-template-columns: 5.2rem 1fr; gap: 1.2rem; }
-}
+@media (min-width: 35em) { .night li { grid-template-columns: 5rem 1fr; gap: 1.4rem; } }
 .night li + li { border-top: 1px dashed var(--rule); }
 .night time, .night .t {
-  font: 500 .8rem/2.1 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
+  font: 500 .8rem/1.9 var(--font-mono);
   color: var(--accent-ink);
   white-space: nowrap;
 }
-.night p { margin: 0; font-size: 1.02rem; color: var(--ink-soft); max-width: 56ch; }
+.night p { margin: 0; font-size: 1rem; color: var(--ink-soft); max-width: 58ch; }
 .night p strong { color: var(--ink); }
 
 /* —— prose arguments —— */
@@ -683,204 +780,169 @@ html:not(.js) .theme-toggle { display: none; }
 .args > li { counter-increment: arg; padding: 1.9rem 0; border-top: 1px dashed var(--rule); }
 .args > li:first-child { border-top: 0; padding-top: .5rem; }
 .args h3 {
-  display: flex; gap: .9rem; align-items: baseline;
-  margin: 0 0 .6rem;
-  font-size: 1.45rem;
-  line-height: 1.3;
+  display: grid; grid-template-columns: 2.4rem 1fr; gap: .7rem; align-items: baseline;
+  margin: 0 0 .55rem; font-size: 1.4rem; line-height: 1.25;
 }
 .args h3::before {
   content: counter(arg, decimal-leading-zero);
-  font: 400 .8rem/1 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
-  color: var(--accent-ink);
-  flex: none;
+  font: 500 .82rem/1.4 var(--font-mono);
+  color: var(--accent);
 }
-.args p { margin: 0; color: var(--ink-soft); font-size: 1.05rem; }
+.args p { margin: 0 0 0 3.1rem; color: var(--ink-soft); font-size: 1.02rem; max-width: 58ch; }
 
-/* —— code figures —— */
+/* —— code figures: faux editor —— */
 .code {
   position: relative;
   margin: 2rem 0;
-  border: 1px solid var(--rule);
+  border: 1px solid var(--rule-strong);
   border-radius: 12px;
   background: var(--code-bg);
   overflow: hidden;
+  box-shadow: 0 2px 10px var(--shadow);
 }
 .code figcaption {
-  display: flex; gap: .8rem; align-items: baseline;
-  padding: .65rem 4.5rem .65rem 1.1rem; /* right padding reserves room for the copy button */
+  display: flex; gap: .7rem; align-items: center;
+  padding: .6rem 4.5rem .6rem 1rem;
   border-bottom: 1px solid var(--rule);
-  font: 400 .78rem/1.5 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
+  background: var(--bg-soft);
+  font: 400 .76rem/1.5 var(--font-mono);
   color: var(--ink-faint);
 }
+.code figcaption .dots { display: inline-flex; gap: .35rem; flex: none; }
+.code figcaption .dots i {
+  width: .6rem; height: .6rem; border-radius: 50%;
+  background: var(--rule-strong); display: inline-block;
+}
 .code figcaption .lang {
-  font-weight: 500;
-  color: var(--accent-ink);
-  text-transform: uppercase;
-  letter-spacing: .1em;
+  font-weight: 500; color: var(--accent-ink);
+  text-transform: uppercase; letter-spacing: .1em;
+  padding: .1em .5em; border: 1px solid var(--rule); border-radius: 4px;
 }
 .code pre {
-  margin: 0;
-  padding: 1.1rem 1.2rem 1.2rem;
+  margin: 0; padding: 1.1rem 1.2rem 1.2rem;
   overflow-x: auto;
-  font-size: .84rem;
-  line-height: 1.65;
-  tab-size: 2;
-  /* narrow screens: the annotations carry the argument, and prose
-     shouldn't need sideways scrolling — wrap instead */
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
+  font-size: .82rem; line-height: 1.7; tab-size: 2;
+  white-space: pre-wrap; overflow-wrap: break-word;
 }
-@media (min-width: 40em) {
-  .code pre { white-space: pre; overflow-wrap: normal; }
-}
+@media (min-width: 40em) { .code pre { white-space: pre; overflow-wrap: normal; } }
 .code .copy {
-  position: absolute; top: .45rem; right: .55rem;
+  position: absolute; top: .42rem; right: .5rem;
   border: 1px solid var(--rule);
   border-radius: 6px;
   background: var(--bg-card);
   color: var(--ink-soft);
-  font: 500 .7rem/1 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
-  padding: .45em .7em;
-  min-height: 24px; /* WCAG 2.5.8 minimum target size */
-  cursor: pointer;
+  font: 500 .7rem/1 var(--font-mono);
+  padding: .45em .7em; min-height: 26px; cursor: pointer;
 }
 .code .copy:hover { color: var(--accent-ink); border-color: var(--rule-strong); }
-.code .copy.done { color: var(--good); }
+.code .copy.done { color: var(--good); border-color: var(--good); }
 
 .tok-c { color: var(--ink-faint); font-style: italic; }
-.tok-s { color: light-dark(#46692e, #a9bf7a); }
+.tok-s { color: light-dark(#0a7a52, #5fd6a0); }
 .tok-k { color: var(--accent-ink); }
-.tok-b { color: light-dark(#205f86, #84b3d4); }
-.tok-f { color: light-dark(#205f86, #84b3d4); }
-.tok-p { color: light-dark(#205f86, #84b3d4); }
+.tok-b { color: light-dark(#9333a8, #d9a0f0); }
+.tok-f { color: light-dark(#1f53e0, #84b3ff); }
+.tok-p { color: light-dark(#1f53e0, #84b3ff); }
 .tok-t { color: var(--accent-ink); }
-.tok-a { color: light-dark(#46692e, #a9bf7a); }
-.tok-n { color: light-dark(#8a4c9e, #c9a0dd); }
-.tok-x { color: var(--bad); font-weight: 500; font-style: normal; }
+.tok-a { color: light-dark(#0a7a52, #5fd6a0); }
+.tok-n { color: light-dark(#b5601a, #f0a85e); }
+.tok-x { color: var(--bad); font-weight: 600; font-style: normal; }
 @supports not (color: light-dark(#000,#fff)) {
-  .tok-s, .tok-a { color: #46692e; }
-  .tok-b, .tok-f, .tok-p { color: #205f86; }
-  .tok-n { color: #8a4c9e; }
+  .tok-s, .tok-a { color: #0a7a52; }
+  .tok-b { color: #9333a8; }
+  .tok-f, .tok-p { color: #1f53e0; }
+  .tok-n { color: #b5601a; }
 }
 
 /* —— state diagram —— */
-.states {
-  display: grid; gap: 1rem;
-  /* one column or three, never 2+1 — an orphaned state card reads
-     as a hierarchy this diagram doesn't have */
-  margin: 2.4rem 0;
-}
-@media (min-width: 40em) {
-  .states { grid-template-columns: repeat(3, 1fr); }
-}
+.states { display: grid; gap: 1rem; margin: 2.4rem 0; }
+@media (min-width: 40em) { .states { grid-template-columns: repeat(3, 1fr); } }
 .state {
   border: 1px solid var(--rule);
-  border-radius: 12px;
+  border-radius: 14px;
   background: var(--bg-card);
-  padding: 1.2rem 1.2rem 1.1rem;
+  padding: 1.3rem 1.2rem;
   text-align: center;
+  position: relative;
 }
-.state.is-default { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
-.state h3 { margin: 0 0 .3rem; font-size: 1.5rem; }
+.state.is-default {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 6px 24px var(--accent-soft);
+}
+.state h3 { margin: 0 0 .3rem; font-size: 1.45rem; }
 .state .tag {
-  display: inline-block;
-  margin-bottom: .8rem;
-  font: 500 .62rem/1 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
+  display: inline-block; margin-bottom: .9rem;
+  font: 500 .6rem/1 var(--font-mono);
   letter-spacing: .14em; text-transform: uppercase;
-  color: var(--accent-ink);
-  border: 1px solid var(--accent);
-  border-radius: 999px;
-  padding: .35em .8em;
+  color: var(--bg); background: var(--accent);
+  border-radius: 999px; padding: .4em .8em;
 }
-.state dl { margin: 0; font: 400 .74rem/1.9 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace; color: var(--ink-faint); }
+.state dl { margin: 0; font: 400 .74rem/1.9 var(--font-mono); color: var(--ink-faint); }
 .state dt { display: none; }
 .state dd { margin: 0; }
 .state dd b, .state dd code { font-weight: 500; color: var(--ink-soft); }
-/* these are exact attribute values — wrap to a new line whole, never mid-token
-   (nowrap blocks the break the hyphen in data-theme would otherwise allow) */
-.state dd code { font-size: inherit; white-space: nowrap; }
+.state dd code { font-size: inherit; white-space: nowrap; background: var(--bg-soft); border: 1px solid var(--rule); border-radius: 4px; padding: .05em .3em; }
 
 /* —— objections —— */
 .objection {
   border: 1px solid var(--rule);
   border-radius: 10px;
   background: var(--bg-card);
-  margin: .8rem 0;
+  margin: .7rem 0;
 }
 .objection summary {
-  cursor: pointer;
-  padding: .95rem 1.2rem;
-  font-family: "Fraunces", "Fraunces-fallback", serif;
-  font-weight: 460;
-  font-size: 1.18rem;
-  color: var(--ink);
-  list-style: none;
+  cursor: pointer; padding: .95rem 1.1rem;
+  font-family: var(--font-display);
+  font-weight: 500; font-size: 1.12rem;
+  color: var(--ink); list-style: none;
+  display: flex; gap: .7rem; align-items: baseline;
 }
 .objection summary::-webkit-details-marker { display: none; }
 .objection summary:hover { color: var(--accent-ink); }
 .objection summary::before {
-  content: "+"; /* a disclosure, not a link — "→" read as the latter */
-  display: inline-block;
-  width: 1.35em;
-  text-align: center;
-  color: var(--accent);
+  content: "+"; flex: none;
+  width: 1.1em; text-align: center;
+  color: var(--accent); font-family: var(--font-mono); font-weight: 400;
 }
 .objection[open] summary::before { rotate: 45deg; }
-/* animatable open/close where ::details-content is supported;
-   elsewhere it simply opens instantly */
 .objection::details-content {
   interpolate-size: allow-keywords;
-  opacity: 0;
-  block-size: 0;
-  overflow-y: clip;
+  opacity: 0; block-size: 0; overflow-y: clip;
 }
-.objection[open]::details-content {
-  opacity: 1;
-  block-size: auto;
-}
-.objection .a { padding: 0 1.2rem 1.1rem; color: var(--ink-soft); font-size: 1rem; max-width: 60ch; }
-.objection .a p { margin: .2rem 0 .6rem; }
+.objection[open]::details-content { opacity: 1; block-size: auto; }
+.objection .a { padding: 0 1.1rem 1.05rem 2.8rem; color: var(--ink-soft); font-size: .98rem; max-width: 62ch; }
+.objection .a p { margin: .2rem 0 .5rem; }
 
-/* —— live console: a real table (property / value / meaning),
-      mobile-first — rows stack into a small grid, then become
-      table rows on wider screens —— */
+/* —— live console —— */
 .console {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  border: 1px solid var(--rule);
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  border: 1px solid var(--rule-strong);
   border-radius: 12px;
   background: var(--code-bg);
   margin: 2.2rem 0;
-  font-family: "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
+  font-family: var(--font-mono);
+  overflow: hidden;
+  box-shadow: 0 2px 10px var(--shadow);
 }
 .console caption {
-  caption-side: top;
-  text-align: left;
-  padding: 0 .2rem .55rem;
-  font-size: .72rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
+  caption-side: top; text-align: left;
+  padding: 0 .2rem .6rem;
+  font-size: .7rem; letter-spacing: .16em; text-transform: uppercase;
   color: var(--ink-faint);
 }
-.console tr {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: .15rem 1rem;
-  padding: .8rem 1.1rem;
-}
+.console tr { display: grid; grid-template-columns: 1fr auto; gap: .15rem 1rem; padding: .85rem 1.1rem; }
 .console tr + tr { border-top: 1px dashed var(--rule); }
 .console th, .console td { padding: 0; text-align: left; font-weight: 400; font-size: .8rem; }
 .console th { color: var(--ink-soft); }
-.console th code { font: inherit; }
+.console th code { font: inherit; background: none; border: 0; padding: 0; color: var(--ink-soft); }
 .console td.v { color: var(--accent-ink); font-weight: 500; }
-.console td.why { grid-column: 1 / -1; color: var(--ink-faint); font-size: .74rem; font-style: italic; font-family: "Newsreader", "Newsreader-fallback", serif; }
+.console td.why { grid-column: 1 / -1; color: var(--ink-faint); font-size: .74rem; font-style: italic; font-family: var(--font-body); }
 @media (min-width: 40em) {
   .console tr { display: table-row; }
-  .console th, .console td { display: table-cell; padding: .8rem 1.1rem; vertical-align: baseline; }
+  .console th, .console td { display: table-cell; padding: .85rem 1.1rem; vertical-align: baseline; }
   .console tr + tr th, .console tr + tr td { border-top: 1px dashed var(--rule); }
-  .console th { width: 38%; }
-  .console td.v { width: 17%; white-space: nowrap; }
+  .console th { width: 40%; }
+  .console td.v { width: 16%; white-space: nowrap; }
 }
 
 /* —— OS instructions —— */
@@ -890,34 +952,24 @@ html:not(.js) .theme-toggle { display: none; }
   margin: 2rem 0;
 }
 .os {
-  border: 1px solid var(--rule);
-  border-radius: 10px;
-  padding: 1rem 1.1rem;
-  background: var(--bg-card);
+  border: 1px solid var(--rule); border-radius: 10px;
+  padding: 1rem 1.1rem; background: var(--bg-card);
 }
-.os b { display: block; font: 500 .72rem/2 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink); }
-.os span { font-size: .92rem; color: var(--ink-soft); }
+.os b { display: block; font: 500 .7rem/2 var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink); }
+.os span { font-size: .9rem; color: var(--ink-soft); }
 
 /* —— checklist —— */
 .checklist { list-style: none; margin: 2rem 0; padding: 0; }
 .checklist li { border-top: 1px dashed var(--rule); }
 .checklist li:last-child { border-bottom: 1px dashed var(--rule); }
 .checklist label {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 1rem;
-  align-items: start;
-  padding: 1rem .2rem;
-  cursor: pointer;
+  display: grid; grid-template-columns: auto 1fr; gap: 1rem;
+  align-items: start; padding: 1rem .2rem; cursor: pointer;
 }
-.checklist input {
-  width: 1.15rem; height: 1.15rem;
-  margin-top: .25rem;
-  accent-color: var(--accent);
-}
-.checklist .what { font-size: 1.05rem; color: var(--ink); }
-.checklist .how { display: block; font-size: .88rem; color: var(--ink-faint); }
-.checklist input:checked + span .what { color: var(--ink-faint); text-decoration: line-through; text-decoration-color: var(--accent); text-decoration-thickness: 1px; }
+.checklist input { width: 1.15rem; height: 1.15rem; margin-top: .25rem; accent-color: var(--accent); flex: none; }
+.checklist .what { font-size: 1.04rem; color: var(--ink); }
+.checklist .how { display: block; font-size: .86rem; color: var(--ink-faint); margin-top: .15rem; }
+.checklist input:checked + span .what { color: var(--ink-faint); text-decoration: line-through; text-decoration-color: var(--accent); }
 
 /* —— resources —— */
 .res-group { margin: 2.6rem 0 0; }
@@ -928,69 +980,55 @@ html:not(.js) .theme-toggle { display: none; }
 }
 a.res {
   display: block;
-  border: 1px solid var(--rule);
-  border-radius: 12px;
+  border: 1px solid var(--rule); border-radius: 14px;
   background: var(--bg-card);
-  padding: 1.15rem 1.2rem 1.05rem;
-  text-decoration: none;
-  color: inherit;
+  padding: 1.2rem; text-decoration: none; color: inherit;
 }
 a.res:hover { border-color: var(--accent); }
 a.res .meta {
   display: block;
-  font: 400 .68rem/1 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
+  font: 400 .66rem/1 var(--font-mono);
   letter-spacing: .12em; text-transform: uppercase;
-  color: var(--ink-faint);
-  margin-bottom: .55rem;
+  color: var(--ink-faint); margin-bottom: .6rem;
 }
 a.res strong {
   display: block;
-  font-family: "Fraunces", "Fraunces-fallback", serif;
-  font-weight: 500;
-  font-size: 1.2rem;
-  line-height: 1.25;
-  margin-bottom: .3rem;
-  text-wrap: balance;
+  font-family: var(--font-display); font-weight: 600;
+  font-size: 1.12rem; line-height: 1.25; margin-bottom: .3rem; text-wrap: balance;
 }
 a.res:hover strong { color: var(--accent-ink); }
-a.res .by { display: block; font-size: .85rem; color: var(--ink-soft); margin-bottom: .45rem; }
-a.res p { margin: 0; font-size: .9rem; line-height: 1.55; color: var(--ink-faint); }
+a.res .by { display: block; font-size: .84rem; color: var(--ink-soft); margin-bottom: .5rem; }
+a.res p { margin: 0; font-size: .89rem; line-height: 1.5; color: var(--ink-faint); }
 a.res .domain {
-  display: block;
-  margin-top: .6rem;
-  font: 400 .68rem/1.4 "Spline Sans Mono", "Spline Sans Mono-fallback", monospace;
-  letter-spacing: .04em;
-  color: var(--ink-faint);
-  overflow-wrap: anywhere;
+  display: block; margin-top: .7rem;
+  font: 400 .66rem/1.4 var(--font-mono); letter-spacing: .04em;
+  color: var(--ink-faint); overflow-wrap: anywhere;
 }
 a.res .domain::after { content: " ↗"; color: var(--accent-ink); }
 
 @media (prefers-reduced-motion: no-preference) {
-  /* not `all`: underline thickness should snap, not smear */
-  a.res, .exhibit, .code .copy, a {
-    transition: color .18s ease, border-color .18s ease,
-                transform .18s ease, box-shadow .18s ease;
+  a.res, .exhibit, .code .copy, a, .toc a, .state, .objection {
+    transition: color .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease;
   }
-  a.res:hover { transform: translateY(-2px); box-shadow: 0 6px 18px var(--shadow); }
+  a.res:hover { transform: translateY(-2px); box-shadow: 0 8px 22px var(--shadow); }
 }
 
 /* —— footer —— */
 .colophon {
   border-top: 1px solid var(--rule);
-  padding: clamp(3rem, 8vh, 5rem) 0 4rem;
+  max-width: 78rem; margin-inline: auto;
+  padding: clamp(3rem, 8vh, 5rem) clamp(1.25rem, 5vw, 3rem) 4rem;
   text-align: center;
 }
-.colophon .pull { margin-top: 0; }
-.colophon p { max-width: 52ch; margin: 1rem auto; color: var(--ink-soft); font-size: .98rem; }
+.colophon .pull { margin-top: 0; border: 0; padding: 0; display: inline-block; text-align: center; }
+.colophon p { max-width: 54ch; margin: 1rem auto; color: var(--ink-soft); font-size: .96rem; }
 .colophon .fine { font-size: .82rem; color: var(--ink-faint); }
 .colophon .fine code { font-size: .78em; }
 
 @media (prefers-reduced-motion: no-preference) {
   .theme-toggle .thumb { transition: translate .28s cubic-bezier(.2, .8, .2, 1); }
   .objection summary::before { transition: rotate .25s ease; }
-  .objection::details-content {
-    transition: content-visibility .35s allow-discrete, opacity .35s ease, block-size .35s ease;
-  }
+  .objection::details-content { transition: content-visibility .35s allow-discrete, opacity .35s ease, block-size .35s ease; }
   ::view-transition-old(root), ::view-transition-new(root) { animation-duration: .3s; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -999,29 +1037,25 @@ a.res .domain::after { content: " ↗"; color: var(--accent-ink); }
 }
 
 abbr[title] {
-  text-decoration: underline dotted;
-  text-underline-offset: 3px;
-  text-decoration-color: var(--ink-faint);
-  cursor: help;
+  text-decoration: underline dotted; text-underline-offset: 3px;
+  text-decoration-color: var(--ink-faint); cursor: help;
 }
 
-/* honor a request for more contrast: stronger rules and secondary
-   text, no grain or glow, solid header */
 @media (prefers-contrast: more) {
   :root {
-    --ink-soft:  light-dark(#473c2c, #d4c9b0);
-    --ink-faint: light-dark(#564a38, #bbae93);
-    --rule:        light-dark(rgb(38 25 10 / .45), rgb(236 226 205 / .4));
-    --rule-strong: light-dark(rgb(38 25 10 / .75), rgb(236 226 205 / .7));
+    --ink-soft: light-dark(#3c424c, #c7cfda);
+    --ink-faint: light-dark(#4b515c, #b0b9c5);
+    --rule: light-dark(rgb(13 15 19 / .4), rgb(238 241 245 / .36));
+    --rule-strong: light-dark(rgb(13 15 19 / .7), rgb(238 241 245 / .64));
   }
-  body::before, body::after { display: none; }
+  .hero::before, .hero::after { display: none; }
   .site-head { background: var(--bg); -webkit-backdrop-filter: none; backdrop-filter: none; }
-  .status { background: var(--bg-card); }
 }
 
 @media print {
-  body::after, .site-head, .scroll-hint, .copy { display: none !important; }
+  .site-head, .scroll-hint, .copy, .toc, .hero::before, .hero::after { display: none !important; }
   body { font-size: 11pt; }
+  .doc { display: block; }
 }
 </style>
 </head>
@@ -1031,8 +1065,8 @@ abbr[title] {
   <div class="bar">
     <a class="wordmark" href="#top" aria-label="You’re doing dark mode wrong."><svg class="mark" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg><span class="label">You’re doing dark mode <b>wrong.</b></span></a>
 
-    <!-- THE control. Three states. Real radio buttons, so the keyboard
-         and screen readers get the right semantics for free. -->
+    <!-- THE control. Three states. Real radio buttons — keyboard and
+         screen-reader semantics for free. -->
     <fieldset class="theme-toggle">
       <legend class="vh">Theme</legend>
       <div class="seg">
@@ -1060,91 +1094,109 @@ abbr[title] {
 <main id="top">
 
   <!-- ====================================================== -->
-  <section class="hero wrap">
-    <p class="kicker up">a field guide for developers and designers</p>
-    <h1 class="up">You’re doing dark&nbsp;mode <span class="wrong">wrong.</span></h1>
-    <p class="dek up">Your toggle has two states. Your users have three.</p>
+  <section class="hero" data-screen-label="Hero">
+    <p class="kicker up">A field guide for developers &amp; designers</p>
+    <h1 class="up">You’re doing <span class="ln">dark&nbsp;mode <span class="wrong">wrong.</span></span></h1>
+    <p class="dek up">Your toggle has <b>two</b> states.<br>Your users have <b>three</b>.</p>
     <p class="status up" id="status-line" aria-live="polite">
-      This page follows your system’s appearance. If you can read this, JavaScript
-      isn’t running — and the theme still matches your system. Auto works without it.
+      <span class="dot" aria-hidden="true"></span>
+      <span>This page follows your system’s appearance. If you can read this, JavaScript
+      isn’t running — and the theme still matches your system. Auto works without it.</span>
     </p>
-    <a class="scroll-hint up" href="#problem">↓ WHY TWO STATES AREN’T ENOUGH</a>
+    <a class="scroll-hint up" href="#problem"><span class="arrow">↓</span> Why two states aren’t enough</a>
   </section>
 
-  <!-- ====================================================== -->
-  <section class="sec" id="problem">
-    <div class="wrap">
-      <header class="sec-head">
-        <span class="sec-num" aria-hidden="true">01</span>
-        <p class="kicker">the problem</p>
-        <h2>The two-state toggle</h2>
-      </header>
+  <div class="doc">
 
-      <p>Most theme toggles have two states: light and dark. Neither means what
-      many users actually want — <em>“just match my device.”</em></p>
-
-      <div class="exhibits">
-        <figure class="exhibit exhibit-bad">
-          <div class="mock mock-2" aria-hidden="true">
-            <div class="pill">
-              <span class="knob"></span>
-              <span class="slot slot-sun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5 5l1.7 1.7M17.3 17.3 19 19M19 5l-1.7 1.7M6.7 17.3 5 19"/></svg></span>
-              <span class="slot slot-moon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.4 14.2A8.5 8.5 0 1 1 9.8 3.6a7 7 0 1 0 10.6 10.6z"/></svg></span>
-            </div>
-          </div>
-          <figcaption><b>✕ two states</b> Re-asks a question the OS already
-          answered. “Follow the system” isn’t an option.</figcaption>
-        </figure>
-        <figure class="exhibit exhibit-good">
-          <div class="mock mock-3" aria-hidden="true">
-            <div class="seg"><span>Light</span><span class="on">Auto</span><span>Dark</span></div>
-          </div>
-          <figcaption><b>✓ three states</b> An override when you want one —
-          and a way back.</figcaption>
-        </figure>
-      </div>
-
-      <p>How that plays out over one evening:</p>
-
-      <ol class="night">
-        <li>
-          <time>19:42</time>
-          <p><strong>Sunset.</strong> Their <abbr title="operating system">OS</abbr> fades
-          to dark — macOS <em>Auto</em>, iOS <em>Automatic</em>, Android’s schedule,
-          Windows via Auto Dark Mode. Every app follows.</p>
-        </li>
-        <li>
-          <time>19:42</time>
-          <p><strong>Your site: still <code>#FFFFFF</code>.</strong> Now the
-          brightest thing on the screen.</p>
-        </li>
-        <li>
-          <time>19:43</time>
-          <p>They click your toggle. <code>localStorage.theme = "dark"</code>.
-          The page goes dark — and that value now overrides the system on every
-          future visit.</p>
-        </li>
-        <li>
-          <time>07:06</time>
-          <p><strong>Sunrise.</strong> The OS returns to light. Every app follows —
-          except your site, pinned by a value written ten hours ago. It will now
-          disagree with the device twice a day.</p>
-        </li>
-        <li>
-          <span class="t">∞</span>
-          <p><strong>No way back to automatic.</strong> The toggle still switches
-          between light and dark, but “follow my system” is gone — the
-          <abbr title="user interface">UI</abbr> has no state for it. Staying in
-          sync is now manual work; the only reset is clearing site data, a step
-          few would connect to a theme.</p>
-        </li>
+    <!-- sticky section index -->
+    <nav class="toc" aria-label="Sections">
+      <p class="toc-label">Contents</p>
+      <ol>
+        <li><a href="#problem"><span class="n">01</span><span>The problem</span></a></li>
+        <li><a href="#why"><span class="n">02</span><span>Why it matters</span></a></li>
+        <li><a href="#fix"><span class="n">03</span><span>The fix</span></a></li>
+        <li><a href="#live"><span class="n">04</span><span>Live demo</span></a></li>
+        <li><a href="#checklist"><span class="n">05</span><span>The checklist</span></a></li>
+        <li><a href="#resources"><span class="n">06</span><span>Resources</span></a></li>
       </ol>
+    </nav>
 
-      <p>The code usually looks like this:</p>
+    <div class="content">
 
-      <figure class="code">
-        <figcaption><span class="lang">js</span> two-state-toggle.js — the anti-pattern, annotated</figcaption>
-        <pre><code data-lang="js"><span class="tok-c">// <span class="tok-x">❌</span> the two-state toggle, with its three bugs annotated</span>
+      <!-- ====================================================== -->
+      <section class="sec" id="problem" data-screen-label="01 The problem">
+        <header class="sec-head">
+          <div class="row">
+            <span class="sec-num" aria-hidden="true">01</span>
+            <span class="kicker" style="margin:0">the problem</span>
+          </div>
+          <h2>The two-state toggle</h2>
+        </header>
+
+        <p>Most theme toggles have two states: light and dark. Neither means what
+        many users actually want — <em>“just match my device.”</em></p>
+
+        <div class="exhibits">
+          <figure class="exhibit exhibit-bad">
+            <div class="mock mock-2" aria-hidden="true">
+              <div class="pill">
+                <span class="knob"></span>
+                <span class="slot slot-sun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5 5l1.7 1.7M17.3 17.3 19 19M19 5l-1.7 1.7M6.7 17.3 5 19"/></svg></span>
+                <span class="slot slot-moon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.4 14.2A8.5 8.5 0 1 1 9.8 3.6a7 7 0 1 0 10.6 10.6z"/></svg></span>
+              </div>
+            </div>
+            <figcaption><b>✕&nbsp;&nbsp;two states</b> Re-asks a question the OS already
+            answered. “Follow the system” isn’t an option.</figcaption>
+          </figure>
+          <figure class="exhibit exhibit-good">
+            <div class="mock mock-3" aria-hidden="true">
+              <div class="seg"><span>Light</span><span class="on">Auto</span><span>Dark</span></div>
+            </div>
+            <figcaption><b>✓&nbsp;&nbsp;three states</b> An override when you want one —
+            and a way back.</figcaption>
+          </figure>
+        </div>
+
+        <p>How that plays out over one evening:</p>
+
+        <ol class="night">
+          <li>
+            <time>19:42</time>
+            <p><strong>Sunset.</strong> Their <abbr title="operating system">OS</abbr> fades
+            to dark — macOS <em>Auto</em>, iOS <em>Automatic</em>, Android’s schedule,
+            Windows via Auto Dark Mode. Every app follows.</p>
+          </li>
+          <li>
+            <time>19:42</time>
+            <p><strong>Your site: still <code>#FFFFFF</code>.</strong> Now the
+            brightest thing on the screen.</p>
+          </li>
+          <li>
+            <time>19:43</time>
+            <p>They click your toggle. <code>localStorage.theme = "dark"</code>.
+            The page goes dark — and that value now overrides the system on every
+            future visit.</p>
+          </li>
+          <li>
+            <time>07:06</time>
+            <p><strong>Sunrise.</strong> The OS returns to light. Every app follows —
+            except your site, pinned by a value written ten hours ago. It will now
+            disagree with the device twice a day.</p>
+          </li>
+          <li>
+            <span class="t">∞</span>
+            <p><strong>No way back to automatic.</strong> The toggle still switches
+            between light and dark, but “follow my system” is gone — the
+            <abbr title="user interface">UI</abbr> has no state for it. Staying in
+            sync is now manual work; the only reset is clearing site data, a step few would connect to a theme.</p>
+          </li>
+        </ol>
+
+        <p>The code usually looks like this:</p>
+
+        <figure class="code">
+          <figcaption><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="lang">js</span> two-state-toggle.js — the anti-pattern, annotated</figcaption>
+          <pre><code data-lang="js"><span class="tok-c">// <span class="tok-x">❌</span> the two-state toggle, with its three bugs annotated</span>
 
 <span class="tok-k">const</span> theme = <span class="tok-b">localStorage</span>.<span class="tok-f">getItem</span>(<span class="tok-s">'theme'</span>) || <span class="tok-s">'light'</span>;
 <span class="tok-c">// <span class="tok-x">BUG 1</span> — defaults to 'light' for every first-time visitor.</span>
@@ -1165,123 +1217,123 @@ toggle.<span class="tok-f">addEventListener</span>(<span class="tok-s">'click'</
 <span class="tok-c">// <span class="tok-x">BUG 3</span> — nowhere in this file:</span>
 <span class="tok-c">//   matchMedia('(prefers-color-scheme: dark)')</span>
 <span class="tok-c">// When the OS switches at sunset, this page won’t follow.</span></code></pre>
-      </figure>
-    </div>
-  </section>
+        </figure>
+      </section>
 
-  <!-- ====================================================== -->
-  <section class="sec" id="why">
-    <div class="wrap">
-      <header class="sec-head">
-        <span class="sec-num" aria-hidden="true">02</span>
-        <p class="kicker">the argument</p>
-        <h2>Why it matters</h2>
-      </header>
+      <!-- ====================================================== -->
+      <section class="sec" id="why" data-screen-label="02 Why it matters">
+        <header class="sec-head">
+          <div class="row">
+            <span class="sec-num" aria-hidden="true">02</span>
+            <span class="kicker" style="margin:0">the argument</span>
+          </div>
+          <h2>Why it matters</h2>
+        </header>
 
-      <ol class="args">
-        <li>
-          <h3>The user already answered.</h3>
-          <p>Every browser exposes the device’s appearance via
-          <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-color-scheme"><code>prefers-color-scheme</code></a> —
-          Baseline since 2020. The preference is on record before the user arrives;
-          a toggle that defaults to light simply ignores it.</p>
-        </li>
-        <li>
-          <h3>Operating systems follow the sun. A stored toggle can’t.</h3>
-          <p>macOS has <a href="https://support.apple.com/guide/mac-help/use-a-light-or-dark-appearance-mchl52e1c2d2/mac"><em>Auto</em></a>,
-          iOS has <a href="https://support.apple.com/en-us/108350"><em>Automatic</em></a> with
-          a schedule, Android can switch on a schedule or
-          <a href="https://support.google.com/android/answer/9730472">with Battery Saver</a>,
-          and Windows does it via
-          <a href="https://learn.microsoft.com/en-us/windows/powertoys/light-switch">PowerToys</a> or
-          <a href="https://github.com/AutoDarkMode/Windows-Auto-Night-Mode">Auto Dark Mode</a>.
-          Appearance changes <em>mid-session</em> — and a stored binary value can
-          never follow.</p>
-        </li>
-        <li>
-          <h3>One click disconnects the site permanently.</h3>
-          <p>Try the other theme once, and the choice is stored for good. As
-          <a href="https://www.bram.us/2022/05/25/dark-mode-toggles-should-be-a-browser-feature/">Bramus
-          Van Damme puts it</a>, such sites “will never be able to respond to the
-          system preference again, as they always have an override applied.”</p>
-        </li>
-        <li>
-          <h3>It’s an accessibility signal, not a vibe.</h3>
-          <p>Photophobia and migraines push some users to dark; astigmatism halation
-          pushes others to light;
-          <a href="https://www.nngroup.com/articles/dark-mode/">NN/g’s research review</a>
-          found no default that suits everyone. That’s why the OS lets each user pick —
-          and why overriding the signal is the same class of bug as ignoring
-          <code>prefers-reduced-motion</code>.</p>
-        </li>
-        <li>
-          <h3>Everything else on the device already behaves this way.</h3>
-          <p>Native apps follow the system. The OS settings panel is a tri-state — so are
-          <a href="https://kilianvalkhof.com/2020/design/your-dark-mode-toggle-is-broken/">Stack
-          Overflow’s and GitHub’s theme controls</a>. When a site doesn’t follow, the
-          mismatch reads as a bug in the site, not in the settings.</p>
-        </li>
-        <li>
-          <h3>The fix costs one enum value and one event listener.</h3>
-          <p>Both versions need two themes in <abbr title="Cascading Style Sheets">CSS</abbr>,
-          a stored preference, a control, and a head script against theme flash. The
-          difference is treating “nothing stored” as a state and listening for system
-          changes — a few lines.</p>
-        </li>
-      </ol>
-    </div>
-  </section>
+        <ol class="args">
+          <li>
+            <h3><span>The user already answered.</span></h3>
+            <p>Every browser exposes the device’s appearance via
+            <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme"><code>prefers-color-scheme</code></a> —
+            Baseline since 2020. The preference is on record before the user arrives;
+            a toggle that defaults to light simply ignores it.</p>
+          </li>
+          <li>
+            <h3><span>Operating systems follow the sun. A stored toggle can’t.</span></h3>
+            <p>macOS has <a href="https://support.apple.com/guide/mac-help/use-a-light-or-dark-appearance-mchl52e1c2d2/mac"><em>Auto</em></a>,
+            iOS has <a href="https://support.apple.com/en-us/108350"><em>Automatic</em></a> with
+            a schedule, Android can switch on a schedule or
+            <a href="https://support.google.com/android/answer/9730472">with Battery Saver</a>,
+            and Windows does it via
+            <a href="https://learn.microsoft.com/en-us/windows/powertoys/light-switch">PowerToys</a> or
+            <a href="https://github.com/AutoDarkMode/Windows-Auto-Night-Mode">Auto Dark Mode</a>.
+            Appearance changes <em>mid-session</em> — and a stored binary value can
+            never follow.</p>
+          </li>
+          <li>
+            <h3><span>One click disconnects the site permanently.</span></h3>
+            <p>Try the other theme once, and the choice is stored for good. As
+            <a href="https://www.bram.us/2022/05/25/dark-mode-toggles-should-be-a-browser-feature/">Bramus
+            Van Damme puts it</a>, such sites “will never be able to respond to the
+            system preference again, as they always have an override applied.”</p>
+          </li>
+          <li>
+            <h3><span>It’s an accessibility signal, not a vibe.</span></h3>
+            <p>Photophobia and migraines push some users to dark; astigmatism halation
+            pushes others to light;
+            <a href="https://www.nngroup.com/articles/dark-mode/">NN/g’s research review</a>
+            found no default that suits everyone. That’s why the OS lets each user pick —
+            and why overriding the signal is the same class of bug as ignoring
+            <code>prefers-reduced-motion</code>.</p>
+          </li>
+          <li>
+            <h3><span>Everything else on the device already behaves this way.</span></h3>
+            <p>Native apps follow the system. The OS settings panel is a tri-state — so are
+            <a href="https://kilianvalkhof.com/2020/design/your-dark-mode-toggle-is-broken/">Stack
+            Overflow’s and GitHub’s theme controls</a>. When a site doesn’t follow, the
+            mismatch reads as a bug in the site, not in the settings.</p>
+          </li>
+          <li>
+            <h3><span>The fix costs one enum value and one event listener.</span></h3>
+            <p>Both versions need two themes in <abbr title="Cascading Style Sheets">CSS</abbr>,
+            a stored preference, a control, and a head script against theme flash. The
+            difference is treating “nothing stored” as a state and listening for system
+            changes — a few lines.</p>
+          </li>
+        </ol>
+      </section>
 
-  <!-- ====================================================== -->
-  <section class="sec" id="fix">
-    <div class="wrap">
-      <header class="sec-head">
-        <span class="sec-num" aria-hidden="true">03</span>
-        <p class="kicker">the fix</p>
-        <h2>Three states, with Auto as the default</h2>
-      </header>
+      <!-- ====================================================== -->
+      <section class="sec" id="fix" data-screen-label="03 The fix">
+        <header class="sec-head">
+          <div class="row">
+            <span class="sec-num" aria-hidden="true">03</span>
+            <span class="kicker" style="margin:0">the fix</span>
+          </div>
+          <h2>Three states, with Auto as the default</h2>
+        </header>
 
-      <p>The model:
-      <strong>light and dark are stored overrides; auto means nothing is stored.</strong>
-      Once “no stored value” means “follow the system,” the rest falls into place.</p>
+        <p>The model:
+        <strong>light and dark are stored overrides; auto means nothing is stored.</strong>
+        Once “no stored value” means “follow the system,” the rest falls into place.</p>
 
-      <div class="states" role="img" aria-label="State diagram: Light stores the value light; Auto, the default, stores nothing; Dark stores the value dark.">
-        <div class="state">
-          <h3>Light</h3>
-          <dl>
-            <dt>storage</dt><dd>storage: <code>"light"</code></dd>
-            <dt>attribute</dt><dd>html: <code>data-theme="light"</code></dd>
-          </dl>
+        <div class="states" role="img" aria-label="State diagram: Light stores the value light; Auto, the default, stores nothing; Dark stores the value dark.">
+          <div class="state">
+            <h3>Light</h3>
+            <dl>
+              <dt>storage</dt><dd>storage: <code>"light"</code></dd>
+              <dt>attribute</dt><dd>html: <code>data-theme="light"</code></dd>
+            </dl>
+          </div>
+          <div class="state is-default">
+            <span class="tag">★ the default</span>
+            <h3>Auto</h3>
+            <dl>
+              <dt>storage</dt><dd>storage: <b>(nothing)</b></dd>
+              <dt>attribute</dt><dd>html: <b>(no attribute)</b></dd>
+            </dl>
+          </div>
+          <div class="state">
+            <h3>Dark</h3>
+            <dl>
+              <dt>storage</dt><dd>storage: <code>"dark"</code></dd>
+              <dt>attribute</dt><dd>html: <code>data-theme="dark"</code></dd>
+            </dl>
+          </div>
         </div>
-        <div class="state is-default">
-          <span class="tag">★ the default</span>
-          <h3>Auto</h3>
-          <dl>
-            <dt>storage</dt><dd>storage: <b>(nothing)</b></dd>
-            <dt>attribute</dt><dd>html: <b>(no attribute)</b></dd>
-          </dl>
-        </div>
-        <div class="state">
-          <h3>Dark</h3>
-          <dl>
-            <dt>storage</dt><dd>storage: <code>"dark"</code></dd>
-            <dt>attribute</dt><dd>html: <code>data-theme="dark"</code></dd>
-          </dl>
-        </div>
-      </div>
 
-      <p class="pull">Auto isn’t a third theme — it’s the absence of an override.</p>
+        <p class="pull">Auto isn’t a third theme — it’s the absence of an override.</p>
 
-      <p><strong>Step one — the head.</strong> Declare scheme support before any
-      CSS, and apply a stored override <em>synchronously</em>, before first paint.
-      The script must be inline and blocking — external files, <code>defer</code>,
-      <code>async</code> and modules all run too late and flash the wrong theme.</p>
+        <p><strong>Step one — the head.</strong> Declare scheme support before any
+        CSS, and apply a stored override <em>synchronously</em>, before first paint.
+        The script must be inline and blocking — external files, <code>defer</code>,
+        <code>async</code> and modules all run too late and flash the wrong theme.</p>
 
-      <figure class="code">
-        <figcaption><span class="lang">html</span> index.html — the &lt;head&gt;, in this order</figcaption>
-        <pre><code data-lang="html">&lt;<span class="tok-t">meta</span> <span class="tok-a">name</span>=<span class="tok-s">"color-scheme"</span> <span class="tok-a">content</span>=<span class="tok-s">"light dark"</span>&gt;
-&lt;<span class="tok-t">meta</span> <span class="tok-a">name</span>=<span class="tok-s">"theme-color"</span> <span class="tok-a">content</span>=<span class="tok-s">"#f5efe3"</span> <span class="tok-a">media</span>=<span class="tok-s">"(prefers-color-scheme: light)"</span>&gt;
-&lt;<span class="tok-t">meta</span> <span class="tok-a">name</span>=<span class="tok-s">"theme-color"</span> <span class="tok-a">content</span>=<span class="tok-s">"#161109"</span> <span class="tok-a">media</span>=<span class="tok-s">"(prefers-color-scheme: dark)"</span>&gt;
+        <figure class="code">
+          <figcaption><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="lang">html</span> index.html — the &lt;head&gt;, in this order</figcaption>
+          <pre><code data-lang="html">&lt;<span class="tok-t">meta</span> <span class="tok-a">name</span>=<span class="tok-s">"color-scheme"</span> <span class="tok-a">content</span>=<span class="tok-s">"light dark"</span>&gt;
+&lt;<span class="tok-t">meta</span> <span class="tok-a">name</span>=<span class="tok-s">"theme-color"</span> <span class="tok-a">content</span>=<span class="tok-s">"#f4f5f7"</span> <span class="tok-a">media</span>=<span class="tok-s">"(prefers-color-scheme: light)"</span>&gt;
+&lt;<span class="tok-t">meta</span> <span class="tok-a">name</span>=<span class="tok-s">"theme-color"</span> <span class="tok-a">content</span>=<span class="tok-s">"#0a0b0d"</span> <span class="tok-a">media</span>=<span class="tok-s">"(prefers-color-scheme: dark)"</span>&gt;
 
 <span class="tok-c">&lt;!-- inline + blocking, BEFORE the stylesheet --&gt;</span>
 &lt;<span class="tok-t">script</span>&gt;
@@ -1294,18 +1346,18 @@ toggle.<span class="tok-f">addEventListener</span>(<span class="tok-s">'click'</
 &lt;/<span class="tok-t">script</span>&gt;
 
 &lt;<span class="tok-t">link</span> <span class="tok-a">rel</span>=<span class="tok-s">"stylesheet"</span> <span class="tok-a">href</span>=<span class="tok-s">"/styles.css"</span>&gt;</code></pre>
-      </figure>
+        </figure>
 
-      <p><strong>Step two — the CSS.</strong> Three lines plus your colors.
-      <code>color-scheme</code> opts you into both schemes — form controls, scrollbars
-      and the default canvas match the OS for free.
-      <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/color_value/light-dark"><code>light-dark()</code></a>
-      picks every color’s side automatically; an override is just
-      <code>color-scheme</code> narrowed to one value.</p>
+        <p><strong>Step two — the CSS.</strong> Three lines plus your colors.
+        <code>color-scheme</code> opts you into both schemes — form controls, scrollbars
+        and the default canvas match the OS for free.
+        <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark"><code>light-dark()</code></a>
+        picks every color’s side automatically; an override is just
+        <code>color-scheme</code> narrowed to one value.</p>
 
-      <figure class="code">
-        <figcaption><span class="lang">css</span> styles.css — the entire theming system</figcaption>
-        <pre><code data-lang="css"><span class="tok-c">/* 1 · support both schemes; auto now works with zero JS */</span>
+        <figure class="code">
+          <figcaption><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="lang">css</span> styles.css — the entire theming system</figcaption>
+          <pre><code data-lang="css"><span class="tok-c">/* 1 · support both schemes; auto now works with zero JS */</span>
 :root { <span class="tok-p">color-scheme</span>: light dark; }
 
 <span class="tok-c">/* 2 · an explicit choice just narrows the scheme */</span>
@@ -1315,36 +1367,36 @@ toggle.<span class="tok-f">addEventListener</span>(<span class="tok-s">'click'</
 <span class="tok-c">/* 3 · every color picks its own side — no duplicated palettes,
        no media queries, correct in all three states */</span>
 body {
-  <span class="tok-p">background</span>: <span class="tok-f">light-dark</span>(<span class="tok-n">#f5efe3</span>, <span class="tok-n">#161109</span>);
-  <span class="tok-p">color</span>:      <span class="tok-f">light-dark</span>(<span class="tok-n">#26190a</span>, <span class="tok-n">#ece2cd</span>);
+  <span class="tok-p">background</span>: <span class="tok-f">light-dark</span>(<span class="tok-n">#f4f5f7</span>, <span class="tok-n">#0a0b0d</span>);
+  <span class="tok-p">color</span>:      <span class="tok-f">light-dark</span>(<span class="tok-n">#0d0f13</span>, <span class="tok-n">#eef1f5</span>);
 }</code></pre>
-      </figure>
+        </figure>
 
-      <p><code>light-dark()</code> is
-      <a href="https://caniuse.com/css-light-dark">Baseline 2024</a> (Chrome&nbsp;123,
-      Edge&nbsp;123, Firefox&nbsp;120, Safari&nbsp;17.5). For older browsers, same model
-      in classic syntax: tokens in <code>:root</code>, overridden in
-      <code>@media (prefers-color-scheme: dark)</code> guarded by
-      <code>:root:not([data-theme])</code>, then re-asserted under each
-      <code>[data-theme]</code>. (This page ships that fallback — view source.)</p>
+        <p><code>light-dark()</code> is
+        <a href="https://caniuse.com/css-light-dark">Baseline 2024</a> (Chrome&nbsp;123,
+        Edge&nbsp;123, Firefox&nbsp;120, Safari&nbsp;17.5). For older browsers, same model
+        in classic syntax: tokens in <code>:root</code>, overridden in
+        <code>@media (prefers-color-scheme: dark)</code> guarded by
+        <code>:root:not([data-theme])</code>, then re-asserted under each
+        <code>[data-theme]</code>. (This page ships that fallback — view source.)</p>
 
-      <p><strong>Step three — the control and the logic.</strong>
-      Radio buttons give you keyboard support and screen-reader semantics for free.
-      The logic enforces one invariant: <em>storage holds overrides only.</em></p>
+        <p><strong>Step three — the control and the logic.</strong>
+        Radio buttons give you keyboard support and screen-reader semantics for free.
+        The logic enforces one invariant: <em>storage holds overrides only.</em></p>
 
-      <figure class="code">
-        <figcaption><span class="lang">html</span> the control — three real states, not a checkbox</figcaption>
-        <pre><code data-lang="html">&lt;<span class="tok-t">fieldset</span>&gt;
+        <figure class="code">
+          <figcaption><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="lang">html</span> the control — three real states, not a checkbox</figcaption>
+          <pre><code data-lang="html">&lt;<span class="tok-t">fieldset</span>&gt;
   &lt;<span class="tok-t">legend</span>&gt;Theme&lt;/<span class="tok-t">legend</span>&gt;
   &lt;<span class="tok-t">label</span>&gt;&lt;<span class="tok-t">input</span> <span class="tok-a">type</span>=<span class="tok-s">"radio"</span> <span class="tok-a">name</span>=<span class="tok-s">"theme"</span> <span class="tok-a">value</span>=<span class="tok-s">"light"</span>&gt; Light&lt;/<span class="tok-t">label</span>&gt;
   &lt;<span class="tok-t">label</span>&gt;&lt;<span class="tok-t">input</span> <span class="tok-a">type</span>=<span class="tok-s">"radio"</span> <span class="tok-a">name</span>=<span class="tok-s">"theme"</span> <span class="tok-a">value</span>=<span class="tok-s">"auto"</span> <span class="tok-a">checked</span>&gt; Auto&lt;/<span class="tok-t">label</span>&gt;
   &lt;<span class="tok-t">label</span>&gt;&lt;<span class="tok-t">input</span> <span class="tok-a">type</span>=<span class="tok-s">"radio"</span> <span class="tok-a">name</span>=<span class="tok-s">"theme"</span> <span class="tok-a">value</span>=<span class="tok-s">"dark"</span>&gt; Dark&lt;/<span class="tok-t">label</span>&gt;
 &lt;/<span class="tok-t">fieldset</span>&gt;</code></pre>
-      </figure>
+        </figure>
 
-      <figure class="code">
-        <figcaption><span class="lang">js</span> theme.js — the whole thing</figcaption>
-        <pre><code data-lang="js"><span class="tok-k">const</span> mql = <span class="tok-b">matchMedia</span>(<span class="tok-s">'(prefers-color-scheme: dark)'</span>);
+        <figure class="code">
+          <figcaption><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="lang">js</span> theme.js — the whole thing</figcaption>
+          <pre><code data-lang="js"><span class="tok-k">const</span> mql = <span class="tok-b">matchMedia</span>(<span class="tok-s">'(prefers-color-scheme: dark)'</span>);
 
 <span class="tok-k">function</span> <span class="tok-f">setTheme</span>(choice) {           <span class="tok-c">// 'light' | 'dark' | 'auto'</span>
   <span class="tok-k">if</span> (choice === <span class="tok-s">'auto'</span>) {
@@ -1367,177 +1419,176 @@ body {
 mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</span>, () <span class="tok-k">=&gt;</span> {
   <span class="tok-k">if</span> (!<span class="tok-b">localStorage</span>.<span class="tok-f">getItem</span>(<span class="tok-s">'theme'</span>)) <span class="tok-f">syncThemeColor</span>();
 });</code></pre>
-      </figure>
+        </figure>
 
-      <p><strong>The fine print</strong> — two gotchas that survive even good
-      implementations. First: <code>&lt;meta name="theme-color"&gt;</code> media
-      attributes track <em>the OS only</em>, never your <code>data-theme</code>
-      attribute — while overridden, rewrite the metas from
-      <abbr title="JavaScript">JS</abbr>. Second: if you animate the swap, gate it
-      behind <code>matchMedia('(prefers-reduced-motion: reduce)')</code> in the JS,
-      not just CSS.</p>
+        <p><strong>The fine print</strong> — two gotchas that survive even good
+        implementations. First: <code>&lt;meta name="theme-color"&gt;</code> media
+        attributes track <em>the OS only</em>, never your <code>data-theme</code>
+        attribute — while overridden, rewrite the metas from
+        <abbr title="JavaScript">JS</abbr>. Second: if you animate the swap, gate it
+        behind <code>matchMedia('(prefers-reduced-motion: reduce)')</code> in the JS,
+        not just CSS.</p>
 
-      <h3 class="kicker kicker-spaced">objections, anticipated</h3>
+        <h3 class="kicker" style="margin:3.2rem 0 1.2rem">objections, anticipated</h3>
 
-      <details class="objection">
-        <summary>“A two-state toggle is simpler.”</summary>
-        <div class="a"><p>Simpler to draw, not simpler to use: it breaks OS sync
-        permanently after one click. Auto is the default, so most users never open
-        the control at all — and the ones who do can finally say
-        <em>“stop overriding.”</em></p></div>
-      </details>
-      <details class="objection">
-        <summary>“Users don’t understand what ‘System’ means.”</summary>
-        <div class="a"><p>Label it <em>Auto</em> —
-        <a href="https://support.apple.com/guide/mac-help/use-a-light-or-dark-appearance-mchl52e1c2d2/mac">Apple’s
-        word in macOS settings</a>;
-        <a href="https://support.apple.com/en-us/108350">iOS says <em>Automatic</em></a>.
-        Stack Overflow, GitHub and the OS panels all ship the tri-state — it’s the
-        familiar pattern. A user who ignores it is unaffected: Auto just makes the
-        site match their device.</p></div>
-      </details>
-      <details class="objection">
-        <summary>“Nobody changes their OS theme anyway.”</summary>
-        <div class="a"><p>Those users are exactly who Auto serves: the site inherits
-        whatever their device does, no effort required. And the users who <em>did</em>
-        configure something aren’t an edge case — in
-        <a href="https://www.androidauthority.com/dark-mode-poll-results-1090716/">Android
-        Authority’s 2,514-vote poll</a>, 81.9% used dark mode everywhere it was
-        offered.</p></div>
-      </details>
-      <details class="objection">
-        <summary>“We initialize the toggle from <code>prefers-color-scheme</code>, so we do respect it.”</summary>
-        <div class="a"><p>Only until the first click. A persisted value shadows the
-        media query permanently, and can’t follow the sunset switch mid-session.
-        Respecting the preference once isn’t staying subscribed to it.</p></div>
-      </details>
-      <details class="objection">
-        <summary>“We clear the stored choice when it matches the system — that’s our way back.”</summary>
-        <div class="a"><p>That fixes one direction and breaks the other. Picking Dark
-        while the system is dark silently becomes Auto — so at sunrise the site flips
-        to light, against an explicit request. The user can no longer pin a theme
-        that happens to match their current system. A third state states the intent;
-        this trick guesses it.</p></div>
-      </details>
-      <details class="objection">
-        <summary>“Fine — then we just won’t persist the choice at all.”</summary>
-        <div class="a"><p>That breaks the opposite contract: someone who wants your
-        site light on a dark device now re-toggles every visit. Three states honor
-        both intents — choices persist, and Auto means “no override.”</p></div>
-      </details>
-    </div>
-  </section>
+        <details class="objection">
+          <summary>“A two-state toggle is simpler.”</summary>
+          <div class="a"><p>Simpler to draw, not simpler to use: it breaks OS sync
+          permanently after one click. Auto is the default, so most users never open
+          the control at all — and the ones who do can finally say
+          <em>“stop overriding.”</em></p></div>
+        </details>
+        <details class="objection">
+          <summary>“Users don’t understand what ‘System’ means.”</summary>
+          <div class="a"><p>Label it <em>Auto</em> —
+          <a href="https://support.apple.com/guide/mac-help/use-a-light-or-dark-appearance-mchl52e1c2d2/mac">Apple’s
+          word in macOS settings</a>;
+          <a href="https://support.apple.com/en-us/108350">iOS says <em>Automatic</em></a>.
+          Stack Overflow, GitHub and the OS panels all ship the tri-state — it’s the
+          familiar pattern. A user who ignores it is unaffected: Auto just makes the
+          site match their device.</p></div>
+        </details>
+        <details class="objection">
+          <summary>“Nobody changes their OS theme anyway.”</summary>
+          <div class="a"><p>Those users are exactly who Auto serves: the site inherits
+          whatever their device does, no effort required. And the users who <em>did</em>
+          configure something aren’t an edge case — in
+          <a href="https://www.androidauthority.com/dark-mode-poll-results-1090716/">Android
+          Authority’s 2,514-vote poll</a>, 81.9% used dark mode everywhere it was
+          offered.</p></div>
+        </details>
+        <details class="objection">
+          <summary>“We initialize the toggle from <code>prefers-color-scheme</code>, so we do respect it.”</summary>
+          <div class="a"><p>Only until the first click. A persisted value shadows the
+          media query permanently, and can’t follow the sunset switch mid-session.
+          Respecting the preference once isn’t staying subscribed to it.</p></div>
+        </details>
+        <details class="objection">
+          <summary>“We clear the stored choice when it matches the system — that’s our way back.”</summary>
+          <div class="a"><p>That fixes one direction and breaks the other. Picking Dark
+          while the system is dark silently becomes Auto — so at sunrise the site flips
+          to light, against an explicit request. The user can no longer pin a theme
+          that happens to match their current system. A third state states the intent;
+          this trick guesses it.</p></div>
+        </details>
+        <details class="objection">
+          <summary>“Fine — then we just won’t persist the choice at all.”</summary>
+          <div class="a"><p>That breaks the opposite contract: someone who wants your
+          site light on a dark device now re-toggles every visit. Three states honor
+          both intents — choices persist, and Auto means “no override.”</p></div>
+        </details>
+      </section>
 
-  <!-- ====================================================== -->
-  <section class="sec" id="live">
-    <div class="wrap">
-      <header class="sec-head">
-        <span class="sec-num" aria-hidden="true">04</span>
-        <p class="kicker">the demonstration</p>
-        <h2>Watch this page do it</h2>
-      </header>
+      <!-- ====================================================== -->
+      <section class="sec" id="live" data-screen-label="04 Live demo">
+        <header class="sec-head">
+          <div class="row">
+            <span class="sec-num" aria-hidden="true">04</span>
+            <span class="kicker" style="margin:0">the demonstration</span>
+          </div>
+          <h2>Watch this page do it</h2>
+        </header>
 
-      <p>This page runs exactly the code above — view source; it’s one file.
-      With the header toggle on <strong>Auto</strong>, change your OS appearance
-      and watch the page follow, no reload:</p>
+        <p>This page runs exactly the code above — view source; it’s one file.
+        With the header toggle on <strong>Auto</strong>, change your OS appearance
+        and watch the page follow, no reload:</p>
 
-      <div class="os-grid">
-        <div class="os"><b>macOS</b> <span>System Settings → Appearance → Light / Dark / Auto</span></div>
-        <div class="os"><b>iOS</b> <span>Settings → Display &amp; Brightness</span></div>
-        <div class="os"><b>Windows</b> <span>Settings → Personalization → Colors → Choose your mode</span></div>
-        <div class="os"><b>Android</b> <span>Settings → Display → Dark theme</span></div>
-      </div>
+        <div class="os-grid">
+          <div class="os"><b>macOS</b> <span>System Settings → Appearance → Light / Dark / Auto</span></div>
+          <div class="os"><b>iOS</b> <span>Settings → Display &amp; Brightness</span></div>
+          <div class="os"><b>Windows</b> <span>Settings → Personalization → Colors → Choose your mode</span></div>
+          <div class="os"><b>Android</b> <span>Settings → Display → Dark theme</span></div>
+        </div>
 
-      <p>The page’s actual internals, updated live:</p>
+        <p>The page’s actual internals, updated live:</p>
 
-      <table class="console">
-        <caption>under the hood · updates live</caption>
-        <tbody>
-          <tr>
-            <th scope="row"><code>localStorage.getItem('theme')</code></th>
-            <td class="v" id="dbg-store">…</td>
-            <td class="why">null is the design — absence means Auto</td>
-          </tr>
-          <tr>
-            <th scope="row"><code>prefers-color-scheme</code></th>
-            <td class="v" id="dbg-mq">…</td>
-            <td class="why">what your OS is saying, right now</td>
-          </tr>
-          <tr>
-            <th scope="row"><code>&lt;html data-theme&gt;</code></th>
-            <td class="v" id="dbg-attr">…</td>
-            <td class="why">set only while you’re overriding</td>
-          </tr>
-          <tr>
-            <th scope="row">effective scheme</th>
-            <td class="v" id="dbg-eff">…</td>
-            <td class="why">what you’re looking at</td>
-          </tr>
-        </tbody>
-      </table>
+        <table class="console">
+          <caption>under the hood · updates live</caption>
+          <tbody>
+            <tr>
+              <th scope="row"><code>localStorage.getItem('theme')</code></th>
+              <td class="v" id="dbg-store">…</td>
+              <td class="why">null is the design — absence means Auto</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>prefers-color-scheme</code></th>
+              <td class="v" id="dbg-mq">…</td>
+              <td class="why">what your OS is saying, right now</td>
+            </tr>
+            <tr>
+              <th scope="row"><code>&lt;html data-theme&gt;</code></th>
+              <td class="v" id="dbg-attr">…</td>
+              <td class="why">set only while you’re overriding</td>
+            </tr>
+            <tr>
+              <th scope="row">effective scheme</th>
+              <td class="v" id="dbg-eff">…</td>
+              <td class="why">what you’re looking at</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
 
-    </div>
-  </section>
+      <!-- ====================================================== -->
+      <section class="sec" id="checklist" data-screen-label="05 The checklist">
+        <header class="sec-head">
+          <div class="row">
+            <span class="sec-num" aria-hidden="true">05</span>
+            <span class="kicker" style="margin:0">before you ship</span>
+          </div>
+          <h2>The checklist</h2>
+        </header>
 
-  <!-- ====================================================== -->
-  <section class="sec" id="checklist">
-    <div class="wrap">
-      <header class="sec-head">
-        <span class="sec-num" aria-hidden="true">05</span>
-        <p class="kicker">before you ship</p>
-        <h2>The checklist</h2>
-      </header>
+        <p>Audit your own site against these. (Ticking the boxes stores
+        nothing — this page only writes to storage when you override the theme.)</p>
 
-      <p>Audit your own site against these. (Ticking the boxes stores
-      nothing — this page only writes to storage when you override the theme.)</p>
+        <ul class="checklist">
+          <li><label><input type="checkbox">
+            <span><span class="what">The control has three states: Light, Dark, and Auto.</span>
+            <span class="how">A checkbox cannot represent “follow my system.” Radios or a select can.</span></span>
+          </label></li>
+          <li><label><input type="checkbox">
+            <span><span class="what">Auto is the default for every first-time visitor.</span>
+            <span class="how">First paint honors prefers-color-scheme — no flash of your favorite theme.</span></span>
+          </label></li>
+          <li><label><input type="checkbox">
+            <span><span class="what">Storage holds overrides only — no key means Auto.</span>
+            <span class="how">removeItem on Auto, never setItem('auto'). Absence is the state.</span></span>
+          </label></li>
+          <li><label><input type="checkbox">
+            <span><span class="what">A matchMedia change listener keeps JS-rendered things in sync.</span>
+            <span class="how">Charts, maps, embeds and meta theme-color don’t read CSS variables on their own.</span></span>
+          </label></li>
+          <li><label><input type="checkbox">
+            <span><span class="what">An inline, blocking head script applies the override before first paint.</span>
+            <span class="how">Inline, above the stylesheet. defer/async/module all flash.</span></span>
+          </label></li>
+          <li><label><input type="checkbox">
+            <span><span class="what">color-scheme is declared in both the meta tag and the CSS.</span>
+            <span class="how">Scrollbars, form controls and the pre-CSS canvas follow the scheme for free.</span></span>
+          </label></li>
+          <li><label><input type="checkbox">
+            <span><span class="what">meta theme-color gets rewritten from JS while overridden.</span>
+            <span class="how">Its media attribute tracks the OS, not your data-theme attribute.</span></span>
+          </label></li>
+          <li><label><input type="checkbox">
+            <span><span class="what">The theme swap respects prefers-reduced-motion.</span>
+            <span class="how">Checked in JS before any view transition — not just in CSS.</span></span>
+          </label></li>
+        </ul>
+      </section>
 
-      <ul class="checklist">
-        <li><label><input type="checkbox">
-          <span><span class="what">The control has three states: Light, Dark, and Auto.</span>
-          <span class="how">A checkbox cannot represent “follow my system.” Radios or a select can.</span></span>
-        </label></li>
-        <li><label><input type="checkbox">
-          <span><span class="what">Auto is the default for every first-time visitor.</span>
-          <span class="how">First paint honors prefers-color-scheme — no flash of your favorite theme.</span></span>
-        </label></li>
-        <li><label><input type="checkbox">
-          <span><span class="what">Storage holds overrides only — no key means Auto.</span>
-          <span class="how">removeItem on Auto, never setItem('auto'). Absence is the state.</span></span>
-        </label></li>
-        <li><label><input type="checkbox">
-          <span><span class="what">A matchMedia change listener keeps JS-rendered things in sync.</span>
-          <span class="how">Charts, maps, embeds and meta theme-color don’t read CSS variables on their own.</span></span>
-        </label></li>
-        <li><label><input type="checkbox">
-          <span><span class="what">An inline, blocking head script applies the override before first paint.</span>
-          <span class="how">Inline, above the stylesheet. defer/async/module all flash.</span></span>
-        </label></li>
-        <li><label><input type="checkbox">
-          <span><span class="what">color-scheme is declared in both the meta tag and the CSS.</span>
-          <span class="how">Scrollbars, form controls and the pre-CSS canvas follow the scheme for free.</span></span>
-        </label></li>
-        <li><label><input type="checkbox">
-          <span><span class="what">meta theme-color gets rewritten from JS while overridden.</span>
-          <span class="how">Its media attribute tracks the OS, not your data-theme attribute.</span></span>
-        </label></li>
-        <li><label><input type="checkbox">
-          <span><span class="what">The theme swap respects prefers-reduced-motion.</span>
-          <span class="how">Checked in JS before any view transition — not just in CSS.</span></span>
-        </label></li>
-      </ul>
-    </div>
-  </section>
+      <!-- ====================================================== -->
+      <section class="sec" id="resources" data-screen-label="06 Resources">
+        <header class="sec-head">
+          <div class="row">
+            <span class="sec-num" aria-hidden="true">06</span>
+            <span class="kicker" style="margin:0">go deeper</span>
+          </div>
+          <h2>Resources</h2>
+        </header>
 
-  <!-- ====================================================== -->
-  <section class="sec" id="resources">
-    <div class="wrap">
-      <header class="sec-head">
-        <span class="sec-num" aria-hidden="true">06</span>
-        <p class="kicker">go deeper</p>
-        <h2>Resources</h2>
-      </header>
-
-      <div class="res-group">
+        <div class="res-group">
         <p class="kicker">the argument</p>
         <div class="res-grid">
           <a class="res" href="https://kilianvalkhof.com/2020/design/your-dark-mode-toggle-is-broken/" target="_blank" rel="noopener">
@@ -1666,34 +1717,34 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
           </a>
         </div>
       </div>
-    </div>
-  </section>
+      </section>
+
+    </div><!-- /.content -->
+  </div><!-- /.doc -->
 
   <!-- ====================================================== -->
   <footer class="colophon">
-    <div class="wrap">
-      <p class="pull">Default to the system.<br>Store only overrides.</p>
-      <p>This page is its own demonstration: Auto by default, one localStorage key
-      (only if you override), follows your OS mid-session. One
-      <abbr title="HyperText Markup Language">HTML</abbr> file — view source,
-      <a href="https://github.com/cheeaun/dark-mode-wrong">fork it on GitHub</a>,
-      copy freely.</p>
-      <p class="fine">Set in <em>Fraunces</em>, <em>Newsreader</em> &amp;
-      <em>Spline Sans Mono</em>, self-hosted. No frameworks, no build step, no
-      analytics, no cookies, no external requests. With JavaScript off, the
-      toggle hides itself and Auto still works.</p>
-      <p class="fine">Reading this with a robot? The whole article is also
-      <a href="llms-full.txt">plain markdown</a> — see <a href="llms.txt">llms.txt</a>.</p>
-    </div>
+    <p class="pull">Default to the system.<br>Store only overrides.</p>
+    <p>This page is its own demonstration: Auto by default, one localStorage key
+    (only if you override), follows your OS mid-session. One
+    <abbr title="HyperText Markup Language">HTML</abbr> file — view source,
+    <a href="https://github.com/cheeaun/dark-mode-wrong">fork it on GitHub</a>,
+    copy freely.</p>
+    <p class="fine">Set in <em>Space Grotesk</em>, <em>Hanken Grotesk</em> &amp;
+    <em>JetBrains Mono</em>, self-hosted. No frameworks, no build step, no
+    analytics, no cookies, no external requests. With JavaScript off, the toggle
+    hides itself and Auto still works.</p>
+    <p class="fine">Reading this with a robot? The whole article is also
+    <a href="llms-full.txt">plain markdown</a> — see <a href="llms.txt">llms.txt</a>.</p>
   </footer>
 
 </main>
 
 <script>
 /* ============================================================
-   The page's own three-state logic — the same pattern as §3,
-   plus the page-specific niceties (status line, debug console,
-   view-transition swap, copy buttons, syntax highlighting).
+   The page's own three-state logic — the same pattern as §3, plus
+   page-specific niceties (status line, debug console, view-transition
+   swap, copy buttons, scroll-spy nav).
    ============================================================ */
 (function () {
   'use strict';
@@ -1709,11 +1760,9 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
       return v === 'light' || v === 'dark' ? v : null; // null = auto
     } catch (e) { return null; }
   }
-
   function effectiveScheme() {
     return root.dataset.theme || (mql.matches ? 'dark' : 'light');
   }
-
   function applyChoice(choice) {
     try {
       if (choice === 'auto') localStorage.removeItem(KEY);
@@ -1723,7 +1772,6 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
     else root.dataset.theme = choice;
     render();
   }
-
   function setChoice(choice) {
     var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (document.startViewTransition && !reduceMotion) {
@@ -1732,8 +1780,6 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
       applyChoice(choice);
     }
   }
-
-  /* ---- rendering: status line, debug console, metas, radios ---- */
 
   var statusLine = document.getElementById('status-line');
   var dbg = {
@@ -1748,20 +1794,18 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
     var sys = mql.matches ? 'dark' : 'light';
     var eff = effectiveScheme();
 
-    // keep the control honest
     radios.forEach(function (r) { r.checked = (r.value === (stored || 'auto')); });
 
-    // hero status line
     if (statusLine) {
-      statusLine.innerHTML = stored
+      var inner = stored
         ? 'This page is set to <em>' + stored + ' mode</em> because you chose it. ' +
           'Your system currently prefers ' + sys + ' — select <em>Auto</em> in the ' +
           'theme control to follow it again.'
         : 'Right now this page is in <em>' + sys + ' mode</em> because your ' +
           'system preference says so — no clicks required. That’s what Auto does.';
+      statusLine.innerHTML = '<span class="dot" aria-hidden="true"></span><span>' + inner + '</span>';
     }
 
-    // debug console
     var rawStored = null;
     try { rawStored = localStorage.getItem(KEY); } catch (e) { rawStored = '(storage blocked)'; }
     if (dbg.store) dbg.store.textContent = rawStored === null ? 'null' : JSON.stringify(rawStored);
@@ -1769,8 +1813,6 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
     if (dbg.attr) dbg.attr.textContent = root.dataset.theme ? '"' + root.dataset.theme + '"' : '(absent)';
     if (dbg.eff) dbg.eff.textContent = eff;
 
-    // meta theme-color: the media attributes only track the OS, so while
-    // overridden we rewrite every candidate to the effective color.
     var bg = getComputedStyle(document.body).backgroundColor;
     document.querySelectorAll('meta[name="theme-color"]').forEach(function (m) {
       m.setAttribute('content', bg);
@@ -1780,11 +1822,7 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
   radios.forEach(function (r) {
     r.addEventListener('change', function () { setChoice(r.value); });
   });
-
-  // Auto mode: CSS recolors itself when the OS flips; this re-renders
-  // the JS-owned bits (status line, console, theme-color metas).
   mql.addEventListener('change', render);
-
   render();
 
   /* ---- console easter egg ---- */
@@ -1794,17 +1832,12 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
       '%c◑ theme internals%c\n\nlocalStorage.theme → ' +
       (s0 ? '"' + s0 + '" — explicit override; choose Auto to follow the system again.'
           : 'null — no override stored; following the system (Auto).'),
-      'font-family: Georgia, serif; font-size: 1.4em; font-style: italic', ''
+      'font-family: "Space Grotesk", sans-serif; font-size: 1.4em', ''
     );
   } catch (e) {}
 
-  /* ============================================================
-     Page furniture: copy buttons.
-     (Syntax highlighting is hard-coded into the markup itself —
-     view any <pre> block. There is no runtime highlighter.)
-     ============================================================ */
+  /* ---- copy buttons ---- */
   var copyKey = /mac|iphone|ipad|ipod/i.test(navigator.platform || navigator.userAgent) ? '⌘C' : 'Ctrl+C';
-
   document.querySelectorAll('figure.code').forEach(function (fig) {
     var code = fig.querySelector('code');
     if (!code) return;
@@ -1812,20 +1845,15 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
     btn.type = 'button';
     btn.className = 'copy';
     btn.textContent = 'copy';
-    // no aria-label: it would shadow the visible text, and the state
-    // changes below are the announcement
     btn.setAttribute('aria-live', 'polite');
     var revertTimer;
     btn.addEventListener('click', function () {
       function done(label, holdMs) {
         btn.textContent = label;
         btn.classList.add('done');
-        clearTimeout(revertTimer); // a re-click must not inherit the old revert
+        clearTimeout(revertTimer);
         revertTimer = setTimeout(function () { btn.textContent = 'copy'; btn.classList.remove('done'); }, holdMs);
       }
-      // clipboard blocked? select the code first so the keypress we
-      // ask for actually copies it — and hold the instruction longer
-      // than a confirmation
       function fallback() {
         var sel = window.getSelection();
         if (sel) {
@@ -1837,14 +1865,29 @@ mql.<span class="tok-f">addEventListener</span>(<span class="tok-s">'change'</sp
         done('selected — press ' + copyKey, 4000);
       }
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code.textContent).then(
-          function () { done('copied ✓', 1600); },
-          fallback
-        );
+        navigator.clipboard.writeText(code.textContent).then(function () { done('copied ✓', 1600); }, fallback);
       } else { fallback(); }
     });
     fig.appendChild(btn);
   });
+
+  /* ---- scroll-spy section index ---- */
+  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
+  if ('IntersectionObserver' in window && tocLinks.length) {
+    var byId = {};
+    tocLinks.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          tocLinks.forEach(function (a) { a.classList.remove('active'); });
+          var a = byId[e.target.id];
+          if (a) a.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-25% 0px -65% 0px' });
+    secs.forEach(function (s) { io.observe(s); });
+  }
 })();
 </script>
 </body>

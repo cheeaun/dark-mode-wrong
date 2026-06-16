@@ -15,7 +15,7 @@ Open `index.html` in a browser. No build step, no dependencies.
 
 ## Stack
 
-One HTML file plus self-hosted fonts ([Fraunces](https://fonts.google.com/specimen/Fraunces), [Newsreader](https://fonts.google.com/specimen/Newsreader), [Spline Sans Mono](https://fonts.google.com/specimen/Spline+Sans+Mono)) — vanilla CSS and JS, no external requests.
+One HTML file plus self-hosted fonts ([Space Grotesk](https://fonts.google.com/specimen/Space+Grotesk), [Hanken Grotesk](https://fonts.google.com/specimen/Hanken+Grotesk), [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono)) — vanilla CSS and JS, no external requests.
 
 ## Disclosure
 

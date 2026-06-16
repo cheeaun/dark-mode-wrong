@@ -6,7 +6,7 @@ Your toggle has two states. Your users have three.
 
 This is the markdown version of <https://cheeaun.github.io/dark-mode-wrong/>. The live page implements everything described here — it is its own demonstration. Source: <https://github.com/cheeaun/dark-mode-wrong> (MIT, free to copy).
 
-*Last updated: 2026-06-14.*
+*Last updated: 2026-06-16.*
 
 ## 01 · The problem: the two-state toggle
 
@@ -74,8 +74,8 @@ The model: **light and dark are stored overrides; auto means nothing is stored.*
 
 ```html
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#f5efe3" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#161109" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f4f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0b0d" media="(prefers-color-scheme: dark)">
 
 <!-- inline + blocking, BEFORE the stylesheet -->
 <script>
@@ -103,8 +103,8 @@ The model: **light and dark are stored overrides; auto means nothing is stored.*
 /* 3 · every color picks its own side — no duplicated palettes,
        no media queries, correct in all three states */
 body {
-  background: light-dark(#f5efe3, #161109);
-  color:      light-dark(#26190a, #ece2cd);
+  background: light-dark(#f4f5f7, #0a0b0d);
+  color:      light-dark(#0d0f13, #eef1f5);
 }
 ```
 
